@@ -38,21 +38,50 @@ import tarifsRouter from './routes/tarifs.js';
 const app = express();
 
 // Middlewares
+// Configuration de sécurité pour la production
+const isProduction = process.env.NODE_ENV === 'production';
+
 app.use(
   helmet({
-    // Autoriser l'utilisation des ressources (images/vidéos) par d'autres origines (ex: front sur :3000)
+    // Configuration de sécurité renforcée en production
+    contentSecurityPolicy: isProduction ? {
+      directives: {
+        defaultSrc: ["'self'"],
+        scriptSrc: ["'self'"],
+        styleSrc: ["'self'"],
+        imgSrc: ["'self'", 'data:', 'blob:', 'https:'],
+        connectSrc: ["'self'", process.env.CORS_ORIGIN || '*'],
+        fontSrc: ["'self'"],
+        objectSrc: ["'none'"],
+        mediaSrc: ["'self'"],
+        frameSrc: ["'none'"],
+      },
+    } : false,
     crossOriginResourcePolicy: { policy: 'cross-origin' },
-    // Désactiver COEP si activé par défaut; utile pour éviter des blocages d'embed
     crossOriginEmbedderPolicy: false,
+    hsts: isProduction ? { maxAge: 63072000, includeSubDomains: true, preload: true } : false,
+    frameguard: { action: 'deny' },
+    noSniff: true,
+    xssFilter: true,
   })
 );
 app.use(express.json({ limit: '1mb' }));
-app.use(
-  cors({
-    origin: process.env.CORS_ORIGIN?.split(',').map(s => s.trim()) || '*',
-    credentials: true,
-  })
-);
+// Configuration CORS pour la production
+const corsOptions = {
+  origin: (origin, callback) => {
+    const allowedOrigins = process.env.CORS_ORIGIN?.split(',').map(s => s.trim()) || [];
+    if (!origin || allowedOrigins.includes(origin) || !isProduction) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+};
+
+app.use(cors(corsOptions));
 app.use(morgan('dev'));
 
 // Health check
@@ -113,11 +142,35 @@ connectDB(MONGODB_URI)
     }
     // Création du serveur HTTP + Socket.io
     const server = http.createServer(app);
+    // Configuration de Socket.IO pour la production
     const io = new SocketIOServer(server, {
       cors: {
-        origin: process.env.CORS_ORIGIN?.split(',').map(s => s.trim()) || '*',
+        origin: (origin, callback) => {
+          const allowedOrigins = process.env.CORS_ORIGIN?.split(',').map(s => s.trim()) || [];
+          if (!origin || allowedOrigins.includes(origin) || !isProduction) {
+            callback(null, true);
+          } else {
+            callback(new Error('Not allowed by CORS'));
+          }
+        },
+        methods: ['GET', 'POST'],
         credentials: true
-      }
+      },
+      // Optimisations pour la production
+      ...(isProduction && {
+        pingTimeout: 60000,
+        pingInterval: 25000,
+        maxHttpBufferSize: 1e8, // 100MB
+        connectTimeout: 45000,
+        transports: ['websocket'], // Désactive le polling long en production
+        allowEIO3: true,
+        cookie: false,
+        serveClient: false,
+        allowRequest: (req, callback) => {
+          // Vérification supplémentaire de l'origine si nécessaire
+          callback(null, true);
+        }
+      })
     });
 
     // Gestion WebSocket pour la messagerie temps réel
@@ -223,10 +276,23 @@ connectDB(MONGODB_URI)
     // Exposer io pour les routes (ex: suppression thread)
     app.set('io', io);
 
+    // Configuration du serveur
+    const protocol = isProduction ? 'https' : 'http';
+    const wsProtocol = isProduction ? 'wss' : 'ws';
+    const host = process.env.HOST || '0.0.0.0';
+    
     // Démarrer le serveur
-    server.listen(PORT, () => {
+    server.listen(PORT, host, () => {
       console.log(`🚀 Serveur démarré sur le port ${PORT}`);
-      console.log(`📡 WebSocket prêt sur ws://localhost:${PORT}`);
+      console.log(`🌍 URL: ${protocol}://${host === '0.0.0.0' ? 'localhost' : host}${PORT === 80 ? '' : ':' + PORT}`);
+      console.log(`📡 WebSocket prêt sur ${wsProtocol}://${host === '0.0.0.0' ? 'localhost' : host}${PORT === 80 ? '' : ':' + PORT}`);
+      
+      if (isProduction) {
+        console.log('🚀 Mode: Production');
+        console.log(`🌐 CORS autorisé pour: ${process.env.CORS_ORIGIN || 'Toutes les origines'}`);
+      } else {
+        console.log('🔧 Mode: Développement');
+      }
     });
   })
   .catch((error) => {

@@ -1,0 +1,35 @@
+{
+  "name": "monhebergement",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --turbopack",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint"
+  },
+  "dependencies": {
+    "@cloudinary/react": "^1.14.3",
+    "@cloudinary/url-gen": "^1.22.0",
+    "@heroicons/react": "^2.2.0",
+    "@react-three/drei": "^10.7.4",
+    "@react-three/fiber": "^9.3.0",
+    "critters": "^0.0.25",
+    "next": "15.5.2",
+    "node-fetch": "^3.3.2",
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
+    "react-hot-toast": "^2.6.0",
+    "react-responsive-carousel": "^3.2.23",
+    "recharts": "^3.2.1",
+    "socket.io-client": "^4.8.1",
+    "swiper": "^12.0.2"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3",
+    "@tailwindcss/postcss": "^4",
+    "eslint": "^9",
+    "eslint-config-next": "15.5.2",
+    "tailwindcss": "^4"
+  }
+}

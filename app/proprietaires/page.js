@@ -124,6 +124,12 @@ export default function ProprietairesDashboard() {
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  
+  // États pour le support
+  const [supportModalOpen, setSupportModalOpen] = useState(false);
+  const [supportMessage, setSupportMessage] = useState("");
+  const [supportLoading, setSupportLoading] = useState(false);
+  const [supportFeedback, setSupportFeedback] = useState(null);
 
   useEffect(() => {
     if (window.location.hash === "#loggedin") {
@@ -132,6 +138,54 @@ export default function ProprietairesDashboard() {
       window.location.hash = "";
     }
   }, []);
+
+  // Fonction pour gérer l'envoi du formulaire de support
+  async function handleSupportSubmit(e) {
+    e.preventDefault();
+    setSupportLoading(true);
+    setSupportFeedback(null);
+    
+    // Récupérer les infos du propriétaire depuis localStorage
+    const userData = typeof window !== 'undefined' ? JSON.parse(localStorage.getItem('userData_owner') || '{}') : {};
+    
+    // Préparer les données du formulaire
+    const formData = {
+      nom: userData.nom || 'Propriétaire',
+      email: userData.email || '',
+      telephone: userData.telephone || '',
+      message: supportMessage,
+      type: 'proprietaire' // Ajout du type pour le backend
+    };
+    
+    // Validation côté client
+    if (!formData.message || formData.message.trim().length < 5) {
+      setSupportFeedback({ type: 'error', message: 'Veuillez écrire un message plus détaillé (au moins 5 caractères).' });
+      setSupportLoading(false);
+      return;
+    }
+    
+    try {
+      const res = await apiService.post('/api/messages/support', formData);
+      if (res.success) {
+        setSupportFeedback({ type: 'success', message: 'Votre message a bien été transmis au support.' });
+        setSupportMessage("");
+        setTimeout(() => {
+          setSupportModalOpen(false);
+          setSupportFeedback(null);
+        }, 1800);
+      } else {
+        throw new Error(res.message || 'Erreur lors de l\'envoi');
+      }
+    } catch (err) {
+      console.error('Erreur:', err);
+      setSupportFeedback({ 
+        type: 'error', 
+        message: 'Une erreur est survenue. Veuillez réessayer plus tard.' 
+      });
+    } finally {
+      setSupportLoading(false);
+    }
+  }
 
   useEffect(() => {
     setLoading(true);
@@ -148,14 +202,63 @@ export default function ProprietairesDashboard() {
         <h1 className="text-2xl font-bold">Tableau de bord</h1>
         <div className="flex gap-2 items-center">
           <button
-            onClick={() => {
-              window.location.href = '/proprietaires/support';
-            }}
+            onClick={() => setSupportModalOpen(true)}
             className="inline-flex items-center gap-2 h-11 px-4 rounded-full border border-[#4A9B8E] text-[#4A9B8E] hover:bg-[#e7f6f3] transition-all font-medium"
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-1c0-1.1.9-2 2-2s2-.9 2-2-1-2-2-2-2 .9-2 2"/><circle cx="12" cy="18" r="1.2"/></svg>
             <span className="hidden sm:inline">Support</span>
           </button>
+          
+          {/* Modal Support */}
+          {supportModalOpen && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 min-h-screen py-8">
+              <div className="bg-white rounded-2xl shadow-2xl w-full max-w-[420px] mx-4 p-6 relative my-auto">
+                <button
+                  className="absolute top-4 right-4 text-neutral-400 hover:text-neutral-700 transition-colors"
+                  onClick={() => {
+                    setSupportModalOpen(false);
+                    setSupportFeedback(null);
+                  }}
+                  aria-label="Fermer"
+                >
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M6 6l12 12M6 18L18 6"/></svg>
+                </button>
+                <h2 className="text-2xl font-bold mb-5 text-[#24766A]">Contacter le support</h2>
+                <form onSubmit={handleSupportSubmit} className="space-y-4">
+                  <div>
+                    <textarea 
+                      className="w-full border border-neutral-300 rounded-lg px-4 py-3 min-h-[120px] focus:ring-2 focus:ring-[#4A9B8E] focus:border-transparent outline-none resize-none text-base" 
+                      placeholder="Décrivez votre problème ou posez votre question..." 
+                      required 
+                      value={supportMessage} 
+                      onChange={e => setSupportMessage(e.target.value)} 
+                    />
+                  </div>
+                  <button 
+                    type="submit" 
+                    className="w-full bg-[#24766A] text-white rounded-lg py-3 font-semibold hover:bg-[#1b5e4e] transition-all text-base shadow-md" 
+                    disabled={supportLoading}
+                  >
+                    {supportLoading ? 'Envoi en cours...' : 'Envoyer'}
+                  </button>
+                  {supportFeedback && (
+                    <div className={`flex items-center justify-center gap-2 mt-3 p-3 rounded-lg ${
+                      supportFeedback.type === 'success' 
+                        ? 'bg-green-50 text-green-700' 
+                        : 'bg-red-50 text-red-700'
+                    }`}>
+                      {supportFeedback.type === 'success' && (
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                          <path d="M5 13l4 4L19 7"/>
+                        </svg>
+                      )}
+                      <span className="text-sm font-medium">{supportFeedback.message}</span>
+                    </div>
+                  )}
+                </form>
+              </div>
+            </div>
+          )}
           <a href="/proprietaires/nouvelle" className="inline-flex items-center gap-2 h-11 px-5 rounded-full bg-[#4A9B8E] text-white font-medium shadow-[0_10px_20px_rgba(74,155,142,0.25)] hover:shadow-[0_15px_30px_rgba(74,155,142,0.35)] transition-all duration-300 hover:scale-105">
             <IconPin className="w-4 h-4" /> Publier une nouvelle annonce
           </a>

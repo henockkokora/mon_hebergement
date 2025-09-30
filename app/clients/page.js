@@ -1103,12 +1103,6 @@ export default function ClientsPage() {
     };
     
     // Validation côté client
-    if (!formData.email || !formData.email.includes('@')) {
-      setSupportFeedback({ type: 'error', message: 'Veuillez fournir une adresse email valide.' });
-      setSupportLoading(false);
-      return;
-    }
-    
     if (!formData.message || formData.message.trim().length < 5) {
       setSupportFeedback({ type: 'error', message: 'Veuillez écrire un message plus détaillé (au moins 5 caractères).' });
       setSupportLoading(false);

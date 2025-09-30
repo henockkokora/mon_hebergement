@@ -74,18 +74,64 @@ app.use(express.json({ limit: '1mb' }));
 const corsOptions = {
   origin: (origin, callback) => {
     const allowedOrigins = process.env.CORS_ORIGIN?.split(',').map(s => s.trim()) || [];
-    if (!origin || allowedOrigins.includes(origin) || !isProduction) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
+    // En développement, on accepte tout pour faciliter les tests
+    if (!isProduction) {
+      return callback(null, true);
     }
+    // En production, on vérifie l'origine
+    if (!origin || allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+    return callback(new Error('Not allowed by CORS'));
   },
   credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
+  allowedHeaders: [
+    'Content-Type', 
+    'Authorization', 
+    'X-Requested-With',
+    'Accept',
+    'Origin',
+    'Cache-Control',
+    'X-HTTP-Method-Override'
+  ],
+  exposedHeaders: [
+    'Content-Range',
+    'X-Content-Range',
+    'Content-Disposition',
+    'Content-Length'
+  ],
+  maxAge: 86400, // 24 heures
+  preflightContinue: false,
+  optionsSuccessStatus: 204
 };
 
+// Gestion des requêtes OPTIONS (pré-vol CORS)
+app.options('*', cors(corsOptions));
 app.use(cors(corsOptions));
+
+// Middleware pour ajouter les en-têtes CORS manuellement
+app.use((req, res, next) => {
+  const origin = req.headers.origin;
+  if (isProduction && origin) {
+    const allowedOrigins = process.env.CORS_ORIGIN?.split(',').map(s => s.trim()) || [];
+    if (allowedOrigins.includes(origin)) {
+      res.setHeader('Access-Control-Allow-Origin', origin);
+    }
+  } else {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+  }
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS, PATCH');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, Accept, Origin, Cache-Control');
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  
+  // Répondre immédiatement aux requêtes OPTIONS (pré-vol CORS)
+  if (req.method === 'OPTIONS') {
+    return res.status(204).end();
+  }
+  
+  next();
+});
 app.use(morgan('dev'));
 
 // Health check

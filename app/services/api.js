@@ -54,25 +54,56 @@ class ApiService {
     const url = `${this.baseURL}${endpoint}`;
     const token = this.getAuthToken();
     
-    const headers = {
+    // Configuration par défaut des en-têtes
+    const defaultHeaders = {
       'Content-Type': 'application/json',
-      ...(token && { 'Authorization': `Bearer ${token}` }),
+      'Accept': 'application/json',
+      'Cache-Control': 'no-cache, no-store, must-revalidate',
+      'X-Requested-With': 'XMLHttpRequest'
+    };
+
+    // Ajout du token d'authentification si disponible
+    if (token) {
+      defaultHeaders['Authorization'] = `Bearer ${token}`;
+    }
+
+    // Fusion des en-têtes
+    const headers = {
+      ...defaultHeaders,
       ...(options.headers || {})
     };
 
+    // Configuration de la requête
     const config = {
       method: options.method || 'GET',
       headers,
-      ...(options.body && { body: options.body })
+      credentials: 'include', // Important pour les cookies de session
+      mode: 'cors',
+      ...(options.body && { 
+        body: typeof options.body === 'object' 
+          ? JSON.stringify(options.body) 
+          : options.body 
+      })
     };
     
     try {
-      // Logs de débogage désactivés
+      // Journalisation en développement
+      if (process.env.NODE_ENV !== 'production') {
+        console.log(`[API] ${config.method} ${url}`, { 
+          headers: config.headers,
+          body: config.body 
+        });
+      }
       
       const response = await fetch(url, config);
       
+      // Vérifier si la réponse est vide (204 No Content)
+      if (response.status === 204) {
+        return null;
+      }
+      
       // Récupérer le texte de la réponse
-      const text = await response.text().catch(() => '');
+      const text = await response.text().catch(() => null);
       let responseData = {};
       
       // Essayer de parser la réponse en JSON
@@ -80,7 +111,8 @@ class ApiService {
         try {
           responseData = JSON.parse(text);
         } catch (e) {
-          console.error('Erreur de parsing JSON:', e, 'Réponse brute:', text);
+          console.error('[API] Erreur de parsing JSON:', e, 'Réponse brute:', text);
+          // Si ce n'est pas du JSON, retourner le texte brut
           responseData = { 
             success: false,
             message: 'Réponse invalide du serveur',
@@ -93,12 +125,19 @@ class ApiService {
       const isError = !response.ok || (responseData && responseData.success === false);
       
       if (isError) {
+        // Journalisation des erreurs
+        console.error(`[API] Erreur ${response.status} sur ${endpoint}`, {
+          status: response.status,
+          statusText: response.statusText,
+          response: responseData
+        });
+        
         // Construire un message d'erreur informatif
         const errorMessage = [
           `Erreur ${response.status || 'inconnue'}`,
           response.statusText || '',
-          responseData?.message,
-          responseData?.error
+          responseData?.message || responseData?.error || 'Erreur inconnue',
+          responseData?.details ? `Détails: ${JSON.stringify(responseData.details)}` : ''
         ]
           .filter(Boolean)
           .join(' - ');

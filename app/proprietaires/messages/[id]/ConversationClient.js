@@ -67,7 +67,7 @@ export default function ConversationClient({ roomId }) {
       return;
     }
 
-    const socket = io(process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000", {
+    const socket = io(apiService.getWebSocketURL(), {
       reconnection: true,
       transports: ["websocket", "polling"],
       withCredentials: true,

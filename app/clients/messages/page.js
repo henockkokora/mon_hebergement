@@ -78,7 +78,7 @@ function ChatRoom({ roomId, user, onConnectionStatusChange, proprietaireName }) 
     setIsLoading(true);
     setError(null);
     
-    const socket = io("http://localhost:4000", {
+    const socket = io(apiService.getWebSocketURL(), {
       reconnection: true,
       reconnectionAttempts: maxReconnectAttempts,
       reconnectionDelay: baseReconnectDelay,
@@ -498,7 +498,7 @@ export default function ClientsMessages() {
       threadsSocketRef.current = null;
     }
 
-    const socket = io(process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000", {
+    const socket = io(apiService.getWebSocketURL(), {
       transports: ["websocket", "polling"],
       withCredentials: true,
     });

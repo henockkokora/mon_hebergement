@@ -10,6 +10,17 @@ class ApiService {
     this.baseURL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
   }
 
+  // Méthode pour obtenir l'URL WebSocket appropriée selon l'environnement
+  getWebSocketURL() {
+    if (typeof window === 'undefined') return '';
+    const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+    const host = process.env.NEXT_PUBLIC_WS_URL || 
+                (process.env.NODE_ENV === 'production' 
+                  ? `${window.location.protocol === 'https:' ? 'wss:' : 'ws:'}//${window.location.host}`
+                  : 'ws://localhost:4000');
+    return host.startsWith('ws') ? host : `${protocol}//${host}`;
+  }
+
   // Récupérer le bon token selon l'espace (client/propriétaire)
   getAuthToken() {
     if (typeof window === 'undefined') return null;

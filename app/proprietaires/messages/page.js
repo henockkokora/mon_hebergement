@@ -66,7 +66,7 @@ export default function Messages() {
       socketRef.current = null;
     }
 
-    const socket = io(process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000', {
+    const socket = io(apiService.getWebSocketURL(), {
       transports: ['websocket', 'polling'],
       withCredentials: true,
     });

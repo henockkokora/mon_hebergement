@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { io } from 'socket.io-client';
 
-const SOCKET_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
+// L'URL WebSocket est gérée dynamiquement par apiService.getWebSocketURL()
 
 export default function ChatThread({ threadId, currentUserId, otherUser }) {
   const [messages, setMessages] = useState([]);
@@ -27,7 +27,7 @@ export default function ChatThread({ threadId, currentUserId, otherUser }) {
 
   // Connexion socket
   useEffect(() => {
-    const socket = io(SOCKET_URL, { transports: ['websocket', 'polling'], withCredentials: true });
+    const socket = io(apiService.getWebSocketURL(), { transports: ['websocket', 'polling'], withCredentials: true });
     socketRef.current = socket;
     if (threadId) {
       socket.emit('join', threadId);

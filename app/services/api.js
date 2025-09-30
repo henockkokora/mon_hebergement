@@ -7,7 +7,7 @@ class ApiService {
   }
   constructor() {
     // URL directe vers le backend
-    this.baseURL = "http://localhost:4000";
+    this.baseURL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
   }
 
   // Récupérer le bon token selon l'espace (client/propriétaire)

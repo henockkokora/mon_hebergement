@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, useEffect, useLayoutEffect, useMemo } from "react";
+import { useRef, useState, useEffect, useLayoutEffect, useMemo, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import CloudinaryImage from "../components/CloudinaryImage";
 
@@ -1171,7 +1171,8 @@ function formatDate(date) {
   return new Date(date).toISOString().split('T')[0];
 }
 
-export default function ClientsPage() {
+// Component that uses useSearchParams - needs to be wrapped in Suspense
+function ClientsPageContent() {
   // Tous les appels à useState en premier
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   // --- Support modal states ---
@@ -1585,5 +1586,47 @@ export default function ClientsPage() {
       {/* Mobile bottom toolbar */}
       <MobileTabBar isLoggedIn={isLoggedIn} />
     </div>
+  );
+}
+
+// Loading component for Suspense fallback
+function LoadingFallback() {
+  return (
+    <div className="min-h-screen bg-white font-sans font-medium md:font-[inherit] md:font-normal">
+      <div className="w-full flex items-center justify-center py-12">
+        <div className="text-center">
+          <div className="relative h-16 w-16 mx-auto mb-2">
+            <svg className="absolute inset-0 w-12 h-12 m-2 text-neutral-800 house-bounce" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+              <path d="M3 10.5 12 3l9 7.5" />
+              <path d="M5 10v9a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-9" />
+              <path d="M9 21v-6a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v6" />
+            </svg>
+            <div className="absolute bottom-1 left-1/2 -translate-x-1/2 w-10 h-2 rounded-full bg-neutral-300/60 house-shadow" />
+          </div>
+          <p className="text-neutral-600 text-sm">Chargement...</p>
+          <style jsx>{`
+            @keyframes house-bounce {
+              0%, 100% { transform: translateY(0); }
+              50% { transform: translateY(-10px); }
+            }
+            @keyframes shadow-pulse {
+              0%, 100% { transform: translateX(-50%) scaleX(1); opacity: .6; }
+              50% { transform: translateX(-50%) scaleX(.85); opacity: .4; }
+            }
+            .house-bounce { animation: house-bounce 0.6s ease-in-out infinite; }
+            .house-shadow { animation: shadow-pulse 0.6s ease-in-out infinite; }
+          `}</style>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// Main export with Suspense wrapper
+export default function ClientsPage() {
+  return (
+    <Suspense fallback={<LoadingFallback />}>
+      <ClientsPageContent />
+    </Suspense>
   );
 }

@@ -115,18 +115,40 @@ export default function Messages() {
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-[320px_1fr] gap-4">
-      <aside className="rounded-2xl border border-black/10 bg-white/70 overflow-hidden">
+      <aside className="rounded-3xl bg-neutral-50 shadow-sm overflow-hidden">
         <div className="px-4 pt-3">
-          <button onClick={goBack} className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-gray-300 text-sm hover:bg-gray-50" aria-label="Retour">
+          <button onClick={goBack} className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#F5F5F5] hover:bg-[#EDEDED] text-[13px] font-medium text-neutral-700 shadow" aria-label="Retour">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4" aria-hidden>
               <path d="M15 18l-6-6 6-6" />
             </svg>
             Retour
           </button>
         </div>
-        <div className="px-4 py-3 border-b border-black/10 font-semibold">Conversations</div>
+        <div className="px-4 py-3 text-[15px] font-semibold text-neutral-900">Conversations</div>
         {loading ? (
-          <div className="p-4 text-sm text-neutral-500">Chargement...</div>
+          <div className="p-6">
+            <div className="text-center">
+              <div className="relative h-16 w-16 mx-auto mb-2">
+                <svg className="absolute inset-0 w-12 h-12 m-2 text-neutral-800 house-bounce" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                  <path d="M21 15a4 4 0 0 1-4 4H8l-5 3 1.5-4.5A4 4 0 0 1 4 15V7a4 4 0 0 1 4-4h9a4 4 0 0 1 4 4z"/>
+                </svg>
+                <div className="absolute bottom-1 left-1/2 -translate-x-1/2 w-10 h-2 rounded-full bg-neutral-300/60 house-shadow" />
+              </div>
+              <p className="text-neutral-600 text-sm">Chargement des conversations...</p>
+              <style jsx>{`
+                @keyframes house-bounce {
+                  0%, 100% { transform: translateY(0); }
+                  50% { transform: translateY(-10px); }
+                }
+                @keyframes shadow-pulse {
+                  0%, 100% { transform: translateX(-50%) scaleX(1); opacity: .6; }
+                  50% { transform: translateX(-50%) scaleX(.85); opacity: .4; }
+                }
+                .house-bounce { animation: house-bounce 0.6s ease-in-out infinite; }
+                .house-shadow { animation: shadow-pulse 0.6s ease-in-out infinite; }
+              `}</style>
+            </div>
+          </div>
         ) : error ? (
           <div className="p-4 text-sm text-red-600 flex items-center justify-between">
             <span>{error}</span>
@@ -135,28 +157,28 @@ export default function Messages() {
             )}
           </div>
         ) : (
-          <ul className="divide-y divide-black/10">
+          <ul className="space-y-1">
             {threads.length === 0 && (
-              <li className="px-4 py-3 text-sm text-neutral-500">Aucune conversation</li>
+              <li className="px-4 py-3 text-[13px] text-neutral-500">Aucune conversation</li>
             )}
             {threads.map((t) => (
               <li key={t._id} className="px-4 py-3">
                 <div className="flex items-center justify-between gap-2">
-                  <button onClick={() => setActiveThread(t._id)} className={`flex-1 text-left -mx-2 px-2 py-2 rounded-lg hover:bg-black/[.03] ${activeThread === t._id ? 'bg-blue-50' : ''}`}>
+                  <button onClick={() => setActiveThread(t._id)} className={`flex-1 text-left -mx-2 px-2 py-2 rounded-lg hover:bg-[#F5F5F5] ${activeThread === t._id ? 'bg-[#EDEDED] shadow-inner' : ''}`}>
                     <div className="flex items-center justify-between">
-                      <span className="font-medium flex items-center gap-2">
+                      <span className="font-semibold text-[15px] flex items-center gap-2 text-neutral-900">
                         {t.clientId?.nom || t.clientId?.email || 'Client'}
                         {(t.unreadCount || 0) > 0 && (
-                          <span className="inline-flex items-center justify-center min-w-5 h-5 px-1 rounded-full bg-red-600 text-white text-[11px]">
+                          <span className="inline-flex items-center justify-center min-w-5 h-5 px-1 rounded-full bg-neutral-800 text-white text-[11px]">
                             {t.unreadCount}
                           </span>
                         )}
                       </span>
-                      <span className="text-xs text-neutral-500">
+                      <span className="text-[12px] text-neutral-500">
                         {t.updatedAt ? new Date(t.updatedAt).toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit' }) : ''}
                       </span>
                     </div>
-                    <div className="text-sm text-neutral-600 line-clamp-1">{t.lastMessage || '—'}</div>
+                    <div className="text-[13px] text-neutral-600 line-clamp-1">{t.lastMessage || '—'}</div>
                   </button>
                   <button
                     title="Supprimer"
@@ -166,7 +188,7 @@ export default function Messages() {
                       setConfirmOpen(true);
                     }}
                     aria-label="Supprimer"
-                    className="shrink-0 inline-flex items-center justify-center w-8 h-8 rounded-full border border-red-200 text-red-600 hover:bg-red-50"
+                    className="shrink-0 inline-flex items-center justify-center w-8 h-8 rounded-full bg-neutral-100 text-neutral-800 hover:bg-neutral-200 shadow-sm"
                   >
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4" aria-hidden>
                       <path d="M6 7h12" />
@@ -183,7 +205,7 @@ export default function Messages() {
         )}
       </aside>
 
-      <section className="rounded-2xl border border-black/10 bg-white/70 flex items-stretch justify-center p-0 text-sm text-neutral-600 min-h-[70vh]">
+      <section className="rounded-3xl bg-neutral-50 shadow-sm flex items-stretch justify-center p-0 text-[13px] text-neutral-600 min-h-[70vh]">
         {activeThread ? (
           <div className="w-full h-full">
             <ConversationClient roomId={activeThread} />

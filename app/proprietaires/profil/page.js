@@ -212,8 +212,8 @@ export default function ProfilPage() {
   return (
     <div className="max-w-2xl mx-auto mt-8 space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold">Mon profil</h1>
-        <Link href="/proprietaires" className="inline-flex items-center h-10 px-4 rounded-full bg-[#4A9B8E] text-white">Retour</Link>
+        <h1 className="text-[22px] leading-7 md:text-2xl font-semibold text-neutral-900">Mon profil</h1>
+        <Link href="/proprietaires" className="inline-flex items-center h-10 px-4 rounded-full bg-[#4A9B8E] text-white font-semibold">Retour</Link>
       </div>
       <div className="rounded-2xl border border-black/10 bg-white/70 p-0">
         <div className="flex border-b border-black/10">
@@ -248,7 +248,7 @@ export default function ProfilPage() {
                 {!editing ? (
                   <button
                     onClick={() => setEditing(true)}
-                    className="px-4 py-2 text-sm font-medium text-white bg-[#4A9B8E] rounded-lg hover:bg-[#3a877b] transition-colors"
+                    className="px-4 py-2 text-sm font-semibold text-white bg-[#4A9B8E] rounded-lg hover:bg-[#3a877b] transition-colors"
                   >
                     Modifier le profil
                   </button>
@@ -260,14 +260,14 @@ export default function ProfilPage() {
                         setEditing(false);
                         fetchUserProfile(); // Recharger les données originales
                       }}
-                      className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50"
+                      className="px-4 py-2 text-sm font-semibold text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50"
                     >
                       Annuler
                     </button>
                     <button
                       type="submit"
                       form="profile-form"
-                      className="px-4 py-2 text-sm font-medium text-white bg-[#4A9B8E] rounded-lg hover:bg-[#3a877b] transition-colors"
+                      className="px-4 py-2 text-sm font-semibold text-white bg-[#4A9B8E] rounded-lg hover:bg-[#3a877b] transition-colors"
                       disabled={loading}
                     >
                       {loading ? 'Enregistrement...' : 'Enregistrer les modifications'}
@@ -280,7 +280,7 @@ export default function ProfilPage() {
                 <div className="grid grid-cols-1 gap-6">
                   {/* Nom et prénom */}
                   <div>
-                    <label htmlFor="nom" className="block text-sm font-medium text-gray-700 mb-1">
+                    <label htmlFor="nom" className="block text-[15px] font-semibold text-neutral-900 mb-1">
                       Nom et prénom
                     </label>
                     {editing ? (
@@ -290,7 +290,7 @@ export default function ProfilPage() {
                         name="nom"
                         value={user.nom || ''}
                         onChange={handleChange}
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#4A9B8E] focus:border-transparent"
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#4A9B8E] focus:border-transparent text-[16px] placeholder:text-neutral-600 placeholder:font-medium"
                         required
                       />
                     ) : (
@@ -300,7 +300,7 @@ export default function ProfilPage() {
 
                   {/* Email */}
                   <div>
-                    <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+                    <label htmlFor="email" className="block text-[15px] font-semibold text-neutral-900 mb-1">
                       Email
                     </label>
                     {editing ? (
@@ -310,7 +310,7 @@ export default function ProfilPage() {
                         name="email"
                         value={user.email || ''}
                         onChange={handleChange}
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#4A9B8E] focus:border-transparent"
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#4A9B8E] focus:border-transparent text-[16px] placeholder:text-neutral-600 placeholder:font-medium"
                         required
                       />
                     ) : (
@@ -320,7 +320,7 @@ export default function ProfilPage() {
 
                   {/* Téléphone */}
                   <div>
-                    <label htmlFor="telephone" className="block text-sm font-medium text-gray-700 mb-1">
+                    <label htmlFor="telephone" className="block text-[15px] font-semibold text-neutral-900 mb-1">
                       Téléphone
                     </label>
                     {editing ? (
@@ -330,7 +330,7 @@ export default function ProfilPage() {
                         name="telephone"
                         value={user.telephone || ''}
                         onChange={handleChange}
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#4A9B8E] focus:border-transparent"
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#4A9B8E] focus:border-transparent text-[16px] placeholder:text-neutral-600 placeholder:font-medium"
                       />
                     ) : (
                       <div className="p-2 bg-gray-50 rounded-lg">{user.telephone || 'Non renseigné'}</div>
@@ -342,15 +342,15 @@ export default function ProfilPage() {
                   <div className="pt-4 border-t border-gray-200">
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div>
-                        <div className="text-xs text-neutral-500">Rôle</div>
+                        <div className="text-[12px] text-neutral-500">Rôle</div>
                         <div className="font-medium capitalize">{user?.role || 'utilisateur'}</div>
                       </div>
                       <div>
-                        <div className="text-xs text-neutral-500">ID utilisateur</div>
-                        <div className="font-mono text-sm">{user?.id || 'N/A'}</div>
+                        <div className="text-[12px] text-neutral-500">ID utilisateur</div>
+                        <div className="font-mono text-[13px]">{user?.id || 'N/A'}</div>
                       </div>
                       <div>
-                        <div className="text-xs text-neutral-500">Date d'inscription</div>
+                        <div className="text-[12px] text-neutral-500">Date d'inscription</div>
                         <div className="font-medium">
                           {user?.createdAt ? (
                             new Date(user.createdAt).toLocaleDateString('fr-FR', {
@@ -370,10 +370,10 @@ export default function ProfilPage() {
           {activeTab === "securite" && (
             <form className="space-y-5 max-w-md" onSubmit={handlePasswordChange}>
               <div className="space-y-1">
-                <label className="block text-sm font-medium text-neutral-700">Ancien mot de passe</label>
+                <label className="block text-[15px] font-semibold text-neutral-900">Ancien mot de passe</label>
                 <input 
                   type="password" 
-                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#4A9B8E] focus:border-transparent transition-all duration-200 outline-none"
+                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#4A9B8E] focus:border-transparent transition-all duration-200 outline-none text-[16px] placeholder:text-neutral-600 placeholder:font-medium"
                   placeholder="••••••••"
                   value={passwordData.oldPassword} 
                   onChange={e => setPasswordData({ ...passwordData, oldPassword: e.target.value })} 
@@ -381,23 +381,23 @@ export default function ProfilPage() {
                 />
               </div>
               <div className="space-y-1">
-                <label className="block text-sm font-medium text-neutral-700">Nouveau mot de passe</label>
+                <label className="block text-[15px] font-semibold text-neutral-900">Nouveau mot de passe</label>
                 <input 
                   type="password" 
-                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#4A9B8E] focus:border-transparent transition-all duration-200 outline-none"
+                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#4A9B8E] focus:border-transparent transition-all duration-200 outline-none text-[16px] placeholder:text-neutral-600 placeholder:font-medium"
                   placeholder="••••••••"
                   value={passwordData.newPassword} 
                   onChange={e => setPasswordData({ ...passwordData, newPassword: e.target.value })} 
                   required 
                   minLength={6} 
                 />
-                <p className="text-xs text-gray-500 mt-1">Minimum 6 caractères</p>
+                <p className="text-[12px] text-gray-500 mt-1">Minimum 6 caractères</p>
               </div>
               <div className="space-y-1">
-                <label className="block text-sm font-medium text-neutral-700">Confirmer le mot de passe</label>
+                <label className="block text-[15px] font-semibold text-neutral-900">Confirmer le mot de passe</label>
                 <input 
                   type="password" 
-                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#4A9B8E] focus:border-transparent transition-all duration-200 outline-none"
+                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#4A9B8E] focus:border-transparent transition-all duration-200 outline-none text-[16px] placeholder:text-neutral-600 placeholder:font-medium"
                   placeholder="••••••••"
                   value={passwordData.confirm} 
                   onChange={e => setPasswordData({ ...passwordData, confirm: e.target.value })} 
@@ -427,7 +427,7 @@ export default function ProfilPage() {
               )}
               <button 
                 type="submit" 
-                className="w-full mt-2 px-6 py-3 rounded-lg bg-[#4A9B8E] text-white font-medium hover:bg-[#3a877b] transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-[#4A9B8E] focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full mt-2 px-6 py-3 rounded-lg bg-[#4A9B8E] text-white font-semibold hover:bg-[#3a877b] transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-[#4A9B8E] focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
                 disabled={!passwordData.oldPassword || !passwordData.newPassword || !passwordData.confirm || loading}
               >
                 {loading ? (

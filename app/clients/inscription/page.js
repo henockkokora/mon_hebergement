@@ -18,7 +18,7 @@ function StepDots({ step }) {
   return (
     <div className="flex items-center gap-2">
       {STEPS.map((_, i) => (
-        <span key={i} className={`w-2 h-2 rounded-full ${i <= step ? "bg-[#4A9B8E]" : "bg-neutral-200"}`} />
+        <span key={i} className={`w-2 h-2 rounded-full ${i <= step ? "bg-neutral-800" : "bg-neutral-200"}`} />
       ))}
     </div>
   );
@@ -348,9 +348,9 @@ export default function InscriptionClient() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-neutral-50 via-white to-neutral-100">
+    <div className="min-h-screen bg-gradient-to-br from-neutral-50 via-white to-neutral-100 font-sans font-medium md:font-normal">
       {/* Header */}
-      <div className="bg-white border-b border-neutral-200">
+      <div className="bg-neutral-50 shadow-sm">
         <div className="max-w-md mx-auto px-4 py-4 flex items-center gap-4">
           <button
             onClick={() => router.back()}
@@ -360,7 +360,7 @@ export default function InscriptionClient() {
             <IconBack />
           </button>
           <div className="flex-1 flex items-center gap-4">
-            <h1 className="text-base font-medium text-neutral-900 whitespace-nowrap">Inscription Client</h1>
+            <h1 className="text-[22px] leading-7 md:text-base font-semibold text-neutral-900 whitespace-nowrap">Inscription Client</h1>
             <div className="flex-1">
               <StepDots step={step} />
             </div>
@@ -386,42 +386,36 @@ export default function InscriptionClient() {
             
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-neutral-700 mb-2">Nom *</label>
+                <label className="block text-[15px] font-semibold text-neutral-900 mb-2">Nom *</label>
                 <input
                   type="text"
                   value={data.nom}
                   onChange={(e) => handleInputChange("nom", e.target.value)}
-                  className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-[#4A9B8E] focus:border-transparent transition-colors ${
-                    errors.nom ? "border-red-300" : "border-neutral-300"
-                  }`}
+                  className={`w-full px-4 py-3 rounded-xl text-[16px] placeholder:text-neutral-600 placeholder:font-medium bg-[#F5F5F5] shadow-inner focus:bg-[#EDEDED]`}
                   placeholder="Votre nom"
                 />
                 {errors.nom && <p className="mt-1 text-sm text-red-600">{errors.nom}</p>}
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-neutral-700 mb-2">Prénom *</label>
+                <label className="block text-[15px] font-semibold text-neutral-900 mb-2">Prénom *</label>
                 <input
                   type="text"
                   value={data.prenom}
                   onChange={(e) => handleInputChange("prenom", e.target.value)}
-                  className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-[#4A9B8E] focus:border-transparent transition-colors ${
-                    errors.prenom ? "border-red-300" : "border-neutral-300"
-                  }`}
+                  className={`w-full px-4 py-3 rounded-xl text-[16px] placeholder:text-neutral-600 placeholder:font-medium bg-[#F5F5F5] shadow-inner focus:bg-[#EDEDED]`}
                   placeholder="Votre prénom"
                 />
                 {errors.prenom && <p className="mt-1 text-sm text-red-600">{errors.prenom}</p>}
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-neutral-700 mb-2">Email *</label>
+                <label className="block text-[15px] font-semibold text-neutral-900 mb-2">Email *</label>
                 <input
                   type="email"
                   value={data.email}
                   onChange={(e) => handleInputChange("email", e.target.value)}
-                  className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-[#4A9B8E] focus:border-transparent transition-colors ${
-                    errors.email ? "border-red-300" : "border-neutral-300"
-                  }`}
+                  className={`w-full px-4 py-3 rounded-xl text-[16px] placeholder:text-neutral-600 placeholder:font-medium bg-[#F5F5F5] shadow-inner focus:bg-[#EDEDED]`}
                   placeholder="votre@email.com"
                 />
                 {errors.email && <p className="mt-1 text-sm text-red-600">{errors.email}</p>}
@@ -440,28 +434,24 @@ export default function InscriptionClient() {
             
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-neutral-700 mb-2">Mot de passe *</label>
+                <label className="block text-[15px] font-semibold text-neutral-900 mb-2">Mot de passe *</label>
                 <input
                   type="password"
                   value={data.password}
                   onChange={(e) => handleInputChange("password", e.target.value)}
-                  className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-[#4A9B8E] focus:border-transparent transition-colors ${
-                    errors.password ? "border-red-300" : "border-neutral-300"
-                  }`}
+                  className={`w-full px-4 py-3 rounded-xl text-[16px] placeholder:text-neutral-600 placeholder:font-medium bg-[#F5F5F5] shadow-inner focus:bg-[#EDEDED]`}
                   placeholder="Minimum 6 caractères"
                 />
                 {errors.password && <p className="mt-1 text-sm text-red-600">{errors.password}</p>}
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-neutral-700 mb-2">Confirmer le mot de passe *</label>
+                <label className="block text-[15px] font-semibold text-neutral-900 mb-2">Confirmer le mot de passe *</label>
                 <input
                   type="password"
                   value={data.confirmPassword}
                   onChange={(e) => handleInputChange("confirmPassword", e.target.value)}
-                  className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-[#4A9B8E] focus:border-transparent transition-colors ${
-                    errors.confirmPassword ? "border-red-300" : "border-neutral-300"
-                  }`}
+                  className={`w-full px-4 py-3 rounded-xl text-[16px] placeholder:text-neutral-600 placeholder:font-medium bg-[#F5F5F5] shadow-inner focus:bg-[#EDEDED]`}
                   placeholder="Répétez votre mot de passe"
                 />
                 {errors.confirmPassword && <p className="mt-1 text-sm text-red-600">{errors.confirmPassword}</p>}
@@ -480,42 +470,36 @@ export default function InscriptionClient() {
             
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-neutral-700 mb-2">Ville *</label>
+                <label className="block text-[15px] font-semibold text-neutral-900 mb-2">Ville *</label>
                 <input
                   type="text"
                   value={data.ville}
                   onChange={(e) => handleInputChange("ville", e.target.value)}
-                  className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-[#4A9B8E] focus:border-transparent transition-colors ${
-                    errors.ville ? "border-red-300" : "border-neutral-300"
-                  }`}
+                  className={`w-full px-4 py-3 rounded-xl text-[16px] placeholder:text-neutral-600 placeholder:font-medium bg-[#F5F5F5] shadow-inner focus:bg-[#EDEDED]`}
                   placeholder="Ex: Abidjan"
                 />
                 {errors.ville && <p className="mt-1 text-sm text-red-600">{errors.ville}</p>}
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-neutral-700 mb-2">Quartier *</label>
+                <label className="block text-[15px] font-semibold text-neutral-900 mb-2">Quartier *</label>
                 <input
                   type="text"
                   value={data.quartier}
                   onChange={(e) => handleInputChange("quartier", e.target.value)}
-                  className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-[#4A9B8E] focus:border-transparent transition-colors ${
-                    errors.quartier ? "border-red-300" : "border-neutral-300"
-                  }`}
+                  className={`w-full px-4 py-3 rounded-xl text-[16px] placeholder:text-neutral-600 placeholder:font-medium bg-[#F5F5F5] shadow-inner focus:bg-[#EDEDED]`}
                   placeholder="Ex: Cocody"
                 />
                 {errors.quartier && <p className="mt-1 text-sm text-red-600">{errors.quartier}</p>}
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-neutral-700 mb-2">Adresse *</label>
+                <label className="block text-[15px] font-semibold text-neutral-900 mb-2">Adresse *</label>
                 <textarea
                   value={data.adresse}
                   onChange={(e) => handleInputChange("adresse", e.target.value)}
                   rows={3}
-                  className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-[#4A9B8E] focus:border-transparent transition-colors resize-none ${
-                    errors.adresse ? "border-red-300" : "border-neutral-300"
-                  }`}
+                  className={`w-full px-4 py-3 rounded-xl text-[16px] placeholder:text-neutral-600 placeholder:font-medium bg-[#F5F5F5] shadow-inner focus:bg-[#EDEDED] resize-none`}
                   placeholder="Votre adresse complète"
                 />
                 {errors.adresse && <p className="mt-1 text-sm text-red-600">{errors.adresse}</p>}
@@ -534,14 +518,12 @@ export default function InscriptionClient() {
             
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-neutral-700 mb-2">Numéro de téléphone *</label>
+                <label className="block text-[15px] font-semibold text-neutral-900 mb-2">Numéro de téléphone *</label>
                 <input
                   type="tel"
                   value={data.telephone}
                   onChange={(e) => handleInputChange("telephone", e.target.value)}
-                  className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-[#4A9B8E] focus:border-transparent transition-colors ${
-                    errors.telephone ? "border-red-300" : "border-neutral-300"
-                  }`}
+                  className={`w-full px-4 py-3 rounded-xl text-[16px] placeholder:text-neutral-600 placeholder:font-medium bg-[#F5F5F5] shadow-inner focus:bg-[#EDEDED]`}
                   placeholder="225xxxxxxxxx"
                 />
                 {errors.telephone && <p className="mt-1 text-sm text-red-600">{errors.telephone}</p>}
@@ -568,24 +550,24 @@ export default function InscriptionClient() {
                     Un code de vérification a été envoyé au {data.telephone}
                   </div>
                   <div className="flex items-center gap-2">
-                    <input
-                      type="text"
-                      value={otpCode}
-                      onChange={(e) => setOtpCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
-                      placeholder="Code OTP"
-                      className="flex-1 h-11 px-3 rounded-xl border border-black/10 outline-none focus:border-[#4A9B8E] text-center text-lg font-mono tracking-widest"
-                      maxLength={6}
-                      inputMode="numeric"
-                      autoComplete="one-time-code"
-                    />
-                    <button
-                      type="button"
-                      onClick={verifyOtp}
-                      disabled={submitting || otpCode.length !== 6}
-                      className="h-11 px-4 rounded-xl bg-[#4A9B8E] text-white font-medium disabled:opacity-50 whitespace-nowrap"
-                    >
-                      {submitting ? 'Vérification...' : 'Vérifier'}
-                    </button>
+                      <input
+                        type="text"
+                        value={otpCode}
+                        onChange={(e) => setOtpCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
+                        placeholder="Code OTP"
+                        className="flex-1 h-11 px-3 rounded-xl bg-[#F5F5F5] outline-none shadow-inner focus:bg-[#EDEDED] text-center text-lg font-mono tracking-widest"
+                        maxLength={6}
+                        inputMode="numeric"
+                        autoComplete="one-time-code"
+                      />
+                      <button
+                        type="button"
+                        onClick={verifyOtp}
+                        disabled={submitting || otpCode.length !== 6}
+                        className="h-11 px-4 rounded-xl bg-neutral-800 hover:bg-neutral-700 text-white font-semibold disabled:opacity-50 whitespace-nowrap shadow-sm"
+                      >
+                        {submitting ? 'Vérification...' : 'Vérifier'}
+                      </button>
                   </div>
                   <div className="text-sm text-center">
                     {!canResend ? (
@@ -619,7 +601,7 @@ export default function InscriptionClient() {
           {step > 0 && step < 4 && (
             <button
               onClick={() => setStep(step - 1)}
-              className="flex-1 px-6 py-3 border border-neutral-300 text-neutral-700 rounded-xl hover:bg-neutral-50 transition-colors"
+              className="flex-1 px-6 py-3 text-neutral-900 rounded-xl bg-neutral-100 hover:bg-neutral-200 transition-colors font-semibold shadow-sm"
             >
               Précédent
             </button>
@@ -629,7 +611,7 @@ export default function InscriptionClient() {
             <button
               onClick={handleNext}
               disabled={submitting}
-              className="flex-1 px-6 py-3 bg-[#4A9B8E] text-white rounded-xl hover:bg-[#3a8b7e] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex-1 px-6 py-3 bg-neutral-800 text-white rounded-xl hover:bg-neutral-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed font-semibold shadow-sm"
             >
               {submitting ? "En cours..." : step === 3 ? "Envoyer le code" : "Suivant"}
             </button>
@@ -637,7 +619,7 @@ export default function InscriptionClient() {
             <button
               onClick={handleSubmit}
               disabled={submitting || !otpVerified}
-              className="flex-1 px-6 py-3 bg-[#4A9B8E] text-white rounded-xl hover:bg-[#3a8b7e] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex-1 px-6 py-3 bg-neutral-800 text-white rounded-xl hover:bg-neutral-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed font-semibold shadow-sm"
             >
               {submitting ? "Inscription..." : "Finaliser l'inscription"}
             </button>

@@ -146,7 +146,7 @@ function SimpleCarousel({ images, title }) {
             <p className="text-gray-600 mb-3">Impossible de charger l'image</p>
             <button
               onClick={() => setError(false)}
-              className="px-4 py-2 bg-[#4A9B8E] text-white rounded-lg hover:bg-[#3B8276] transition-colors"
+              className="px-4 py-2 bg-neutral-800 text-white rounded-lg hover:bg-neutral-700 transition-colors"
             >
               Réessayer
             </button>
@@ -282,6 +282,26 @@ export default function AnnonceDetails() {
   const [isConnected, setIsConnected] = useState(false);
   const [currentAvisIndex, setCurrentAvisIndex] = useState(0);
   const [userAvis, setUserAvis] = useState(null);
+  // Keyboard offset for keeping inputs/buttons visible on mobile
+  const [kbOffset, setKbOffset] = useState(0);
+
+  useEffect(() => {
+    const vv = typeof window !== 'undefined' ? window.visualViewport : null;
+    if (!vv) return;
+    const update = () => {
+      try {
+        const offset = Math.max(0, (window.innerHeight - vv.height - vv.offsetTop));
+        setKbOffset(offset);
+      } catch (_) {}
+    };
+    vv.addEventListener('resize', update);
+    vv.addEventListener('scroll', update);
+    update();
+    return () => {
+      vv.removeEventListener('resize', update);
+      vv.removeEventListener('scroll', update);
+    };
+  }, []);
   // Fonction pour contacter l'hôte
   const handleContactHost = async () => {
     try {
@@ -522,7 +542,28 @@ export default function AnnonceDetails() {
   if (loadingAnnonce) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#4A9B8E]"></div>
+        <div className="text-center">
+          <div className="relative h-16 w-16 mx-auto mb-2">
+            <svg className="absolute inset-0 w-12 h-12 m-2 text-neutral-800 house-bounce" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+              <path d="M3 10.5 12 3l9 7.5" />
+              <path d="M5 10v9a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-9" />
+              <path d="M9 21v-6a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v6" />
+            </svg>
+            <div className="absolute bottom-1 left-1/2 -translate-x-1/2 w-10 h-2 rounded-full bg-neutral-300/60 house-shadow" />
+          </div>
+          <style jsx>{`
+            @keyframes house-bounce {
+              0%, 100% { transform: translateY(0); }
+              50% { transform: translateY(-10px); }
+            }
+            @keyframes shadow-pulse {
+              0%, 100% { transform: translateX(-50%) scaleX(1); opacity: .6; }
+              50% { transform: translateX(-50%) scaleX(.85); opacity: .4; }
+            }
+            .house-bounce { animation: house-bounce 0.6s ease-in-out infinite; }
+            .house-shadow { animation: shadow-pulse 0.6s ease-in-out infinite; }
+          `}</style>
+        </div>
       </div>
     );
   }
@@ -539,7 +580,7 @@ export default function AnnonceDetails() {
           <div className="space-y-3">
             <button 
               onClick={() => router.back()}
-              className="w-full px-4 py-2 bg-[#4A9B8E] text-white rounded-md hover:bg-[#35786b] transition-colors"
+              className="w-full px-4 py-2 bg-neutral-800 text-white rounded-md hover:bg-neutral-700 transition-colors"
             >
               ← Retour à la page précédente
             </button>
@@ -682,27 +723,31 @@ export default function AnnonceDetails() {
         setUserAvis(nouvelAvis);
       }
     } catch (error) {
-      console.error('Erreur lors de l\'ajout de l\'avis:', error);
-      setAvisError(
-        error.message || 
-        "Une erreur est survenue lors de l'envoi de votre avis. Veuillez réessayer."
-      );
+      // Affichage d'un message utilisateur (pas d'alerte, pas de bruit console)
+      const msg = (error?.status === 400 || /déjà.*avis/i.test(error?.message || ''))
+        ? "Vous avez déjà laissé un avis pour cette annonce."
+        : (error?.message || "Une erreur est survenue lors de l'envoi de votre avis. Veuillez réessayer.");
+      setAvisError(msg);
+      // Optionnel: si doublon, on désactive la possibilité de resoumettre
+      if ((error?.status === 400) || /déjà.*avis/i.test(error?.message || '')) {
+        setUserAvis({ note, commentaire });
+      }
     } finally {
       setSubmitting(false);
     }
   };
 
   return (
-    <div className="bg-gray-50 min-h-screen">
-      <main className="max-w-7xl mx-auto py-6 sm:py-8 px-4 sm:px-6 lg:px-8">
+    <div className="bg-neutral-50 min-h-screen">
+      <main className="max-w-7xl mx-auto py-6 sm:py-8 px-4 sm:px-6 lg:px-8" style={{ paddingBottom: kbOffset ? kbOffset + 24 : undefined }}>
         {/* --- Header --- */}
         <div className="mb-6">
-          <button onClick={() => router.back()} className="inline-flex items-center justify-center border border-black/10 bg-white rounded-full px-4 h-10 hover:bg-gray-50 transition-colors space-x-2">
+          <button onClick={() => router.back()} className="inline-flex items-center justify-center rounded-full px-4 h-10 bg-neutral-100 hover:bg-neutral-200 transition-colors space-x-2 shadow-sm">
             <IconBack className="w-4 h-4 text-gray-600" />
-            <span className="text-sm font-medium text-gray-700">Retour</span>
+            <span className="text-[13px] font-medium text-gray-700">Retour</span>
           </button>
-          <h1 className="text-3xl font-extrabold mb-4">{annonce.title || annonce.titre || 'Titre non renseigné'}</h1>
-          <div className="text-sm text-gray-500">
+          <h1 className="text-[22px] leading-7 md:text-3xl font-semibold text-neutral-900 mb-2">{annonce.title || annonce.titre || 'Titre non renseigné'}</h1>
+          <div className="text-[13px] text-neutral-700">
               {annonce.ville || annonce.address?.ville || ''}{(annonce.quartier || annonce.pays || annonce.address?.pays) ? ' · ' : ''}
               {annonce.quartier || ''}{annonce.quartier && (annonce.pays || annonce.address?.pays) ? ', ' : ''}{annonce.pays || annonce.address?.pays || ''}
             </div>
@@ -716,16 +761,16 @@ export default function AnnonceDetails() {
           <div className="flex items-center gap-2">
             <button 
               onClick={handleShare}
-              className="chip-glass px-3 py-1.5"
+              className="px-3 py-1.5 rounded-full bg-[#F5F5F5] hover:bg-[#EDEDED] text-[13px] font-medium shadow"
             >
               Partager
             </button>
-            <button onClick={handleToggleSave} className={`chip-glass px-3 py-1.5 ${isFavorite ? 'text-[#d23b3b]' : ''}`}>{isFavorite ? 'Enregistré' : 'Enregistrer'}</button>
-            <button onClick={handleOpenReport} className="chip-glass px-3 py-1.5">Signaler</button>
+            <button onClick={handleToggleSave} className={`px-3 py-1.5 rounded-full bg-[#F5F5F5] hover:bg-[#EDEDED] text-[13px] font-medium shadow ${isFavorite ? 'text-[#d23b3b]' : ''}`}>{isFavorite ? 'Enregistré' : 'Enregistrer'}</button>
+            <button onClick={handleOpenReport} className="px-3 py-1.5 rounded-full bg-[#F5F5F5] hover:bg-[#EDEDED] text-[13px] font-medium shadow">Signaler</button>
             {(annonce.matterportModelId || annonce.matterportShareUrl) && (
               <button
                 onClick={() => router.push(`/clients/annonce/${id}/visite3d`)}
-                className="chip-glass px-3 py-1.5"
+                className="px-3 py-1.5 rounded-full bg-[#F5F5F5] hover:bg-[#EDEDED] text-[13px] font-medium shadow"
               >
                 Visite 3D
               </button>
@@ -739,14 +784,14 @@ export default function AnnonceDetails() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
           {/* Left Column */}
           <div className="lg:col-span-2 space-y-4">
-            <div className="rounded-2xl border border-black/10 bg-white/70 p-6">
-              <h2 className="text-2xl font-semibold text-gray-800">
+            <div className="rounded-3xl bg-neutral-50 shadow-sm p-6">
+              <h2 className="text-[15px] font-semibold text-neutral-900">
                 {annonce.type || 'Logement'}{annonce.type ? ' · ' : ''}Hôte : {annonce.proprietaireId?.nom || annonce.proprietaire?.nom || 'Non renseigné'}
               </h2>
             </div>
-            <div className="rounded-2xl border border-black/10 bg-white/70 p-6">
-              <h3 className="text-xl font-semibold mb-4 text-gray-800">Description</h3>
-              <p className="text-gray-700 leading-relaxed">{annonce.description || 'Description non renseignée.'}</p>
+            <div className="rounded-3xl bg-neutral-50 shadow-sm p-6">
+              <h3 className="text-[15px] font-semibold mb-3 text-neutral-900">Description</h3>
+              <p className="text-[13px] text-neutral-700 leading-relaxed">{annonce.description || 'Description non renseignée.'}</p>
             </div>
           </div>
 
@@ -754,8 +799,8 @@ export default function AnnonceDetails() {
           <div className="lg:col-span-1">
             <div className="sticky top-24 flex flex-col gap-6">
               {/* Carte hôte */}
-              <div className="rounded-2xl border border-black/10 bg-white/70 p-5">
-                <h4 className="text-sm font-semibold text-neutral-600 mb-3">Hôte</h4>
+              <div className="rounded-3xl bg-neutral-50 shadow-sm p-5">
+                <h4 className="text-[15px] font-semibold text-neutral-900 mb-3">Hôte</h4>
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center gap-3">
                     <div className="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center text-gray-500">
@@ -763,13 +808,13 @@ export default function AnnonceDetails() {
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                       </svg>
                     </div>
-                    <div className="text-sm">
+                    <div className="text-[13px]">
                       <div className="font-semibold">{annonce.proprietaireId?.nom || 'Hôte'}</div>
                     </div>
                   </div>
                   <button 
                     onClick={handleShare}
-                    className="p-2 text-gray-500 hover:text-[#4A9B8E] transition-colors"
+                    className="p-2 text-gray-500 hover:text-neutral-800 transition-colors"
                     aria-label="Partager cette annonce"
                     title="Partager cette annonce"
                   >
@@ -778,14 +823,14 @@ export default function AnnonceDetails() {
                 </div>
                 <button 
                   onClick={handleContactHost}
-                  className="mt-3 w-full chip-glass px-3 py-2 hover:bg-gray-100 transition-colors"
+                  className="mt-3 w-full px-3 py-2 rounded-full bg-[#F5F5F5] hover:bg-[#EDEDED] transition-colors text-[13px] font-semibold shadow-sm"
                 >
                   Contacter l'hôte
                 </button>
               </div>
 
               {/* Carte réservation/visite */}
-              <div className="bg-white border border-black/10 rounded-2xl shadow-sm p-6">
+              <div className="bg-neutral-50 rounded-3xl shadow-sm p-6">
                 <div className="text-center mb-4">
                   <div className="flex items-center justify-center">
                     <span className="text-2xl font-bold text-gray-900">{(annonce.price || annonce.prixParNuit || 0).toLocaleString()} FCFA</span>
@@ -794,7 +839,7 @@ export default function AnnonceDetails() {
                 </div>
                 <div className="space-y-3">
                   <button
-                    className="w-full bg-white hover:bg-gray-50 text-[#4A9B8E] border-2 border-[#4A9B8E] py-3 rounded-xl font-semibold text-lg transition-colors flex items-center justify-center gap-2"
+                    className="w-full bg-[#F5F5F5] hover:bg-[#EDEDED] text-neutral-900 py-3 rounded-full font-semibold text-lg transition-colors flex items-center justify-center gap-2 shadow-sm"
                     onClick={() => {
                       if (annonce?.matterportModelId || annonce?.matterportShareUrl) {
                         router.push(`/clients/annonce/${id}/visite3d`);
@@ -816,28 +861,28 @@ export default function AnnonceDetails() {
         </div>
 
         {/* --- Avis Section --- */}
-        <div className="mt-16 border-t border-gray-200 pt-12 pb-16">
+        <div className="mt-10 pt-6 pb-8">
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-3xl font-extrabold mb-8 flex items-center gap-3">
-              <svg className="w-8 h-8 text-[#4A9B8E]" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+            <h2 className="text-[22px] leading-7 md:text-3xl font-semibold mb-6 flex items-center gap-3 text-neutral-900">
+              <svg className="w-8 h-8 text-neutral-800" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 20l9 2-7-7 7-7-9 2-2-9-2 9-9-2 7 7-7 7 9-2 2 9z"/>
               </svg>
-              Avis sur le propriétaire <span className="ml-2 text-xl font-semibold text-gray-500">({avis.length})</span>
+              Avis sur le propriétaire <span className="ml-2 text-[13px] font-medium text-neutral-600">({avis.length})</span>
             </h2>
-            {avisLoading && <div className="text-gray-400 animate-pulse text-center py-8">Chargement des avis…</div>}
-            {avisError && <div className="text-red-500 text-center py-4">{avisError}</div>}
+            {avisLoading && <div className="text-[13px] text-neutral-500 animate-pulse text-center py-6">Chargement des avis…</div>}
+            {avisError && <div className="text-[13px] text-red-600 text-center py-4">{avisError}</div>}
             <div className="relative">
             {!avisLoading && avis.length === 0 ? (
-              <div className="flex flex-col items-center py-10">
+              <div className="flex flex-col items-center py-6">
                 <svg className="w-20 h-20 text-gray-300 mb-4" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                 </svg>
                 <p className="text-lg text-gray-500 mb-2">Aucun avis sur ce propriétaire pour le moment</p>
-                <span className="text-[#4A9B8E] font-medium">Soyez le premier à partager votre expérience !</span>
+                <span className="text-neutral-800 font-medium">Soyez le premier à partager votre expérience !</span>
               </div>
             ) : (
               <>
-                <div className="relative overflow-hidden pb-12">
+                <div className="relative overflow-hidden pb-8">
                   <div 
                     className="flex transition-transform duration-300 ease-out"
                     style={{ transform: `translateX(-${currentAvisIndex * 100}%)` }}
@@ -847,9 +892,9 @@ export default function AnnonceDetails() {
                         key={a._id || a.date} 
                         className="w-full flex-shrink-0 px-2 transition-all duration-300 transform hover:scale-[1.01]"
                       >
-                        <div className="bg-white rounded-xl shadow-md p-8 h-full border border-gray-100">
+                        <div className="bg-neutral-50 rounded-3xl shadow-sm p-6 h-full">
                           <div className="flex items-center mb-4">
-                            <div className="w-12 h-12 rounded-full bg-[#4A9B8E]/10 flex items-center justify-center text-[#4A9B8E] text-xl font-bold mr-3">
+                            <div className="w-12 h-12 rounded-full bg-neutral-200 flex items-center justify-center text-neutral-800 text-xl font-bold mr-3">
                               {a.auteur?.nom?.charAt(0)?.toUpperCase() || "U"}
                             </div>
                             <div>
@@ -892,7 +937,7 @@ export default function AnnonceDetails() {
                         setCurrentAvisIndex(prev => Math.max(0, prev - 1));
                       }}
                       disabled={currentAvisIndex === 0}
-                      className="p-3 rounded-full bg-white shadow-lg text-gray-700 hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed transition-all duration-200 hover:scale-110"
+                      className="p-3 rounded-full bg-neutral-100 shadow-sm text-gray-700 hover:bg-neutral-200 disabled:opacity-30 disabled:cursor-not-allowed transition-all duration-200"
                       aria-label="Avis précédent"
                     >
                       <ChevronLeftIcon className="w-6 h-6" />
@@ -907,7 +952,7 @@ export default function AnnonceDetails() {
                             setCurrentAvisIndex(index);
                           }}
                           className={`h-2 rounded-full transition-all ${
-                            index === currentAvisIndex ? 'bg-[#4A9B8E] w-6' : 'bg-gray-300 w-2.5'
+                            index === currentAvisIndex ? 'bg-neutral-800 w-6' : 'bg-gray-300 w-2.5'
                           }`}
                           aria-label={`Aller à l'avis ${index + 1}`}
                         />
@@ -932,33 +977,38 @@ export default function AnnonceDetails() {
           </div>
           </div>
           {/* Formulaire d'ajout d'avis */}
-          <div className="max-w-4xl mx-auto mt-16 border-t border-gray-200 pt-12">
-            <h3 className="text-2xl font-bold mb-4 text-[#4A9B8E] flex items-center gap-2">
-              <svg className="w-6 h-6 text-[#4A9B8E]" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+          <div className="max-w-4xl mx-auto mt-10 pt-6">
+            <h3 className="text-[22px] leading-7 md:text-2xl font-semibold mb-4 text-neutral-900 flex items-center gap-2">
+              <svg className="w-6 h-6 text-neutral-800" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 20l9 2-7-7 7-7-9 2-2-9-2 9-9-2 7 7-7 7 9-2 2 9z"/>
               </svg>
               {userAvis ? 'Votre évaluation' : isConnected ? 'Évaluer ce propriétaire' : 'Connectez-vous pour évaluer'}
             </h3>
+            {isConnected && avisError && (
+              <div className="max-w-xl mb-4 p-4 bg-red-50 text-red-700 rounded-xl text-[13px] shadow-sm">
+                {avisError}
+              </div>
+            )}
             
             {!isConnected ? (
-              <div className="max-w-xl bg-white rounded-xl shadow p-8 border border-gray-100 text-center">
-                <p className="text-gray-600 mb-4">Connectez-vous pour évaluer ce propriétaire.</p>
+              <div className="max-w-xl bg-neutral-50 rounded-xl shadow-sm p-6 text-center">
+                <p className="text-[13px] text-neutral-700 mb-4">Connectez-vous pour évaluer ce propriétaire.</p>
                 <button 
                   onClick={() => router.push('/clients/connexion')}
-                  className="px-6 py-2 bg-[#4A9B8E] text-white rounded-md hover:bg-[#3a7a6f] transition-colors"
+                  className="px-6 py-2 bg-neutral-800 text-white rounded-md hover:bg-neutral-700 transition-colors font-semibold shadow-sm"
                 >
                   Se connecter
                 </button>
               </div>
             ) : userAvis ? (
-              <div className="max-w-xl bg-white rounded-xl shadow p-8 border border-gray-100">
+              <div className="max-w-xl bg-neutral-50 rounded-xl shadow-sm p-6">
                 <div className="flex items-center mb-4">
-                  <div className="w-12 h-12 rounded-full bg-[#4A9B8E]/10 flex items-center justify-center text-[#4A9B8E] text-xl font-bold mr-3">
+                  <div className="w-12 h-12 rounded-full bg-neutral-200 flex items-center justify-center text-neutral-800 text-xl font-bold mr-3">
                     {userAvis.auteur?.nom?.charAt(0)?.toUpperCase() || "U"}
                   </div>
                   <div>
-                    <p className="font-semibold text-gray-800">Votre avis</p>
-                    <p className="text-xs text-gray-400">
+                    <p className="font-semibold text-neutral-900">Votre avis</p>
+                    <p className="text-[12px] text-neutral-500">
                       {new Date(userAvis.date).toLocaleDateString('fr-FR', { 
                         day: 'numeric', 
                         month: 'long', 
@@ -981,18 +1031,18 @@ export default function AnnonceDetails() {
                     ))}
                   </div>
                 </div>
-                <p className="text-gray-700 italic">"{userAvis.commentaire}"</p>
-                <div className="mt-6 pt-4 border-t border-gray-100">
-                  <p className="text-sm text-gray-500">Merci d'avoir évalué ce propriétaire !</p>
+                <p className="text-[13px] text-neutral-700 italic">"{userAvis.commentaire}"</p>
+                <div className="mt-6 pt-4">
+                  <p className="text-[13px] text-neutral-600">Merci d'avoir évalué ce propriétaire !</p>
                 </div>
               </div>
             ) : isConnected ? (
               <form 
                 onSubmit={handleAddAvis} 
-                className={`space-y-6 max-w-xl bg-white rounded-xl shadow p-8 border ${userAvis ? 'opacity-70 pointer-events-none' : ''}`}
+                className={`space-y-5 max-w-xl bg-neutral-50 rounded-xl shadow-sm p-6 ${userAvis ? 'opacity-70 pointer-events-none' : ''}`}
               >
                 <div>
-                  <label className="block text-sm font-bold text-gray-700 mb-3">Votre note</label>
+                  <label className="block text-[15px] font-semibold text-neutral-900 mb-3">Votre note</label>
                   <div className="flex items-center space-x-1 mb-1">
                     {[1, 2, 3, 4, 5].map((star) => (
                       <button
@@ -1012,36 +1062,38 @@ export default function AnnonceDetails() {
                       </button>
                     ))}
                   </div>
-                  <p className="text-sm text-gray-500 mt-1">
+                  <p className="text-[13px] text-neutral-600 mt-1">
                     {note} étoile{note > 1 ? 's' : ''} - {note >= 4 ? 'Excellent' : note >= 3 ? 'Bien' : 'Moyen'}
                   </p>
                 </div>
                 <div className="mt-6">
-                  <label htmlFor="commentaire" className="block text-sm font-medium text-gray-700 mb-2">
+                  <label htmlFor="commentaire" className="block text-[15px] font-semibold text-neutral-900 mb-2">
                     Votre commentaire sur le propriétaire
                   </label>
                   <textarea
                     id="commentaire"
                     rows={4}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-[#4A9B8E] focus:border-[#4A9B8E]"
+                    className="w-full px-3 py-2 rounded-xl bg-[#F5F5F5] text-[16px] text-neutral-900 placeholder:text-neutral-600 placeholder:font-medium shadow-inner focus:outline-none focus:bg-[#EDEDED]"
                     placeholder="Décrivez votre expérience avec ce propriétaire..."
                     value={commentaire}
                     onChange={(e) => setCommentaire(e.target.value)}
                     required
                   />
                 </div>
-                <button
-                  type="submit"
-                  disabled={submitting || userAvis}
-                  className={`w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-[#4A9B8E] hover:bg-[#3a7a6f] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#4A9B8E] disabled:opacity-50 disabled:cursor-not-allowed ${userAvis ? 'cursor-not-allowed opacity-50' : ''}`}
-                >
-                  {userAvis ? 'Vous avez déjà évalué ce propriétaire' : (submitting ? 'Envoi en cours...' : 'Publier mon évaluation')}
-                </button>
+                <div className="sticky bottom-0 pt-2" style={{ bottom: kbOffset }}>
+                  <button
+                    type="submit"
+                    disabled={submitting || userAvis}
+                    className={`w-full flex justify-center py-3 px-4 rounded-md shadow-sm text-sm font-semibold text-white bg-neutral-800 hover:bg-neutral-700 focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed ${userAvis ? 'cursor-not-allowed opacity-50' : ''}`}
+                  >
+                    {userAvis ? 'Vous avez déjà évalué ce propriétaire' : (submitting ? 'Envoi en cours...' : 'Publier mon évaluation')}
+                  </button>
+                </div>
               </form>
             ) : (
-              <div className="text-center py-4 border rounded-lg bg-gray-50">
-                <p className="text-gray-600">
-                  <button onClick={() => router.push('/connexion')} className="text-[#4A9B8E] hover:underline font-medium">Connectez-vous</button> pour laisser un avis.
+              <div className="text-center py-4 rounded-lg bg-neutral-50 shadow-sm">
+                <p className="text-[13px] text-neutral-700">
+                  <button onClick={() => router.push('/connexion')} className="text-neutral-800 hover:underline font-semibold">Connectez-vous</button> pour laisser un avis.
                 </p>
               </div>
             )}
@@ -1051,10 +1103,10 @@ export default function AnnonceDetails() {
         {/* Modal Signalement */}
         {reportOpen && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
-            <div className="w-full max-w-md rounded-2xl bg-white shadow-lg overflow-hidden">
-              <div className="px-5 py-4 border-b border-black/10 font-semibold">Signaler cette annonce</div>
+            <div className="w-full max-w-md rounded-2xl bg-white shadow-2xl overflow-hidden">
+              <div className="px-5 py-4 text-[15px] font-semibold text-neutral-900">Signaler cette annonce</div>
               <div className="p-5 space-y-3">
-                <div className="text-sm text-neutral-600">
+                <div className="text-[13px] text-neutral-700">
                   Décrivez brièvement le motif du signalement. Notre équipe examinera votre requête.
                 </div>
                 <textarea
@@ -1062,17 +1114,17 @@ export default function AnnonceDetails() {
                   onChange={(e)=>setReportReason(e.target.value)}
                   rows={5}
                   maxLength={1000}
-                  className="w-full px-3 py-2 rounded-xl border border-black/10 bg-white/80 outline-none focus:ring-2 focus:ring-[#4A9B8E]"
+                  className="w-full px-3 py-2 rounded-xl bg-[#F5F5F5] text-[16px] text-neutral-900 placeholder:text-neutral-500 shadow-inner focus:outline-none focus:bg-[#EDEDED]"
                   placeholder="Ex: Contenu inapproprié, informations trompeuses, etc."
                 />
-                <div className="text-xs text-neutral-500 text-right">{reportReason.length}/1000</div>
+                <div className="text-[12px] text-neutral-500 text-right">{reportReason.length}/1000</div>
               </div>
-              <div className="px-5 py-4 border-t border-black/10 flex items-center justify-end gap-2 bg-neutral-50">
-                <button onClick={()=>setReportOpen(false)} className="chip-glass px-4 py-2">Annuler</button>
+              <div className="px-5 py-4 flex items-center justify-end gap-2 bg-neutral-50">
+                <button onClick={()=>setReportOpen(false)} className="px-4 py-2 rounded-full bg-[#F5F5F5] hover:bg-[#EDEDED] text-[13px] font-medium shadow">Annuler</button>
                 {alreadyReported ? (
-                  <span className="text-red-600 font-semibold">Annonce déjà signalée</span>
+                  <span className="text-red-600 font-semibold text-[13px]">Annonce déjà signalée</span>
                 ) : (
-                  <button onClick={submitReport} className="px-4 py-2 rounded-xl bg-red-600 hover:bg-red-700 text-white">Envoyer le signalement</button>
+                  <button onClick={submitReport} className="px-4 py-2 rounded-xl bg-red-600 hover:bg-red-700 text-white font-semibold shadow">Envoyer le signalement</button>
                 )}
               </div>
             </div>

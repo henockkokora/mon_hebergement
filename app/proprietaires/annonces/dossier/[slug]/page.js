@@ -4,7 +4,7 @@ import { useParams } from "next/navigation";
 import Link from "next/link";
 import apiService from "../../../../services/api";
 
-const CATEGORIES = ["tous","studio","appartement","maison","villa","chambre","loft","duplex"];
+const CATEGORIES = ["tous","studio","appartement","bureau","maison","villa","chambre","loft","duplex"];
 
 function IconBack({ className = "w-5 h-5" }) {
   return (

@@ -128,28 +128,28 @@ export default function ProprietairesLayout({ children }) {
   };
 
   return (
-    <div className="min-h-screen vh-stable bg-gradient-to-b from-neutral-50 to-white text-neutral-900">
+    <div className="min-h-screen vh-stable bg-gradient-to-b from-neutral-50 to-white text-neutral-900 font-sans font-medium md:font-normal">
       {!isAuthPage && (
-        <header className="sticky top-0 z-40 border-b border-black/10 backdrop-blur bg-white/70">
+        <header className="sticky top-0 z-40 backdrop-blur bg-white/70 shadow-sm">
           <div className="max-w-[1200px] mx-auto px-4 py-3 flex items-center gap-3 relative">
             <div className="flex items-center gap-2">
               <span className="inline-flex items-center justify-center w-7 h-7 rounded-full bg-[#4A9B8E] text-white text-[12px] font-bold">M</span>
               <span className="font-semibold">Espace Propriétaire</span>
             </div>
-            <nav className="ml-auto hidden sm:flex items-center gap-4 text-sm">
-              <a className="chip-glass px-3 py-1.5" href="/proprietaires">Dashboard</a>
-              <a className="chip-glass px-3 py-1.5" href="/proprietaires/annonces">Annonces</a>
-              <a className="chip-glass px-3 py-1.5" href="/proprietaires/nouvelle">Publier</a>
-              <a className="chip-glass px-3 py-1.5" href="/proprietaires/messages">Messages {unreadTotal > 0 && (<span className="inline-flex items-center justify-center min-w-5 h-5 px-1 ml-1 rounded-full bg-red-600 text-white text-[10px]">{unreadTotal}</span>)}</a>
-              <a className="chip-glass px-3 py-1.5" href="/proprietaires/paiements">Paiements</a>
-              <a className="chip-glass px-3 py-1.5" href="/proprietaires/profil">Profil</a>
+            <nav className="ml-auto hidden sm:flex items-center gap-3 text-sm">
+              <a className="px-3 py-1.5 rounded-full bg-[#F5F5F5] hover:bg-[#EDEDED] shadow font-semibold" href="/proprietaires">Dashboard</a>
+              <a className="px-3 py-1.5 rounded-full bg-[#F5F5F5] hover:bg-[#EDEDED] shadow font-semibold" href="/proprietaires/annonces">Annonces</a>
+              <a className="px-3 py-1.5 rounded-full bg-[#F5F5F5] hover:bg-[#EDEDED] shadow font-semibold" href="/proprietaires/nouvelle">Publier</a>
+              <a className="px-3 py-1.5 rounded-full bg-[#F5F5F5] hover:bg-[#EDEDED] shadow font-semibold" href="/proprietaires/messages">Messages {unreadTotal > 0 && (<span className="inline-flex items-center justify-center min-w-5 h-5 px-1 ml-1 rounded-full bg-red-600 text-white text-[10px]">{unreadTotal}</span>)}</a>
+              <a className="px-3 py-1.5 rounded-full bg-[#F5F5F5] hover:bg-[#EDEDED] shadow font-semibold" href="/proprietaires/paiements">Paiements</a>
+              <a className="px-3 py-1.5 rounded-full bg-[#F5F5F5] hover:bg-[#EDEDED] shadow font-semibold" href="/proprietaires/profil">Profil</a>
               {showLogout && (
-                <button onClick={handleLogout} className="chip-glass px-3 py-1.5 border border-[red] text-[red] bg-white hover:bg-[#e6f4f1] font-medium ml-2">Déconnexion</button>
+                <button onClick={handleLogout} className="px-3 py-1.5 rounded-full bg-[#F5F5F5] hover:bg-[#EDEDED] shadow text-red-600 font-semibold ml-2">Déconnexion</button>
               )}
             </nav>
             {/* Mobile hamburger (render after mount to avoid hydration mismatch) */}
             {mounted && (
-              <button onClick={()=>setMobileOpen(v=>!v)} className="ml-auto sm:hidden inline-flex items-center justify-center w-10 h-10 rounded-full border border-black/10 bg-white/90" aria-label="Menu">
+              <button onClick={()=>setMobileOpen(v=>!v)} className="ml-auto sm:hidden inline-flex items-center justify-center w-10 h-10 rounded-full bg-white shadow" aria-label="Menu">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6" aria-hidden>
                   <path d="M3 6h18M3 12h18M3 18h18" />
                 </svg>
@@ -157,7 +157,7 @@ export default function ProprietairesLayout({ children }) {
             )}
             {/* Mobile dropdown */}
             {mounted && mobileOpen && (
-              <div className="sm:hidden absolute right-4 top-full mt-2 w-56 rounded-2xl border border-black/10 bg-white/95 shadow-[0_16px_32px_rgba(0,0,0,0.12)] backdrop-blur overflow-hidden">
+              <div className="sm:hidden absolute right-4 top-full mt-2 w-56 rounded-2xl bg-white/95 shadow-[0_16px_32px_rgba(0,0,0,0.12)] backdrop-blur overflow-hidden">
                 <div className="py-2 grid gap-1 text-sm">
                   <a className="px-3 py-2 rounded-lg hover:bg-black/[.04] flex items-center gap-2" href="/proprietaires" onClick={()=>setMobileOpen(false)}>
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4" aria-hidden>
@@ -167,7 +167,7 @@ export default function ProprietairesLayout({ children }) {
                     </svg>
                     <span>Dashboard</span>
                   </a>
-                  <a className="px-3 py-2 rounded-lg hover:bg黒/[.04] flex items-center gap-2" href="/proprietaires/annonces" onClick={()=>setMobileOpen(false)}>
+                  <a className="px-3 py-2 rounded-lg hover:bg-black/[.04] flex items-center gap-2" href="/proprietaires/annonces" onClick={()=>setMobileOpen(false)}>
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4" aria-hidden>
                       <path d="M8 6h13M8 12h13M8 18h13" />
                       <path d="M3 6h.01M3 12h.01M3 18h.01" />
@@ -200,7 +200,7 @@ export default function ProprietairesLayout({ children }) {
                     <span>Profil</span>
                   </a>
                   {showLogout && (
-                    <button onClick={()=>{ setMobileOpen(false); handleLogout(); }} className="mx-3 my-1 px-3 py-2 rounded-lg hover:bg-black/[.04] text-left border border-[red]/30 text-[red]">Déconnexion</button>
+                    <button onClick={()=>{ setMobileOpen(false); handleLogout(); }} className="mx-3 my-1 px-3 py-2 rounded-lg hover:bg-black/[.04] text-left bg-[#F5F5F5] text-red-600">Déconnexion</button>
                   )}
                 </div>
               </div>
@@ -210,8 +210,8 @@ export default function ProprietairesLayout({ children }) {
       )}
       <main className={`max-w-[1200px] mx-auto px-4 py-6 ${!isAuthPage ? 'pb-28' : ''}`}>{children}</main>
       {!isAuthPage && (
-        <nav className="fixed bottom-0 inset-x-0 z-40 sm:hidden border-t border-black/10 bg-white/90 backdrop-blur safe-bottom">
-          <div className="max-w-[1200px] mx-auto grid grid-cols-5 text-sm py-3">
+        <nav className="fixed bottom-0 inset-x-0 z-40 sm:hidden bg-white/90 backdrop-blur safe-bottom shadow-[0_-6px_16px_rgba(0,0,0,0.06)]">
+          <div className="max-w-[1200px] mx-auto grid grid-cols-5 text-[13px] font-medium py-3">
             <a className="flex items-center justify-center text-[#4A9B8E]" href="/proprietaires" aria-label="Tableau de bord">
               <IconHome className="w-7 h-7" />
             </a>

@@ -17,7 +17,7 @@ function StepDots({ step }) {
   return (
     <div className="flex items-center gap-2">
       {STEPS.map((_, i) => (
-        <span key={i} className={`w-2 h-2 rounded-full ${i<=step? 'bg-[#4A9B8E]' : 'bg-neutral-300'}`} />
+        <span key={i} className={`w-2 h-2 rounded-full ${i<=step? 'bg-neutral-800' : 'bg-neutral-300'}`} />
       ))}
     </div>
   );
@@ -554,52 +554,52 @@ export default function InscriptionProprietaire() {
   // La fonction isStepValid est définie plus haut dans le code
 
   return (
-    <div className="min-h-screen vh-stable bg-gradient-to-b from-neutral-50 to-white">
+    <div className="min-h-screen vh-stable bg-neutral-50 font-sans font-medium md:font-normal">
       <div className="max-w-[720px] mx-auto px-4 py-6">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">
             <div className="block md:hidden">
-              <button onClick={goBack} aria-label="Retour" className="inline-flex items-center justify-center border border-black/10 bg-white/95 rounded-full w-10 h-10 chip-glass">
-                <IconBack className="w-5 h-5" />
+              <button onClick={goBack} aria-label="Retour" className="inline-flex items-center justify-center rounded-full w-10 h-10 bg-neutral-100 hover:bg-neutral-200 shadow-sm transition-colors">
+                <IconBack className="w-4 h-4 text-gray-600" />
               </button>
             </div>
             <div className="hidden md:block">
-              <button onClick={goBack} className="inline-flex items-center gap-2 chip-glass px-3 py-1.5">
-                <IconBack className="w-4 h-4" />
+              <button onClick={goBack} className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-neutral-100 hover:bg-neutral-200 shadow-sm transition-colors">
+                <IconBack className="w-4 h-4 text-gray-600" />
                 Retour
               </button>
             </div>
-            <h1 className="text-lg font-semibold">Créer un compte propriétaire</h1>
+            <h1 className="text-[22px] leading-7 md:text-lg font-semibold text-neutral-900">Créer un compte propriétaire</h1>
           </div>
           <StepDots step={step} />
         </div>
 
         {/* Progress bar */}
         <div className="w-full h-2 rounded-full bg-neutral-200 overflow-hidden mb-5">
-          <div className="h-full bg-[#4A9B8E] transition-all" style={{ width: `${((step + 1) / STEPS.length) * 100}%` }} />
+          <div className="h-full bg-neutral-800 transition-all" style={{ width: `${((step + 1) / STEPS.length) * 100}%` }} />
         </div>
 
-        <div className="rounded-2xl border border-black/10 bg-white/70 p-4 space-y-4">
+        <div className="rounded-3xl bg-neutral-50 shadow-sm p-4 space-y-4">
           {step === 0 && (
             <div className="grid gap-4 sm:grid-cols-2">
               <div>
-                <label className="text-sm font-medium">Nom</label>
+                <label className="text-[15px] font-semibold text-neutral-900">Nom</label>
                 <input 
                   value={form.nom} 
                   onChange={e => setField('nom', e.target.value)} 
                   onBlur={() => setTouched(t => ({...t, nom: true}))}
-                  className={`mt-1 w-full h-11 px-3 rounded-xl border ${touched.nom && allErrors.nom ? 'border-red-500' : 'border-black/10'} bg-white/90 outline-none`} 
+                  className={`mt-1 w-full h-11 px-3 rounded-xl ${touched.nom && allErrors.nom ? 'border border-red-500' : 'border border-transparent'} bg-[#F5F5F5] outline-none text-[16px] text-neutral-900 placeholder:text-neutral-600 placeholder:font-medium shadow-inner focus:bg-[#EDEDED]`} 
                   placeholder="Votre nom" 
                 />
                 {touched.nom && allErrors.nom && <p className="mt-1 text-xs text-red-600">{allErrors.nom}</p>}
               </div>
               <div>
-                <label className="text-sm font-medium">Prénom</label>
+                <label className="text-[15px] font-semibold text-neutral-900">Prénom</label>
                 <input 
                   value={form.prenom} 
                   onChange={e => setField('prenom', e.target.value)} 
                   onBlur={() => setTouched(t => ({...t, prenom: true}))}
-                  className={`mt-1 w-full h-11 px-3 rounded-xl border ${touched.prenom && allErrors.prenom ? 'border-red-500' : 'border-black/10'} bg-white/90 outline-none`} 
+                  className={`mt-1 w-full h-11 px-3 rounded-xl ${touched.prenom && allErrors.prenom ? 'border border-red-500' : 'border border-transparent'} bg-[#F5F5F5] outline-none text-[16px] text-neutral-900 placeholder:text-neutral-600 placeholder:font-medium shadow-inner focus:bg-[#EDEDED]`} 
                   placeholder="Votre prénom" 
                 />
                 {touched.prenom && allErrors.prenom && <p className="mt-1 text-xs text-red-600">{allErrors.prenom}</p>}
@@ -610,37 +610,37 @@ export default function InscriptionProprietaire() {
           {step === 1 && (
             <div className="space-y-4">
               <div>
-                <label className="text-sm font-medium">Email</label>
+                <label className="text-[15px] font-semibold text-neutral-900">Email</label>
                 <input 
                   type="email"
                   value={form.email} 
                   onChange={e => setField('email', e.target.value)} 
                   onBlur={() => setTouched(t => ({...t, email: true}))}
-                  className={`mt-1 w-full h-11 px-3 rounded-xl border ${touched.email && allErrors.email ? 'border-red-500' : 'border-black/10'} bg-white/90 outline-none`} 
+                  className={`mt-1 w-full h-11 px-3 rounded-xl ${touched.email && allErrors.email ? 'border border-red-500' : 'border border-transparent'} bg-[#F5F5F5] outline-none text-[16px] text-neutral-900 placeholder:text-neutral-600 placeholder:font-medium shadow-inner focus:bg-[#EDEDED]`} 
                   placeholder="votre@email.com" 
                 />
                 {touched.email && allErrors.email && <p className="mt-1 text-xs text-red-600">{allErrors.email}</p>}
               </div>
               <div>
-                <label className="text-sm font-medium">Mot de passe</label>
+                <label className="text-[15px] font-semibold text-neutral-900">Mot de passe</label>
                 <input 
                   type="password"
                   value={form.password} 
                   onChange={e => setField('password', e.target.value)} 
                   onBlur={() => setTouched(t => ({...t, password: true}))}
-                  className={`mt-1 w-full h-11 px-3 rounded-xl border ${touched.password && allErrors.password ? 'border-red-500' : 'border-black/10'} bg-white/90 outline-none`} 
+                  className={`mt-1 w-full h-11 px-3 rounded-xl ${touched.password && allErrors.password ? 'border border-red-500' : 'border border-transparent'} bg-[#F5F5F5] outline-none text-[16px] text-neutral-900 placeholder:text-neutral-600 placeholder:font-medium shadow-inner focus:bg-[#EDEDED]`} 
                   placeholder="Minimum 6 caractères" 
                 />
                 {touched.password && allErrors.password && <p className="mt-1 text-xs text-red-600">{allErrors.password}</p>}
               </div>
               <div>
-                <label className="text-sm font-medium">Confirmer le mot de passe</label>
+                <label className="text-[15px] font-semibold text-neutral-900">Confirmer le mot de passe</label>
                 <input 
                   type="password"
                   value={form.confirmPassword} 
                   onChange={e => setField('confirmPassword', e.target.value)} 
                   onBlur={() => setTouched(t => ({...t, confirmPassword: true}))}
-                  className={`mt-1 w-full h-11 px-3 rounded-xl border ${touched.confirmPassword && allErrors.confirmPassword ? 'border-red-500' : 'border-black/10'} bg-white/90 outline-none`} 
+                  className={`mt-1 w-full h-11 px-3 rounded-xl ${touched.confirmPassword && allErrors.confirmPassword ? 'border border-red-500' : 'border border-transparent'} bg-[#F5F5F5] outline-none text-[16px] text-neutral-900 placeholder:text-neutral-600 placeholder:font-medium shadow-inner focus:bg-[#EDEDED]`} 
                   placeholder="Répétez votre mot de passe" 
                 />
                 {touched.confirmPassword && allErrors.confirmPassword && <p className="mt-1 text-xs text-red-600">{allErrors.confirmPassword}</p>}
@@ -650,22 +650,22 @@ export default function InscriptionProprietaire() {
 
           {step === 2 && (
             <div>
-              <label className="text-sm font-medium">Localisation</label>
+              <label className="text-[15px] font-semibold text-neutral-900">Localisation</label>
               <div className="mt-1 flex gap-2">
                 <input 
                   value={form.lieu} 
                   onChange={e => setField('lieu', e.target.value)} 
                   onBlur={() => setTouched(t => ({...t, lieu: true}))}
-                  className={`flex-1 h-11 px-3 rounded-xl border ${touched.lieu && allErrors.lieu ? 'border-red-500' : 'border-black/10'} bg-white/90 outline-none`} 
+                  className={`flex-1 h-11 px-3 rounded-xl ${touched.lieu && allErrors.lieu ? 'border border-red-500' : 'border border-transparent'} bg-[#F5F5F5] outline-none text-[16px] text-neutral-900 placeholder:text-neutral-600 placeholder:font-medium shadow-inner focus:bg-[#EDEDED]`} 
                   placeholder="Ville, quartier..." 
                 />
-                <button type="button" onClick={locateMe} className="h-11 px-4 rounded-xl chip-glass">
+                <button type="button" onClick={locateMe} className="h-11 px-4 rounded-full bg-neutral-100 hover:bg-neutral-200 shadow-sm">
                   {loadingLoc ? 'Localisation...' : 'Me localiser'}
                 </button>
               </div>
               {touched.lieu && allErrors.lieu && <p className="mt-1 text-xs text-red-600">{allErrors.lieu}</p>}
               {form.coords && (
-                <div className="mt-2 text-xs text-neutral-600">Coordonnées: {form.coords.latitude.toFixed(4)}, {form.coords.longitude.toFixed(4)}</div>
+                <div className="mt-2 text-[12px] text-neutral-600">Coordonnées: {form.coords.latitude.toFixed(4)}, {form.coords.longitude.toFixed(4)}</div>
               )}
             </div>
           )}
@@ -673,16 +673,16 @@ export default function InscriptionProprietaire() {
           {step === 3 && (
             <div className="grid gap-4 sm:grid-cols-2">
               <div className="sm:col-span-2">
-                <label className="text-sm font-medium">Numéro de téléphone</label>
+                <label className="text-[15px] font-semibold text-neutral-900">Numéro de téléphone</label>
                 <input 
                   value={form.phone} 
                   onChange={e => setField('phone', e.target.value)} 
                   onBlur={() => setTouched(t => ({...t, phone: true}))}
-                  className={`mt-1 w-full h-11 px-3 rounded-xl border ${touched.phone && allErrors.phone ? 'border-red-500' : 'border-black/10'} bg-white/90 outline-none`} 
+                  className={`mt-1 w-full h-11 px-3 rounded-xl ${touched.phone && allErrors.phone ? 'border border-red-500' : 'border border-transparent'} bg-[#F5F5F5] outline-none text-[16px] text-neutral-900 placeholder:text-neutral-600 placeholder:font-medium shadow-inner focus:bg-[#EDEDED]`} 
                   placeholder="Ex. 2250701234567" 
                 />
                 {touched.phone && allErrors.phone && <p className="mt-1 text-xs text-red-600">{allErrors.phone}</p>}
-                <p className="mt-1 text-xs text-neutral-600">Format requis: 225xxxxxxxxx (ex: 2250701234567)</p>
+                <p className="mt-1 text-[12px] text-neutral-600">Format requis: 225xxxxxxxxx (ex: 2250701234567)</p>
               </div>
             </div>
           )}
@@ -690,7 +690,7 @@ export default function InscriptionProprietaire() {
           {step === 4 && (
             <div className="space-y-4">
               <div>
-                <label className="text-sm font-medium">Code OTP</label>
+                <label className="text-[15px] font-semibold text-neutral-900">Code OTP</label>
                 <div className="mt-1 grid grid-cols-6 gap-2">
                   {Array.from({length:6}).map((_,i)=> (
                     <input
@@ -699,18 +699,18 @@ export default function InscriptionProprietaire() {
                       maxLength={1}
                       value={form.otp[i]}
                       onChange={(e) => handleOtpChange(i, e.target.value)}
-                      className="text-center h-11 rounded-xl border border-black/10 bg-white/90 outline-none"
+                      className="text-center h-11 rounded-xl border border-transparent bg-[#F5F5F5] outline-none shadow-inner focus:bg-[#EDEDED]"
                     />
                   ))}
                 </div>
-                <div className="text-xs text-neutral-600 mt-2">
+                <div className="text-[12px] text-neutral-600 mt-2">
                   Saisissez le code reçu par SMS pour vérifier votre numéro.
                 </div>
                 {otpError && <p className="mt-1 text-xs text-red-600">{otpError}</p>}
               </div>
               
               {/* Section renvoi d'OTP */}
-              <div className="border-t border-neutral-200 pt-4">
+              <div className="pt-4">
                 <div className="flex items-center justify-between">
                   <div className="text-sm text-neutral-600">
                     {otpStatus?.hasActiveOTP && (
@@ -722,9 +722,9 @@ export default function InscriptionProprietaire() {
                     type="button"
                     onClick={resendOTP}
                     disabled={!canResend || loadingOTP || !otpStatus?.hasActiveOTP}
-                    className={`px-4 py-2 text-sm rounded-lg transition-colors ${
+                    className={`px-4 py-2 text-sm rounded-full transition-colors ${
                       canResend && !loadingOTP
-                        ? 'bg-[#4A9B8E] text-white hover:bg-[#3a8b7e]'
+                        ? 'bg-neutral-800 text-white hover:bg-neutral-700 shadow-sm'
                         : 'bg-neutral-200 text-neutral-500 cursor-not-allowed'
                     }`}
                   >
@@ -736,7 +736,7 @@ export default function InscriptionProprietaire() {
                 </div>
                 
                 {resendCount > 0 && (
-                  <p className="text-xs text-neutral-500 mt-1">
+                  <p className="text-[12px] text-neutral-500 mt-1">
                     {resendCount === 2 ? 'Limite de renvoi atteinte' : 
                      `Vous avez renvoyé ${resendCount} fois`}
                   </p>
@@ -751,7 +751,7 @@ export default function InscriptionProprietaire() {
       <button 
         onClick={prev} 
         disabled={step === 0} 
-        className="px-4 h-11 rounded-full border border-black/10 disabled:opacity-50 disabled:cursor-not-allowed"
+        className="px-4 h-11 rounded-full bg-neutral-100 hover:bg-neutral-200 shadow-sm font-semibold text-neutral-800 disabled:opacity-50 disabled:cursor-not-allowed"
       >
         Précédent
       </button>
@@ -762,7 +762,7 @@ export default function InscriptionProprietaire() {
             type="button"
             onClick={handleVerifyOTP}
             disabled={submitting || form.otp.some(digit => digit === '')}
-            className="px-4 py-2 rounded-full bg-[#4A9B8E] text-white font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="px-4 py-2 rounded-full bg-neutral-800 text-white font-semibold shadow-sm hover:bg-neutral-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {submitting ? 'Vérification...' : 'Valider le code'}
           </button>
@@ -770,7 +770,7 @@ export default function InscriptionProprietaire() {
             type="button"
             onClick={resendOTP}
             disabled={!canResend || loadingOTP || !otpStatus?.hasActiveOTP}
-            className={`px-4 py-2 rounded-full border border-black/10 bg-white/90 text-[#4A9B8E] font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed`}
+            className={`px-4 py-2 rounded-full bg-neutral-100 hover:bg-neutral-200 text-neutral-900 font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed`}
           >
             {loadingOTP ? 'Envoi...' : 'Renvoyer le code'}
           </button>
@@ -799,7 +799,7 @@ export default function InscriptionProprietaire() {
             }
           }}
           disabled={submitting}
-          className="px-6 h-11 rounded-full bg-[#4A9B8E] text-white font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+          className="px-6 h-11 rounded-full bg-neutral-800 hover:bg-neutral-700 text-white font-semibold disabled:opacity-50 disabled:cursor-not-allowed shadow-sm"
         >
           {submitting ? 'Chargement...' : step === 3 ? 'Envoyer le code' : 'Suivant'}
         </button>
@@ -809,10 +809,24 @@ export default function InscriptionProprietaire() {
         <div className="mt-3 text-sm text-red-600 text-center w-full">{error}</div>
       )}
     </div>
-    <div className="mt-6 text-center text-md text-neutral-600">
+    <div className="mt-6 text-center text-[15px] text-neutral-600">
       Vous avez déjà un compte ? <a href="/proprietaires/connexion" className="text-[#4A9B8E] hover:underline">Se connecter</a>
     </div>
-    <Toaster />
+    <Toaster
+      position="top-center"
+      toastOptions={{
+        className: 'rounded-2xl shadow text-[13px] font-medium',
+        style: { background: '#ffffff', color: '#111827' },
+        success: {
+          iconTheme: { primary: '#16a34a', secondary: '#eaffea' },
+          style: { borderLeft: '4px solid #16a34a' }
+        },
+        error: {
+          iconTheme: { primary: '#dc2626', secondary: '#ffecec' },
+          style: { borderLeft: '4px solid #dc2626' }
+        }
+      }}
+    />
   </div>
 );
 }

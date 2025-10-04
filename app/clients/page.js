@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState, useEffect, useLayoutEffect, useMemo } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import CloudinaryImage from "../components/CloudinaryImage";
 
 // Titre unique pour la section des annonces récentes
@@ -37,30 +37,96 @@ function IconHeart({ className = "w-5 h-5" }) {
 }
 
 function MobileTabBar({ isLoggedIn }) {
+  const router = useRouter();
+  const [loadingTab, setLoadingTab] = useState(''); // 'home' | 'fav' | 'profile'
+  const favBtnRef = useRef(null);
+  const profileBtnRef = useRef(null);
+  const [flyHeart, setFlyHeart] = useState(false);
+  const [flyUser, setFlyUser] = useState(false);
+  const [flyStyle, setFlyStyle] = useState({ top: 0, left: 0, transform: 'translate(-50%, -50%) scale(1)' });
+  const go = (key, href) => {
+    setLoadingTab(key);
+    if (key === 'fav') {
+      try {
+        const rect = favBtnRef.current?.getBoundingClientRect();
+        const startX = rect ? rect.left + rect.width / 2 : window.innerWidth - 40;
+        const startY = rect ? rect.top + rect.height / 2 : window.innerHeight - 40;
+        const targetX = window.innerWidth / 2;
+        const targetY = window.innerHeight / 2;
+        setFlyStyle({ top: startY, left: startX, transform: 'translate(-50%, -50%) scale(1)' });
+        setFlyHeart(true);
+        requestAnimationFrame(() => {
+          setFlyStyle({ top: targetY, left: targetX, transform: 'translate(-50%, -50%) scale(1.4)' });
+        });
+        setTimeout(() => router.push(href), 500);
+        return;
+      } catch {}
+    }
+    if (key === 'profile') {
+      try {
+        const rect = profileBtnRef.current?.getBoundingClientRect();
+        const startX = rect ? rect.left + rect.width / 2 : window.innerWidth - 40;
+        const startY = rect ? rect.top + rect.height / 2 : window.innerHeight - 40;
+        const targetX = window.innerWidth / 2;
+        const targetY = window.innerHeight / 2;
+        setFlyStyle({ top: startY, left: startX, transform: 'translate(-50%, -50%) scale(1)' });
+        setFlyUser(true);
+        requestAnimationFrame(() => {
+          setFlyStyle({ top: targetY, left: targetX, transform: 'translate(-50%, -50%) scale(1.4)' });
+        });
+        setTimeout(() => router.push(href), 500);
+        return;
+      } catch {}
+    }
+    router.push(href);
+  };
+  const iconClass = (key, base = 'w-6 h-6') => (
+    `${base} transition-transform ${loadingTab===key ? 'scale-125 animate-pulse' : ''}`
+  );
+  const textClass = (key, base = '') => (
+    `${base} ${loadingTab===key ? 'animate-pulse' : ''}`
+  );
   return (
-    <nav className="md:hidden fixed bottom-0 inset-x-0 z-40 bg-white/85 backdrop-blur border-t border-black/10">
-      <div className="max-w-[1200px] mx-auto px-6 py-2 grid grid-cols-3 gap-2 text-xs">
-        <a href="#" className="flex flex-col items-center justify-center py-1 text-[#4A9B8E]">
-          <IconHome className="w-5 h-5" />
-          <span>Explorer</span>
-        </a>
-        <a href="#" className="flex flex-col items-center justify-center py-1 text-neutral-600">
-          <IconHeart className="w-5 h-5" />
-          <span>Favoris</span>
-        </a>
+    <>
+    <nav className="md:hidden fixed bottom-0 inset-x-0 z-40 bg-neutral-50 backdrop-blur shadow-sm">
+      <div className="max-w-[1200px] mx-auto px-6 py-2 grid grid-cols-3 gap-2 text-[13px] font-medium">
+        <button onClick={()=>go('home','/clients')} className="flex flex-col items-center justify-center py-1 text-neutral-900">
+          <IconHome className={iconClass('home')} />
+          <span className={textClass('home')}>Explorer</span>
+        </button>
+        <button ref={favBtnRef} onClick={()=>go('fav','/clients/favoris')} className="flex flex-col items-center justify-center py-1 text-neutral-600">
+          <IconHeart className={iconClass('fav')} />
+          <span className={textClass('fav')}>Favoris</span>
+        </button>
         {isLoggedIn ? (
-          <a href="/clients/profil" className="flex flex-col items-center justify-center py-1 text-neutral-600">
-            <IconUser className="w-5 h-5" />
-            <span>Profil</span>
-          </a>
+          <button ref={profileBtnRef} onClick={()=>go('profile','/clients/profil')} className="flex flex-col items-center justify-center py-1 text-neutral-600">
+            <IconUser className={iconClass('profile')} />
+            <span className={textClass('profile')}>Profil</span>
+          </button>
         ) : (
-          <a href="/clients/connexion" className="flex flex-col items-center justify-center py-1 text-neutral-600">
-            <IconUser className="w-5 h-5" />
-            <span>Connexion</span>
-          </a>
+          <button ref={profileBtnRef} onClick={()=>go('profile','/clients/connexion')} className="flex flex-col items-center justify-center py-1 text-neutral-600">
+            <IconUser className={iconClass('profile')} />
+            <span className={textClass('profile')}>Connexion</span>
+          </button>
         )}
       </div>
     </nav>
+    {flyHeart && (
+      <div className="fixed z-50 pointer-events-none" style={{ top: flyStyle.top, left: flyStyle.left, transform: flyStyle.transform, transition: 'transform 0.5s ease, top 0.5s ease, left 0.5s ease' }}>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-7 h-7 text-neutral-800" aria-hidden>
+          <path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 22l7.8-8.6 1-1a5.5 5.5 0 0 0 0-7.8Z" />
+        </svg>
+      </div>
+    )}
+    {flyUser && (
+      <div className="fixed z-50 pointer-events-none" style={{ top: flyStyle.top, left: flyStyle.left, transform: flyStyle.transform, transition: 'transform 0.5s ease, top 0.5s ease, left 0.5s ease' }}>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-7 h-7 text-neutral-800" aria-hidden>
+          <circle cx="12" cy="8" r="4" />
+          <path d="M4 21c0-3.5 3.5-6 8-6s8 2.5 8 6" />
+        </svg>
+      </div>
+    )}
+    </>
   );
 }
 
@@ -125,6 +191,38 @@ function IconUserPlus({ className = "w-4 h-4" }) {
       <circle cx="9" cy="8" r="4" />
       <path d="M1 21c0-3.5 3.5-6 8-6" />
       <path d="M15 8h6M18 5v6" />
+    </svg>
+  );
+}
+
+// Additional icons for categories
+function IconBuilding({ className = "w-5 h-5" }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className={className} aria-hidden>
+      <rect x="3" y="3" width="7" height="18" rx="1" />
+      <rect x="14" y="7" width="7" height="14" rx="1" />
+      <path d="M6.5 7h0M6.5 11h0M6.5 15h0M17.5 11h0M17.5 15h0" />
+    </svg>
+  );
+}
+
+function IconBed({ className = "w-5 h-5" }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className={className} aria-hidden>
+      <path d="M3 7v10" />
+      <path d="M3 12h18a2 2 0 0 1 2 2v3H3" />
+      <rect x="6" y="8" width="6" height="4" rx="1.2" />
+    </svg>
+  );
+}
+
+function IconHouses({ className = "w-5 h-5" }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className={className} aria-hidden>
+      <path d="M4 12l4-4 4 4" />
+      <path d="M6 10v7h4v-7" />
+      <path d="M12 14l3-3 3 3" />
+      <path d="M13 13v4h4v-4" />
     </svg>
   );
 }
@@ -284,7 +382,7 @@ function Header({
     }))
   ];
   return (
-    <header className="sticky top-0 z-40 bg-gradient-to-b from-neutral-50 to-white backdrop-blur supports-[backdrop-filter]:backdrop-blur-md border-b border-black/10">
+    <header className="sticky top-0 z-40 bg-gradient-to-b from-neutral-50 to-white backdrop-blur supports-[backdrop-filter]:backdrop-blur-md shadow-sm">
       {/* Top bar with brand, nav and actions */}
       <div className="max-w-[1200px] mx-auto px-4 py-3 flex items-center gap-6">
         {/* Brand + Support */}
@@ -292,44 +390,8 @@ function Header({
           <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-[#4A9B8E] text-white text-[12px] font-bold">M</span>
           <span className="font-semibold">Mon Hebergement</span>
         </div>
-        {/* Mobile hamburger */}
-        <div className="md:hidden ml-auto relative">
-          <button aria-label="Menu" onClick={()=>setMenuOpen(v=>!v)} className="w-10 h-10 rounded-full border border-black/10 bg-white flex items-center justify-center">
-            <IconMenu />
-          </button>
-          {menuOpen && (
-            <div className="absolute right-0 mt-2 w-56 rounded-2xl border border-black/10 bg-white/95 shadow-[0_16px_32px_rgba(0,0,0,0.12)] backdrop-blur overflow-hidden z-50">
-              <div className="py-1 text-sm">
-                {isLoggedIn ? (
-                  <>
-                    <a href="/clients/profil" onClick={()=>setMenuOpen(false)} className="block px-4 py-3 hover:bg-black/[.04]">Mon compte</a>
-                    <a href="/clients/parametres" onClick={()=>setMenuOpen(false)} className="block px-4 py-3 hover:bg-black/[.04]">Paramètres</a>
-                    <button onClick={() => {
-                      // Supprimer les données d'authentification
-                      localStorage.removeItem('auth_token');
-                      localStorage.removeItem('auth_user');
-                      
-                      // Mettre à jour l'état local
-                      setIsLoggedIn(false);
-                      setMenuOpen(false);
-                      
-                      // Déclencher un événement personnalisé pour informer les autres onglets
-                      window.dispatchEvent(new Event('storage'));
-                      
-                      // Recharger la page pour s'assurer que tout est synchronisé
-                      window.location.href = '/clients';
-                    }} className="w-full text-left px-4 py-3 hover:bg-black/[.04] text-red-600">Se déconnecter</button>
-                  </>
-                ) : (
-                  <>
-                    <a href="/clients/connexion" onClick={()=>setMenuOpen(false)} className="block px-4 py-3 hover:bg-black/[.04]">Se connecter</a>
-                    <a href="/clients/inscription" onClick={()=>setMenuOpen(false)} className="block px-4 py-3 hover:bg-black/[.04]">Créer un compte</a>
-                  </>
-                )}
-              </div>
-            </div>
-          )}
-        </div>
+        {/* Mobile hamburger (original) hidden; moved to right actions */}
+        <div className="hidden"></div>
         {/* Center nav */}
         <nav className="hidden md:flex items-center gap-6 text-sm text-neutral-700 mx-auto">
           <a href="#" className="flex items-center gap-2 relative pb-2">
@@ -373,11 +435,11 @@ function Header({
           )}
         </nav>
         {/* Right actions */}
-        <div className="flex items-center gap-3 text-sm text-neutral-700">
+        <div className="flex items-center gap-3 text-sm text-neutral-700 ml-auto">
           <button
             type="button"
             aria-label="Contacter le support"
-            className="flex items-center justify-center rounded-full border border-black/10 bg-white text-[#24766A] hover:bg-[#e7f6f3] transition-all font-semibold px-4 h-9 whitespace-nowrap"
+            className="flex items-center justify-center rounded-full bg-neutral-100 hover:bg-neutral-200 text-neutral-900 transition-colors font-semibold px-4 h-9 whitespace-nowrap shadow-sm"
             onClick={() => {
               if (!isLoggedIn) {
                 window.location.href = '/clients/connexion';
@@ -389,10 +451,48 @@ function Header({
             <svg className="w-5 h-5 min-w-[20px]" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-1c0-1.1.9-2 2-2s2-.9 2-2-1-2-2-2-2 .9-2 2"/><circle cx="12" cy="18" r="1.2"/></svg>
             <span className="hidden lg:inline ml-2 text-[15px]">Contacter le support</span>
           </button>
+          {/* Mobile hamburger to be rightmost on mobile */}
+          <div className="md:hidden relative">
+            <button aria-label="Menu" onClick={()=>setMenuOpen(v=>!v)} className="w-10 h-10 rounded-full bg-neutral-100 shadow-sm flex items-center justify-center">
+              <IconMenu />
+            </button>
+            {menuOpen && (
+              <div className="absolute right-0 mt-2 w-56 rounded-2xl bg-neutral-50 shadow-sm backdrop-blur overflow-hidden z-50">
+                <div className="py-1 text-sm">
+                  {isLoggedIn ? (
+                    <>
+                      <a href="/clients/profil" onClick={()=>setMenuOpen(false)} className="block px-4 py-3 hover:bg-black/[.04]">Mon compte</a>
+                      <a href="/clients/parametres" onClick={()=>setMenuOpen(false)} className="block px-4 py-3 hover:bg-black/[.04]">Paramètres</a>
+                      <button onClick={() => {
+                        // Supprimer les données d'authentification
+                        localStorage.removeItem('auth_token');
+                        localStorage.removeItem('auth_user');
+                        
+                        // Mettre à jour l'état local
+                        setIsLoggedIn(false);
+                        setMenuOpen(false);
+                        
+                        // Déclencher un événement personnalisé pour informer les autres onglets
+                        window.dispatchEvent(new Event('storage'));
+                        
+                        // Recharger la page pour s'assurer que tout est synchronisé
+                        window.location.href = '/clients';
+                      }} className="w-full text-left px-4 py-3 hover:bg-black/[.04] text-red-600">Se déconnecter</button>
+                    </>
+                  ) : (
+                    <>
+                      <a href="/clients/connexion" onClick={()=>setMenuOpen(false)} className="block px-4 py-3 hover:bg-black/[.04]">Se connecter</a>
+                      <a href="/clients/inscription" onClick={()=>setMenuOpen(false)} className="block px-4 py-3 hover:bg-black/[.04]">Créer un compte</a>
+                    </>
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
           {/* Modal Support */}
           {supportModalOpen && (
             <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 min-h-screen py-8">
-              <div className="bg-white rounded-2xl shadow-2xl w-full max-w-[420px] mx-4 p-6 relative my-auto">
+              <div className="bg-neutral-50 rounded-2xl shadow-sm w-full max-w-[420px] mx-4 p-6 relative my-auto">
                 <button
                   className="absolute top-4 right-4 text-neutral-400 hover:text-neutral-700 transition-colors"
                   onClick={() => setSupportModalOpen(false)}
@@ -400,11 +500,11 @@ function Header({
                 >
                   <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M6 6l12 12M6 18L18 6"/></svg>
                 </button>
-                <h2 className="text-2xl font-bold mb-5 text-[#24766A]">Message</h2>
+                <h2 className="text-2xl font-bold mb-5 text-neutral-900">Message</h2>
                 <form onSubmit={handleSupportSubmit} className="space-y-4">
                   <div>
                     <textarea 
-                      className="w-full border border-neutral-300 rounded-lg px-4 py-3 min-h-[120px] focus:ring-2 focus:ring-[#4A9B8E] focus:border-transparent outline-none resize-none text-base" 
+                      className="w-full rounded-lg px-4 py-3 min-h-[120px] bg-[#F5F5F5] text-base text-neutral-900 placeholder:text-neutral-500 shadow-inner focus:outline-none focus:bg-[#EDEDED] resize-none" 
                       placeholder="Écrivez votre message ou plainte ici..." 
                       required 
                       value={supportMessage} 
@@ -413,7 +513,7 @@ function Header({
                   </div>
                   <button 
                     type="submit" 
-                    className="w-full bg-[#24766A] text-white rounded-lg py-3 font-semibold hover:bg-[#1b5e4e] transition-all text-base shadow-md" 
+                    className="w-full bg-neutral-800 text-white rounded-lg py-3 font-semibold hover:bg-neutral-700 transition-colors text-base shadow-sm" 
                     disabled={supportLoading}
                   >
                     {supportLoading ? 'Envoi en cours...' : 'Envoyer'}
@@ -448,7 +548,7 @@ function Header({
                 window.dispatchEvent(new Event('storage'));
                 window.location.href = '/clients';
               }}
-              className="flex items-center gap-2 px-3 py-1.5 rounded-full border border-red-500 bg-white text-red-600 hover:bg-red-50 transition-colors"
+              className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-full border border-red-500 bg-white text-red-600 hover:bg-red-50 transition-colors"
               title="Se déconnecter"
             >
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4">
@@ -464,16 +564,16 @@ function Header({
       {/* Mobile simple search bar */}
       <div className="block md:hidden pb-3">
         <div className="max-w-[1100px] mx-auto px-4">
-          <div className="flex items-center gap-2 rounded-full border border-black/10 bg-white/80 shadow-[0_8px_20px_rgba(0,0,0,0.06)] px-3 py-2" onClick={() => router.push('/clients/recherche')}>
+          <div className="flex items-center gap-2 rounded-full bg-[#F5F5F5] shadow-inner px-3 py-2" onClick={() => router.push('/clients/recherche')}>
             <IconSearch className="w-5 h-5 text-neutral-500" />
             <input
               type="text"
-              className="flex-1 bg-transparent outline-none text-sm placeholder:text-neutral-500"
+              className="flex-1 bg-transparent outline-none text-[16px] md:text-sm font-medium md:font-normal text-neutral-900 placeholder:text-neutral-500 placeholder:font-medium md:placeholder:font-normal"
               placeholder="Rechercher votre appartement"
               readOnly
               onFocus={() => router.push('/clients/recherche')}
             />
-            <button aria-label="Rechercher" className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-[#4A9B8E] text-white">
+            <button aria-label="Rechercher" className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-neutral-800 text-white">
               <IconSearch className="w-4 h-4" />
             </button>
           </div>
@@ -483,7 +583,7 @@ function Header({
       {/* Large segmented search bar (desktop/tablette) */}
       <div className="hidden md:block pb-3">
         <div className="max-w-[1100px] mx-auto px-4 pb-5 relative" ref={containerRef}>
-          <div ref={barRef} className="rounded-full border border-black/10 bg-white/70 shadow-[0_12px_28px_rgba(0,0,0,0.08)] overflow-hidden flex items-stretch relative">
+          <div ref={barRef} className="rounded-full bg-[#F5F5F5] shadow-inner overflow-hidden flex items-stretch relative">
             {/* Sliding glass highlight */}
             <div
               className="absolute top-1 bottom-1 rounded-[999px] backdrop-blur-md bg-white/55 border border-white/40 shadow-[inset_0_1px_0_rgba(255,255,255,0.6),0_8px_24px_rgba(0,0,0,0.08)] transition-all duration-300 ease-out overflow-hidden"
@@ -587,8 +687,8 @@ function Header({
           
           {/* Menu déroulant des zones */}
           {destOpen && (
-            <div className="absolute left-1/2 -translate-x-1/2 mt-2 w-[min(92vw,760px)] rounded-3xl bg-white border border-black/10 shadow-[0_24px_40px_rgba(0,0,0,0.12)] overflow-hidden z-50">
-              <div className="flex justify-between items-center px-5 py-4 border-b border-black/10">
+            <div className="absolute left-1/2 -translate-x-1/2 mt-2 w-[min(92vw,760px)] rounded-3xl bg-white shadow-[0_24px_40px_rgba(0,0,0,0.12)] overflow-hidden z-50">
+              <div className="flex justify-between items-center px-5 py-4 bg-neutral-50">
                 <div className="text-[13px] font-semibold text-neutral-600">Sélectionnez un quartier</div>
                 <button 
                   onClick={() => setDestOpen(false)}
@@ -601,7 +701,7 @@ function Header({
                   </svg>
                 </button>
               </div>
-              <ul className="max-h-[360px] overflow-y-auto divide-y divide-black/5">
+              <ul className="max-h[360px] overflow-y-auto">
                 {quartierSuggestions.map((s, i) => (
                   <li key={i}>
                     <button
@@ -625,8 +725,8 @@ function Header({
           
           {/* Menu déroulant des types */}
           {typeOpen && (
-            <div className="absolute right-0 mt-2 w-[min(92vw,400px)] rounded-3xl bg-white border border-black/10 shadow-[0_24px_40px_rgba(0,0,0,0.12)] overflow-hidden z-50">
-              <div className="flex justify-between items-center px-5 py-4 border-b border-black/10">
+            <div className="absolute right-0 mt-2 w-[min(92vw,400px)] rounded-3xl bg-white shadow-[0_24px_40px_rgba(0,0,0,0.12)] overflow-hidden z-50">
+              <div className="flex justify-between items-center px-5 py-4 bg-neutral-50">
                 <div className="text-[13px] font-semibold text-neutral-600">Type de logement</div>
                 <button 
                   onClick={() => setTypeOpen(false)}
@@ -639,7 +739,7 @@ function Header({
                   </svg>
                 </button>
               </div>
-              <ul className="max-h-[360px] overflow-y-auto divide-y divide-black/5">
+              <ul className="max-h-[360px] overflow-y-auto">
                 {typeSuggestions.map((s, i) => (
                   <li key={i}>
                     <button
@@ -670,23 +770,20 @@ function Header({
           )}
           
           {/* Filtres */}
-          <div className="border-t border-black/10 relative z-0">
+          <div className="relative z-0 mt-2">
             <div className="max-w-[1200px] mx-auto px-4 py-3 flex gap-4 overflow-x-auto text-sm hide-scrollbar">
               {!loadingAnnonces && !errorAnnonces && categories.map((category) => (
                 <button
                   key={category}
                   className={`
-                    px-4 h-10 rounded-lg border flex items-center justify-center
+                    px-4 h-9 md:h-10 rounded-full md:rounded-lg flex items-center justify-center
                     whitespace-nowrap flex-shrink-0
                     transition-all duration-200 ease-in-out
-                    ${
-                      selectedCategory === category
-                        ? 'bg-emerald-600 text-white border-emerald-600 hover:bg-emerald-700 hover:border-emerald-700'
-                        : 'bg-white/90 text-neutral-800 border-black/10 hover:bg-gray-100 hover:border-gray-300 hover:text-gray-900'
-                    }
-                    active:scale-95
-                    focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-1
-                    transform hover:-translate-y-0.5
+                    text-[15px] md:text-sm font-medium md:font-normal
+                    ${selectedCategory === category
+                      ? 'bg-neutral-200 text-neutral-900 shadow'
+                      : 'bg-[#F5F5F5] text-neutral-800 hover:bg-[#EDEDED]'}
+                    active:scale-95 focus:outline-none
                   `}
                   onClick={() => onSelectCategory(category)}
                 >
@@ -1034,7 +1131,7 @@ function Card({ item, isLoggedIn }) {
 
   return (
     <a href={`/clients/annonce/${item.id}`} className="group min-w-[230px] max-w-[230px] block">
-      <div className="relative aspect-square w-full overflow-hidden rounded-2xl border border-black/10">
+      <div className="relative aspect-square w-full overflow-hidden rounded-2xl bg-white shadow">
         <CloudinaryImage 
           src={imageSrc}
           alt={item.title}
@@ -1043,7 +1140,7 @@ function Card({ item, isLoggedIn }) {
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
         />
         <button
-          className={`absolute top-2 right-2 w-8 h-8 rounded-full bg-white/90 border border-black/10 text-[16px] flex items-center justify-center transition-colors duration-150 ${liked ? 'text-red-500' : 'text-gray-400'} ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
+          className={`absolute top-2 right-2 w-8 h-8 rounded-full bg-white shadow text-[16px] flex items-center justify-center transition-colors duration-150 ${liked ? 'text-red-500' : 'text-gray-400'} ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
           aria-label={liked ? 'Retirer des favoris' : 'Ajouter aux favoris'}
           onClick={handleLike}
           disabled={isLoading}
@@ -1059,11 +1156,11 @@ function Card({ item, isLoggedIn }) {
       </div>
       <div className="mt-2 space-y-0.5">
         <div className="flex items-center justify-between">
-          <div className="text-sm font-semibold truncate">{item.title}</div>
-          <div className="text-xs"><span className="text-yellow-400">★</span> {item.rating ? item.rating.toFixed(1) : 'N/A'}</div>
+          <div className="text-[17px] md:text-base font-semibold text-neutral-900 truncate">{item.title}</div>
+          <div className="text-[12px] md:text-sm font-medium text-neutral-700"><span className="text-yellow-400">★</span> {item.rating ? item.rating.toFixed(1) : 'N/A'}</div>
         </div>
-        <div className="text-xs text-neutral-600 truncate">{item.subtitle}</div>
-        <div className="text-sm"><span className="font-semibold">{item.price} FCFA</span> {unitePrix}</div>
+        <div className="text-[14px] md:text-sm text-neutral-700 truncate">{item.subtitle}</div>
+        <div className="text-[17px] md:text-base text-neutral-900"><span className="font-semibold">{item.price} FCFA</span> <span className="text-neutral-700">{unitePrix}</span></div>
       </div>
     </a>
   );
@@ -1243,6 +1340,18 @@ export default function ClientsPage() {
   // États pour les filtres
   const [selectedQuartierVille, setSelectedQuartierVille] = useState('Tous');
   const [selectedType, setSelectedType] = useState('Tous');
+  const [priceRange, setPriceRange] = useState({ min: '', max: '' });
+  const searchParams = useSearchParams();
+
+  // Initialiser les filtres depuis l'URL (type, prixMin, prixMax)
+  useEffect(() => {
+    if (!searchParams) return;
+    const t = searchParams.get('type');
+    const pmin = searchParams.get('prixMin');
+    const pmax = searchParams.get('prixMax');
+    if (t && t.trim()) setSelectedType(t);
+    setPriceRange({ min: pmin || '', max: pmax || '' });
+  }, [searchParams]);
 
   // Fonction pour vérifier si une date correspond à la date sélectionnée
   const isSelectedDate = (dateToCheck, selectedDate) => {
@@ -1267,6 +1376,11 @@ export default function ClientsPage() {
         matchType = annonce.type === selectedType;
       }
       
+      // Vérifier le prix
+      const minOk = priceRange.min === '' || (typeof annonce.prixParNuit === 'number' && annonce.prixParNuit >= Number(priceRange.min));
+      const maxOk = priceRange.max === '' || (typeof annonce.prixParNuit === 'number' && annonce.prixParNuit <= Number(priceRange.max));
+      const matchPrice = minOk && maxOk;
+
       // Vérifier le quartier et la ville
       const matchQuartierVille = selectedQuartierVille === 'Tous' ||
         (annonce.quartier && 
@@ -1277,9 +1391,9 @@ export default function ClientsPage() {
       const matchDate = !selectedDate || 
         (annonce.createdAt && isSelectedDate(new Date(annonce.createdAt), selectedDate));
       
-      return matchType && matchQuartierVille && matchDate;
+      return matchType && matchPrice && matchQuartierVille && matchDate;
     }),
-    [annonces, selectedType, selectedQuartierVille, selectedDate]
+    [annonces, selectedType, priceRange, selectedQuartierVille, selectedDate]
   );
   
   // Gestion du clic en dehors du calendrier
@@ -1297,7 +1411,7 @@ export default function ClientsPage() {
   if (!ready) return null;
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white font-sans font-medium md:font-[inherit] md:font-normal">
       <Header
             isLoggedIn={isLoggedIn}
             setIsLoggedIn={setIsLoggedIn}
@@ -1337,34 +1451,56 @@ export default function ClientsPage() {
         
         {/* Section Catégories */}
         <div className="space-y-4">
-          <h2 className="text-xl font-semibold text-neutral-800 px-4">Catégories populaires</h2>
+          <h2 className="text-[22px] leading-7 md:text-xl font-semibold text-neutral-900 md:text-neutral-800 px-4">Catégories populaires</h2>
           <div className="relative">
             <div className="flex w-full space-x-4 overflow-x-auto pb-3 px-2 -mx-2 md:mx-0 md:flex md:justify-between md:space-x-0 md:w-full md:overflow-visible md:pb-0 md:px-0">
               {[
-                { name: 'Maisons', icon: '🏠', count: annonces.filter(a => a.type === 'Maison').length },
-                { name: 'Appartements', icon: '🏢', count: annonces.filter(a => a.type === 'Appartement').length },
-                { name: 'Villas', icon: '🏡', count: annonces.filter(a => a.type === 'Villa').length },
-                { name: 'Studios', icon: '🛏️', count: annonces.filter(a => a.type === 'Studio').length },
-                { name: 'Chambres', icon: '🛌', count: annonces.filter(a => a.type === 'Chambre').length },
+                { name: 'Maisons', value: 'Maison', icon: (<IconHome className="w-8 h-8" />), count: annonces.filter(a => a.type === 'Maison').length },
+                { name: 'Appartements', value: 'Appartement', icon: (<IconBuilding className="w-8 h-8" />), count: annonces.filter(a => a.type === 'Appartement').length },
+                { name: 'Bureau', value: 'Bureau', icon: (<IconBuilding className="w-8 h-8" />), count: annonces.filter(a => a.type === 'Bureau').length },
+                { name: 'Villas', value: 'Villa', icon: (<IconHome className="w-8 h-8" />), count: annonces.filter(a => a.type === 'Villa').length },
+                { name: 'Studios', value: 'Studio', icon: (<IconBed className="w-8 h-8" />), count: annonces.filter(a => a.type === 'Studio').length },
+                { name: 'Chambres', value: 'Chambre', icon: (<IconBed className="w-8 h-8" />), count: annonces.filter(a => a.type === 'Chambre').length },
                 { 
-                  name: 'Autres', 
-                  icon: '🏘️', 
-                  count: annonces.filter(a => !['Maison', 'Appartement', 'Villa', 'Studio', 'Chambre'].includes(a.type)).length 
+                  name: 'Autres', value: 'Autres',
+                  icon: (<IconHouses className="w-8 h-8" />), 
+                  count: annonces.filter(a => !['Maison', 'Appartement', 'Bureau', 'Villa', 'Studio', 'Chambre'].includes(a.type)).length 
                 },
-                { name: 'Tous', icon: '🔍', count: annonces.length }
+                { name: 'Tous', value: 'Tous', icon: (<IconSearch className="w-8 h-8" />), count: annonces.length }
               ].map((category) => (
                 <button
-                  key={category.name}
-                  onClick={() => setSelectedType(category.name === 'Tous' ? 'Tous' : category.name)}
-                  className={`flex-shrink-0 w-24 md:w-full md:max-w-[120px] flex-1 flex flex-col items-center justify-center gap-1 p-2 md:py-2 rounded-xl border-none shadow transition-all duration-200 bg-white hover:bg-neutral-50 cursor-pointer group
-                    ${(selectedType === category.name || (category.name === 'Tous' && selectedType === 'Tous')) ? 'ring-2 ring-[#4A9B8E] bg-[#e7f6f3]' : 'ring-1 ring-neutral-200'}
+                  key={category.value}
+                  onClick={() => setSelectedType(category.value)}
+                  className={`flex-shrink-0 w-[120px] md:w-full md:max-w-[120px] flex flex-col items-center justify-center gap-1 p-2 md:py-2 rounded-xl transition-all duration-200 cursor-pointer group
+                    ${ (selectedType === category.value)
+                        ? (
+                            category.name === 'Maisons' ? 'bg-emerald-100 text-neutral-900 shadow' :
+                            category.name === 'Appartements' ? 'bg-sky-100 text-neutral-900 shadow' :
+                            category.name === 'Bureau' ? 'bg-cyan-100 text-neutral-900 shadow' :
+                            category.name === 'Villas' ? 'bg-lime-100 text-neutral-900 shadow' :
+                            category.name === 'Studios' ? 'bg-amber-100 text-neutral-900 shadow' :
+                            category.name === 'Chambres' ? 'bg-rose-100 text-neutral-900 shadow' :
+                            category.name === 'Autres' ? 'bg-violet-100 text-neutral-900 shadow' :
+                            'bg-neutral-200 text-neutral-900 shadow'
+                          )
+                        : (
+                            category.name === 'Maisons' ? 'bg-emerald-50 text-neutral-800 hover:bg-emerald-100 shadow-sm' :
+                            category.name === 'Appartements' ? 'bg-sky-50 text-neutral-800 hover:bg-sky-100 shadow-sm' :
+                            category.name === 'Bureau' ? 'bg-cyan-50 text-neutral-800 hover:bg-cyan-100 shadow-sm' :
+                            category.name === 'Villas' ? 'bg-lime-50 text-neutral-800 hover:bg-lime-100 shadow-sm' :
+                            category.name === 'Studios' ? 'bg-amber-50 text-neutral-800 hover:bg-amber-100 shadow-sm' :
+                            category.name === 'Chambres' ? 'bg-rose-50 text-neutral-800 hover:bg-rose-100 shadow-sm' :
+                            category.name === 'Autres' ? 'bg-violet-50 text-neutral-800 hover:bg-violet-100 shadow-sm' :
+                            'bg-neutral-100 text-neutral-800 hover:bg-neutral-200 shadow-sm'
+                          )
+                      }
                   `}
                 >
-                  <span className="flex items-center justify-center w-8 h-8 rounded-full bg-[#f1f5f9] group-hover:bg-[#4A9B8E]/10 transition-all text-lg shadow mb-0.5">
+                  <span className="flex items-center justify-center w-12 h-12 rounded-full bg-white text-neutral-700 shadow-inner mb-0.5">
                     {category.icon}
                   </span>
-                  <span className="font-medium text-neutral-800 text-xs text-center mb-0 group-hover:text-[#4A9B8E] transition-all">{category.name}</span>
-                  <span className="inline-block px-1.5 py-0.5 rounded-full text-[11px] font-normal bg-neutral-100 text-neutral-500 group-hover:bg-[#4A9B8E]/20 group-hover:text-[#4A9B8E] transition-all">
+                  <span className="font-semibold md:font-medium text-neutral-900 md:text-neutral-800 text-[13px] md:text-xs text-center mb-0">{category.name}</span>
+                  <span className="inline-block px-1.5 py-0.5 rounded-full text-[11px] font-medium bg-neutral-200 text-neutral-600">
                     {category.count}
                   </span>
                 </button>
@@ -1374,27 +1510,75 @@ export default function ClientsPage() {
         </div>
 
         {loadingAnnonces ? (
-          <div className="text-center text-neutral-600 py-10">Chargement des annonces...</div>
+          <div className="w-full flex items-center justify-center py-12">
+            <div className="text-center">
+              <div className="relative h-16 w-16 mx-auto mb-2">
+                <svg className="absolute inset-0 w-12 h-12 m-2 text-neutral-800 house-bounce" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                  <path d="M3 10.5 12 3l9 7.5" />
+                  <path d="M5 10v9a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-9" />
+                  <path d="M9 21v-6a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v6" />
+                </svg>
+                <div className="absolute bottom-1 left-1/2 -translate-x-1/2 w-10 h-2 rounded-full bg-neutral-300/60 house-shadow" />
+              </div>
+              <p className="text-neutral-600 text-sm">Chargement des annonces...</p>
+              <style jsx>{`
+                @keyframes house-bounce {
+                  0%, 100% { transform: translateY(0); }
+                  50% { transform: translateY(-10px); }
+                }
+                @keyframes shadow-pulse {
+                  0%, 100% { transform: translateX(-50%) scaleX(1); opacity: .6; }
+                  50% { transform: translateX(-50%) scaleX(.85); opacity: .4; }
+                }
+                .house-bounce { animation: house-bounce 0.6s ease-in-out infinite; }
+                .house-shadow { animation: shadow-pulse 0.6s ease-in-out infinite; }
+              `}</style>
+            </div>
+          </div>
         ) : (
-          <Row title="Récemment ajoutés">
-          {filteredAnnonces
-            .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)) // Trie par date décroissante
-            .slice(0, 10) // Prend les 10 plus récentes
-            .map((item) => (
-              <Card 
-                key={item._id} 
-                item={{
-                  id: item._id,
-                  title: item.titre,
-                  subtitle: `${item.type || ''}${item.ville ? ' · ' + item.ville : ''}`,
-                  price: item.prixParNuit || 0,
-                  rating: item.rating ,
-                  image: item.photos?.[0] || null,
-                  type: item.type || ''
-                }}
-                isLoggedIn={isLoggedIn}
-              />
-            ))}
+          <Row title={(function(){
+            const map = { Maison:'maisons', Appartement:'appartements', Bureau:'bureaux', Villa:'villas', Studio:'studios', Chambre:'chambres', Autres:'autres' };
+            if (selectedType && selectedType !== 'Tous') {
+              const label = map[selectedType] || selectedType.toLowerCase();
+              return `Vos ${label} disponibles`;
+            }
+            return 'Récemment ajoutés';
+          })()}>
+          {filteredAnnonces.length === 0 ? (
+            <div className="w-full flex justify-center px-4">
+              <div className="w-full max-w-2xl px-4 py-10 text-center bg-neutral-50 rounded-2xl shadow-sm">
+              {(() => {
+                const map = { Maison:'maisons', Appartement:'appartements', Bureau:'bureaux', Villa:'villas', Studio:'studios', Chambre:'chambres', Autres:'autres' };
+                const label = map[selectedType] || selectedType?.toLowerCase?.() || '';
+                return (
+                  <>
+                    <p className="text-[15px] font-semibold text-neutral-900 mb-1">Aucune publication{selectedType && selectedType !== 'Tous' ? ` pour cette catégorie (${label})` : ''}</p>
+                    <p className="text-[13px] text-neutral-600">Aucune publication n'a été faite pour l'instant. Repassez plus tard ou visitez d'autres types d'appartements disponibles.</p>
+                  </>
+                );
+              })()}
+              </div>
+            </div>
+          ) : (
+            filteredAnnonces
+              .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)) // Trie par date décroissante
+              .slice(0, 10) // Prend les 10 plus récentes
+              .map((item) => (
+                <Card 
+                  key={item._id} 
+                  item={{
+                    id: item._id,
+                    title: item.titre,
+                    subtitle: `${item.type || ''}${item.ville ? ' · ' + item.ville : ''}`,
+                    price: item.prixParNuit || 0,
+                    rating: item.rating ,
+                    image: item.photos?.[0] || null,
+                    type: item.type || ''
+                  }}
+                  isLoggedIn={isLoggedIn}
+                />
+              ))
+          )}
         </Row>
         )}
       </main>

@@ -35,20 +35,20 @@ import apiService from "../../services/api";
 
 function Badge({ status }) {
   const statusMap = {
-    Actif: { text: 'Actif', className: 'bg-green-100 text-green-700 border-green-200' },
-    Inactif: { text: 'Inactif', className: 'bg-red-100 text-red-700 border-red-200' },
-    "En attente": { text: 'En attente', className: 'bg-amber-100 text-amber-700 border-amber-200' },
+    Actif: { text: 'Actif', className: 'bg-neutral-200 text-neutral-700' },
+    Inactif: { text: 'Inactif', className: 'bg-neutral-200 text-neutral-700' },
+    "En attente": { text: 'En attente', className: 'bg-neutral-200 text-neutral-700' },
   };
-  const currentStatus = statusMap[status] || { text: status, className: 'bg-gray-100 text-gray-700 border-gray-200' };
+  const currentStatus = statusMap[status] || { text: status, className: 'bg-neutral-200 text-neutral-700' };
   
-  return <span className={`px-2 py-1 text-xs rounded-full border ${currentStatus.className}`}>
+  return <span className={`px-2 py-1 text-xs rounded-full ${currentStatus.className}`}>
     {currentStatus.text}
   </span>;
 }
 
 export default function ProprietairesAnnonces() {
   // Types prédéfinis alignés avec la page de publication (hors "Autre")
-  const PREDEFINED_TYPES = ["Appartement", "Maison", "Studio", "Chambre", "Villa"];
+  const PREDEFINED_TYPES = ["Appartement", "Maison", "Bureau", "Studio", "Chambre", "Villa"];
   
   // Options de tri disponibles
   const SORT_OPTIONS = [
@@ -136,16 +136,41 @@ export default function ProprietairesAnnonces() {
     });
   }, [grouped, selected, sortBy]);
 
-  if (loading) return <div>Chargement des annonces...</div>;
+  if (loading) return (
+    <div className="min-h-[50vh] flex items-center justify-center">
+      <div className="text-center">
+        <div className="relative h-16 w-16 mx-auto mb-2">
+          <svg className="absolute inset-0 w-12 h-12 m-2 text-neutral-800 house-bounce" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+            <path d="M14 2v6h6" />
+          </svg>
+          <div className="absolute bottom-1 left-1/2 -translate-x-1/2 w-10 h-2 rounded-full bg-neutral-300/60 house-shadow" />
+        </div>
+        <p className="text-neutral-600 text-sm">Chargement des annonces...</p>
+        <style jsx>{`
+          @keyframes house-bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+          }
+          @keyframes shadow-pulse {
+            0%, 100% { transform: translateX(-50%) scaleX(1); opacity: .6; }
+            50% { transform: translateX(-50%) scaleX(.85); opacity: .4; }
+          }
+          .house-bounce { animation: house-bounce 0.6s ease-in-out infinite; }
+          .house-shadow { animation: shadow-pulse 0.6s ease-in-out infinite; }
+        `}</style>
+      </div>
+    </div>
+  );
   if (error) return <div className="text-red-500">{error}</div>;
 
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <h1 className="text-lg font-bold">Mes annonces</h1>
+        <h1 className="text-[22px] leading-7 md:text-lg font-semibold text-neutral-900">Mes annonces</h1>
         <a 
           href="/proprietaires/nouvelle" 
-          className="inline-flex items-center h-10 px-6 rounded-full bg-[#10B981] hover:bg-[#059669] text-white font-medium transition-colors shadow-sm"
+          className="inline-flex items-center h-10 px-6 rounded-full bg-neutral-800 hover:bg-neutral-700 text-white font-semibold transition-colors shadow-sm"
         >
           Publier
         </a>
@@ -153,21 +178,21 @@ export default function ProprietairesAnnonces() {
 
       <div className="grid grid-cols-1 lg:grid-cols-[260px_1fr] gap-4">
         {/* Sidebar dossiers */}
-        <aside className="rounded-2xl border border-black/10 bg-white/70 p-3">
-          <div className="text-sm font-semibold mb-2">Dossiers</div>
+        <aside className="rounded-3xl bg-neutral-50 shadow-sm p-3">
+          <div className="text-[15px] font-semibold text-neutral-900 mb-2">Dossiers</div>
           <ul className="space-y-1">
             {folders.map((f) => (
               <li key={f}>
                 <a
                   href={`/proprietaires/annonces/dossier/${encodeURIComponent(f.toLowerCase())}`}
-                  className={`w-full flex items-center gap-2 px-2 py-2 rounded-xl text-sm hover:bg-black/[.04] ${selected===f? 'ring-1 ring-[#9BC1BC]':''}`}
+                  className={`w-full flex items-center gap-2 px-2 py-2 rounded-xl text-[15px] hover:bg-[#F5F5F5] ${selected===f? 'bg-[#F5F5F5] shadow':''}`}
                 >
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5" aria-hidden>
                     <path d="M3 7h6l2 2h10v6a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3z" />
                     <path d="M3 7v8a3 3 0 0 0 3 3h12" />
                   </svg>
                   <span>{f}</span>
-                  <span className="ml-auto text-xs text-neutral-500">{grouped[f]?.length ?? 0}</span>
+                  <span className="ml-auto text-[12px] text-neutral-500">{grouped[f]?.length ?? 0}</span>
                 </a>
               </li>
             ))}
@@ -177,13 +202,13 @@ export default function ProprietairesAnnonces() {
         {/* Contenu: cartes d'annonces */}
         <section className="space-y-4">
           <div className="flex items-center justify-between">
-            <div className="text-sm text-neutral-600">{items.length} éléments dans « {selected} »</div>
+            <div className="text-[13px] text-neutral-700">{items.length} éléments dans « {selected} »</div>
             <div className="flex items-center gap-2">
               <div className="relative">
                 <select
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value)}
-                  className="appearance-none chip-glass px-4 py-2 pr-8 text-sm font-medium cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#9BC1BC] focus:border-transparent"
+                  className="appearance-none px-4 py-2 pr-8 text-[15px] font-medium cursor-pointer rounded-full bg-[#F5F5F5] shadow-inner focus:outline-none focus:bg-[#EDEDED]"
                 >
                   {SORT_OPTIONS.map((option) => (
                     <option key={option.value} value={option.value}>
@@ -202,14 +227,14 @@ export default function ProprietairesAnnonces() {
 
           <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
             {items.map((a) => (
-              <div key={a._id || a.id || Math.random().toString(36).substr(2, 9)} className="rounded-2xl border border-black/10 bg-white/70 p-4 space-y-2">
+              <div key={a._id || a.id || Math.random().toString(36).substr(2, 9)} className="rounded-3xl bg-neutral-50 shadow-sm p-4 space-y-2">
                 <div className="flex items-start gap-2">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4" aria-hidden>
                     <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
                     <path d="M14 2v6h6" />
                   </svg>
-                  <div className="font-semibold flex-1">{a.titre}</div>
-                  <span className="text-xs chip-glass px-2 py-1">{a.type}</span>
+                  <div className="font-semibold text-[15px] flex-1 text-neutral-900">{a.titre}</div>
+                  <span className="text-xs px-2 py-1 rounded-full bg-neutral-100 text-neutral-800 shadow-sm">{a.type}</span>
                 </div>
                 {/* Statut dynamique selon la date d'expiration */}
                 <div className="text-sm">
@@ -229,7 +254,7 @@ export default function ProprietairesAnnonces() {
                 </div>
                 <div className="pt-2 flex items-center gap-2 text-sm">
                   <button
-                    className="inline-flex items-center gap-1 chip-glass px-3 py-1"
+                    className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-[#F5F5F5] hover:bg-[#EDEDED] shadow font-semibold"
                     onClick={() => {
                       // Redirection vers la page de modification (à adapter selon ta structure)
                       window.location.href = `/proprietaires/nouvelle?id=${a._id}`;
@@ -239,7 +264,7 @@ export default function ProprietairesAnnonces() {
                   </button>
                   {/* Bouton Renouveler supprimé */}
                   <button
-                    className="inline-flex items-center gap-1 chip-glass px-3 py-1"
+                    className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-[#F5F5F5] hover:bg-[#EDEDED] shadow font-semibold"
                     onClick={() => { setAnnonceToDelete(a._id); setConfirmOpen(true); }}
                   >
                     <span className="sr-only">Supprimer</span><span>Supprimer</span>

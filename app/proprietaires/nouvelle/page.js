@@ -77,6 +77,7 @@ function NouvelleAnnonce() {
   const [acceptImages, setAcceptImages] = useState(true);
   const [acceptVideos, setAcceptVideos] = useState(false);
   const [isDragOver, setIsDragOver] = useState(false);
+  const [pageLoading, setPageLoading] = useState(true);
 
   function validateStep(step) {
     const errors = {};
@@ -312,27 +313,25 @@ function NouvelleAnnonce() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold">Publier une annonce</h1>
-        <div className="text-sm text-neutral-600">Étape {step + 1}/{STEPS.length}</div>
+        <h1 className="text-[22px] leading-7 md:text-2xl font-semibold text-neutral-900">Publier une annonce</h1>
+        <div className="text-[13px] text-neutral-700">Étape {step + 1}/{STEPS.length}</div>
       </div>
 
       {/* Progress bar */}
       <div className="w-full h-2 rounded-full bg-neutral-200 overflow-hidden">
-        <div className="h-full bg-[#4A9B8E] transition-all" style={{ width: `${((step + 1) / STEPS.length) * 100}%` }} />
+        <div className="h-full bg-neutral-800 transition-all" style={{ width: `${((step + 1) / STEPS.length) * 100}%` }} />
       </div>
 
-      <div className="rounded-2xl border border-black/10 bg-white/70 p-4 space-y-4">
+      <div className="rounded-3xl bg-neutral-50 shadow-sm p-4 space-y-4">
         {step === 0 && (
           <div className="grid gap-4 sm:grid-cols-2">
             <div>
-              <label className="text-sm font-medium">Titre <span className="text-red-500">*</span></label>
+              <label className="text-[15px] font-semibold text-neutral-900">Titre <span className="text-red-500">*</span></label>
               <input 
                 value={data.titre} 
                 onChange={e => setData({...data, titre: e.target.value})} 
                 onBlur={() => setTouched({...touched, titre: true})}
-                className={`mt-1 w-full h-11 px-3 rounded-xl border ${
-                  (touched.titre && formErrors.titre) ? 'border-red-500' : 'border-black/10'
-                } bg-white/90 outline-none`} 
+                className="mt-1 w-full h-11 px-3 rounded-xl bg-[#F5F5F5] outline-none text-[16px] placeholder:text-neutral-600 placeholder:font-medium shadow-inner focus:bg-[#EDEDED]" 
                 placeholder="Appartement 3 pièces – Cocody" 
               />
               {touched.titre && formErrors.titre && (
@@ -340,14 +339,12 @@ function NouvelleAnnonce() {
               )}
             </div>
             <div>
-              <label className="text-sm font-medium">Type de bien <span className="text-red-500">*</span></label>
+              <label className="text-[15px] font-semibold text-neutral-900">Type de bien <span className="text-red-500">*</span></label>
               <select 
                 value={data.type} 
                 onChange={e => setData({...data, type: e.target.value})}
                 onBlur={() => setTouched({...touched, type: true})}
-                className={`mt-1 w-full h-11 px-3 rounded-xl border ${
-                  (touched.type && formErrors.type) ? 'border-red-500' : 'border-black/10'
-                } bg-white/90 outline-none`}
+                className="mt-1 w-full h-11 px-3 rounded-xl bg-[#F5F5F5] outline-none text-[16px] shadow-inner focus:bg-[#EDEDED]"
               >
                 {['Appartement','Maison','Studio','Chambre','Villa','Autre'].map(t => (
                   <option key={t} value={t}>{t}</option>
@@ -356,14 +353,12 @@ function NouvelleAnnonce() {
             </div>
             {data.type === "Autre" && (
               <div className="sm:col-span-2">
-                <label className="text-sm font-medium">Précisez le type de bien <span className="text-red-500">*</span></label>
+                <label className="text-[15px] font-semibold text-neutral-900">Précisez le type de bien <span className="text-red-500">*</span></label>
                 <input 
                   value={data.typeAutre} 
                   onChange={e => setData({...data, typeAutre: e.target.value})}
                   onBlur={() => setTouched({...touched, type: true})}
-                  className={`mt-1 w-full h-11 px-3 rounded-xl border ${
-                    (touched.type && formErrors.typeAutre) ? 'border-red-500' : 'border-black/10'
-                  } bg-white/90 outline-none`} 
+                  className="mt-1 w-full h-11 px-3 rounded-xl bg-[#F5F5F5] outline-none text-[16px] placeholder:text-neutral-600 placeholder:font-medium shadow-inner focus:bg-[#EDEDED]" 
                   placeholder="Ex: Bungalow, Penthouse, etc." 
                 />
                 {touched.type && formErrors.typeAutre && (
@@ -372,16 +367,14 @@ function NouvelleAnnonce() {
               </div>
             )}
             <div>
-              <label className="text-sm font-medium">Prix par mois <span className="text-red-500">*</span></label>
+              <label className="text-[15px] font-semibold text-neutral-900">Prix par mois <span className="text-red-500">*</span></label>
               <input 
                 value={data.prix} 
                 onChange={e => setData({...data, prix: e.target.value})}
                 onBlur={() => setTouched({...touched, prix: true})}
                 type="number" 
                 min="0"
-                className={`mt-1 w-full h-11 px-3 rounded-xl border ${
-                  (touched.prix && formErrors.prix) ? 'border-red-500' : 'border-black/10'
-                } bg-white/90 outline-none`} 
+                className="mt-1 w-full h-11 px-3 rounded-xl bg-[#F5F5F5] outline-none text-[16px] placeholder:text-neutral-600 placeholder:font-medium shadow-inner focus:bg-[#EDEDED]" 
                 placeholder="35000" 
               />
               {touched.prix && formErrors.prix && (
@@ -389,14 +382,12 @@ function NouvelleAnnonce() {
               )}
             </div>
             <div>
-              <label className="text-sm font-medium">Adresse complète <span className="text-red-500">*</span></label>
+              <label className="text-[15px] font-semibold text-neutral-900">Adresse complète <span className="text-red-500">*</span></label>
               <input 
                 value={data.adresse} 
                 onChange={e => setData({...data, adresse: e.target.value})}
                 onBlur={() => setTouched({...touched, adresse: true})}
-                className={`mt-1 w-full h-11 px-3 rounded-xl border ${
-                  (touched.adresse && formErrors.adresse) ? 'border-red-500' : 'border-black/10'
-                } bg-white/90 outline-none`} 
+                className="mt-1 w-full h-11 px-3 rounded-xl bg-[#F5F5F5] outline-none text-[16px] placeholder:text-neutral-600 placeholder:font-medium shadow-inner focus:bg-[#EDEDED]" 
                 placeholder="12 Rue des Fleurs" 
               />
               {touched.adresse && formErrors.adresse && (
@@ -404,14 +395,12 @@ function NouvelleAnnonce() {
               )}
             </div>
             <div>
-              <label className="text-sm font-medium">Ville <span className="text-red-500">*</span></label>
+              <label className="text-[15px] font-semibold text-neutral-900">Ville <span className="text-red-500">*</span></label>
               <input 
                 value={data.ville} 
                 onChange={e => setData({...data, ville: e.target.value})}
                 onBlur={() => setTouched({...touched, ville: true})}
-                className={`mt-1 w-full h-11 px-3 rounded-xl border ${
-                  (touched.ville && formErrors.ville) ? 'border-red-500' : 'border-black/10'
-                } bg-white/90 outline-none`} 
+                className="mt-1 w-full h-11 px-3 rounded-xl bg-[#F5F5F5] outline-none text-[16px] placeholder:text-neutral-600 placeholder:font-medium shadow-inner focus:bg-[#EDEDED]" 
                 placeholder="Abidjan" 
               />
               {touched.ville && formErrors.ville && (
@@ -419,14 +408,12 @@ function NouvelleAnnonce() {
               )}
             </div>
             <div>
-              <label className="text-sm font-medium">Quartier <span className="text-red-500">*</span></label>
+              <label className="text-[15px] font-semibold text-neutral-900">Quartier <span className="text-red-500">*</span></label>
               <input 
                 value={data.quartier} 
                 onChange={e => setData({...data, quartier: e.target.value})}
                 onBlur={() => setTouched({...touched, quartier: true})}
-                className={`mt-1 w-full h-11 px-3 rounded-xl border ${
-                  (touched.quartier && formErrors.quartier) ? 'border-red-500' : 'border-black/10'
-                } bg-white/90 outline-none`} 
+                className="mt-1 w-full h-11 px-3 rounded-xl bg-[#F5F5F5] outline-none text-[16px] placeholder:text-neutral-600 placeholder:font-medium shadow-inner focus:bg-[#EDEDED]" 
                 placeholder="Cocody" 
               />
               {touched.quartier && formErrors.quartier && (
@@ -434,7 +421,7 @@ function NouvelleAnnonce() {
               )}
             </div>
             <div>
-              <label className="text-sm font-medium">Nombre de pièces</label>
+              <label className="text-[15px] font-semibold text-neutral-900">Nombre de pièces</label>
               <input 
                 value={data.capacite ?? ''} 
                 onChange={e => {
@@ -443,19 +430,17 @@ function NouvelleAnnonce() {
                 }}
                 type="number" 
                 min="1"
-                className="mt-1 w-full h-11 px-3 rounded-xl border border-black/10 bg-white/90 outline-none" 
+                className="mt-1 w-full h-11 px-3 rounded-xl bg-[#F5F5F5] outline-none text-[16px] placeholder:text-neutral-600 placeholder:font-medium shadow-inner focus:bg-[#EDEDED]" 
                 placeholder="1" 
               />
             </div>
             <div className="sm:col-span-2">
-              <label className="text-sm font-medium">Description <span className="text-red-500">*</span></label>
+              <label className="text-[15px] font-semibold text-neutral-900">Description <span className="text-red-500">*</span></label>
               <textarea 
                 value={data.description} 
                 onChange={e => setData({...data, description: e.target.value})}
                 onBlur={() => setTouched({...touched, description: true})}
-                className={`mt-1 w-full min-h-[90px] px-3 py-2 rounded-xl border ${
-                  (touched.description && formErrors.description) ? 'border-red-500' : 'border-black/10'
-                } bg-white/90 outline-none`} 
+                className="mt-1 w-full min-h-[90px] px-3 py-2 rounded-xl bg-[#F5F5F5] outline-none text-[16px] placeholder:text-neutral-600 placeholder:font-medium shadow-inner focus:bg-[#EDEDED]" 
                 placeholder="Bel appartement lumineux proche des commodités." 
               />
               {touched.description && formErrors.description && (
@@ -467,15 +452,15 @@ function NouvelleAnnonce() {
 
         {step === 1 && (
           <div className="space-y-3">
-            <label className="text-sm font-medium">Médias <span className="text-red-500">*</span></label>
+            <label className="text-[15px] font-semibold text-neutral-900">Médias <span className="text-red-500">*</span></label>
             {formErrors.media && (
               <p className="text-xs text-red-600 -mt-2">{formErrors.media}</p>
             )}
             <div 
-              className={`rounded-xl border border-dashed p-6 text-center transition-colors cursor-pointer ${
+              className={`rounded-xl p-6 text-center transition-colors cursor-pointer ${
                 isDragOver 
-                  ? 'border-[#4A9B8E] bg-[#4A9B8E]/10' 
-                  : 'border-black/15 bg-white/60 hover:bg-white/80'
+                  ? 'bg-[#EDEDED]' 
+                  : 'bg-[#F5F5F5] shadow-inner hover:bg-[#EDEDED]'
               }`}
               onDragOver={handleDragOver}
               onDragLeave={handleDragLeave}
@@ -527,11 +512,11 @@ function NouvelleAnnonce() {
               </div>
             )}
             <div>
-              <label className="text-sm font-medium">Photos (URLs séparées par des virgules)</label>
+              <label className="text-[15px] font-semibold text-neutral-900">Photos (URLs séparées par des virgules)</label>
               <input 
                 value={data.photosText} 
                 onChange={e => setData({...data, photosText: e.target.value})} 
-                className="mt-1 w-full h-11 px-3 rounded-xl border border-black/10 bg-white/90 outline-none" 
+                className="mt-1 w-full h-11 px-3 rounded-xl bg-[#F5F5F5] outline-none text-[16px] placeholder:text-neutral-600 placeholder:font-medium shadow-inner focus:bg-[#EDEDED]" 
                 placeholder="https://exemple.com/img1.jpg, https://exemple.com/img2.jpg" 
               />
             </div>
@@ -541,7 +526,7 @@ function NouvelleAnnonce() {
         {step === 2 && (
           <div className="space-y-6">
             <div className="space-y-4">
-              <label className="text-sm font-medium">Durée de publication <span className="text-red-500">*</span></label>
+              <label className="text-[15px] font-semibold text-neutral-900">Durée de publication <span className="text-red-500">*</span></label>
               {formErrors.duree && (
                 <p className="text-xs text-red-600 -mt-2">{formErrors.duree}</p>
               )}
@@ -551,21 +536,21 @@ function NouvelleAnnonce() {
                     key={option.d} 
                     type="button"
                     onClick={() => setData({...data, duree: option.d})} 
-                    className={`p-4 rounded-2xl border transition-all text-left relative ${
+                    className={`p-4 rounded-2xl transition-all text-left relative ${
                       data.duree === option.d 
-                        ? 'border-[#4A9B8E] bg-white/70' 
-                        : 'border-black/10 bg-white/70 hover:border-[#4A9B8E]/50'
+                        ? 'bg-neutral-50 shadow-sm' 
+                        : 'bg-[#F5F5F5] hover:bg-[#EDEDED]'
                     }`}
                   >
                     {option.popular && (
-                      <div className="absolute -top-2 -right-2 bg-[#4A9B8E] text-white text-xs px-2 py-1 rounded-full font-medium">
+                      <div className="absolute -top-2 -right-2 bg-neutral-800 text-white text-xs px-2 py-1 rounded-full font-medium">
                         Populaire
                       </div>
                     )}
                     <div className="font-semibold text-lg">{option.label}</div>
                     <div className="text-sm text-neutral-600 mt-1">{option.p} FCFA</div>
                     {data.duree === option.d && (
-                      <div className="text-xs text-[#4A9B8E] font-medium mt-2">✓ Sélectionné</div>
+                      <div className="text-xs text-neutral-800 font-medium mt-2">✓ Sélectionné</div>
                     )}
                   </button>
                 ))}
@@ -574,10 +559,10 @@ function NouvelleAnnonce() {
             
             {/* Affichage de la sélection actuelle */}
             {data.duree && (
-              <div className="rounded-2xl border border-black/10 bg-white/70 p-4">
+              <div className="rounded-2xl bg-neutral-50 shadow-sm p-4">
                 <div className="flex items-center justify-between">
                   <div>
-                    <div className="font-semibold text-[#4A9B8E]">Durée sélectionnée</div>
+                    <div className="font-semibold text-neutral-900">Durée sélectionnée</div>
                     <div className="text-sm text-neutral-700">
                       {dureeOptions.find(opt => opt.d === data.duree)?.label} - {dureeOptions.find(opt => opt.d === data.duree)?.p} FCFA
                     </div>
@@ -585,7 +570,7 @@ function NouvelleAnnonce() {
                   <button 
                     type="button"
                     onClick={() => setData({...data, duree: null})}
-                    className="text-xs text-neutral-500 hover:text-red-600 px-2 py-1 rounded"
+                    className="text-xs text-neutral-600 hover:text-neutral-800 px-2 py-1 rounded"
                   >
                     Changer
                   </button>
@@ -597,7 +582,7 @@ function NouvelleAnnonce() {
 
         {step === 3 && (
           <div className="space-y-4">
-            <div className="rounded-xl border border-black/10 p-4 bg-white/70">
+            <div className="rounded-xl p-4 bg-neutral-50 shadow-sm">
               <div className="font-semibold mb-1">Résumé</div>
               <ul className="text-sm text-neutral-700 list-disc pl-5">
                 <li>Titre: {data.titre || '—'}</li>
@@ -610,7 +595,7 @@ function NouvelleAnnonce() {
               </ul>
             </div>
             <div className="flex items-center justify-between">
-              <div className="text-sm text-neutral-600">
+              <div className="text-[13px] text-neutral-700">
                 Total: <span className="font-semibold">
                   {data.duree ? dureeOptions.find(opt => opt.d === data.duree)?.p : 0} FCFA
                 </span>
@@ -620,7 +605,7 @@ function NouvelleAnnonce() {
                   type="button"
                   onClick={handleSubmit} 
                   disabled={submitting} 
-                  className="inline-flex items-center h-11 px-5 rounded-full bg-[#4A9B8E] text-white font-medium disabled:opacity-60"
+                  className="inline-flex items-center h-11 px-5 rounded-full bg-neutral-800 hover:bg-neutral-700 text-white font-semibold disabled:opacity-60 shadow-sm"
                 >
                   {submitting ? 'Publication...' : "Publier votre annonce"}
                 </button>
@@ -637,7 +622,7 @@ function NouvelleAnnonce() {
           type="button"
           onClick={prev} 
           disabled={step === 0} 
-          className="px-4 h-11 rounded-full border border-black/10 disabled:opacity-50"
+          className="px-4 h-11 rounded-full bg-[#F5F5F5] hover:bg-[#EDEDED] shadow font-semibold text-neutral-800 disabled:opacity-50"
         >
           Précédent
         </button>
@@ -645,7 +630,7 @@ function NouvelleAnnonce() {
           <button 
             type="button"
             onClick={next} 
-            className="px-5 h-11 rounded-full bg-[#4A9B8E] text-white disabled:opacity-50"
+            className="px-5 h-11 rounded-full bg-neutral-800 hover:bg-neutral-700 text-white font-semibold disabled:opacity-50 shadow-sm"
           >
             Suivant
           </button>
@@ -661,7 +646,7 @@ function NouvelleAnnonce() {
             onClick={() => setShowModal(false)}
             aria-label="Fermer la modale"
           />
-          <div className="relative w-full max-w-md rounded-2xl border border-black/10 bg-white/95 p-5 shadow-xl">
+          <div className="relative w-full max-w-md rounded-2xl bg-neutral-50 p-5 shadow-xl">
             <div className="flex items-center gap-3 mb-3">
               <div className={`w-10 h-10 rounded-full flex items-center justify-center ${modalType==='success' ? 'bg-green-500/20 text-green-700' : 'bg-red-500/20 text-red-700'}`}>
                 {modalType==='success' ? '✓' : '✕'}
@@ -677,7 +662,7 @@ function NouvelleAnnonce() {
               <button 
                 type="button"
                 onClick={() => setShowModal(false)} 
-                className="h-10 px-4 rounded-full border border-black/10 bg-white/90 hover:bg-white/80 transition-colors"
+                className="h-10 px-4 rounded-full bg-[#F5F5F5] hover:bg-[#EDEDED] shadow transition-colors"
               >
                 Fermer
               </button>
@@ -691,7 +676,32 @@ function NouvelleAnnonce() {
 
 export default function Page() {
   return (
-    <Suspense fallback={<div className="min-h-screen flex items-center justify-center">Chargement...</div>}>
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="relative h-16 w-16 mx-auto mb-2">
+            <svg className="absolute inset-0 w-12 h-12 m-2 text-neutral-800 house-bounce" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+              <path d="M14 2v6h6" />
+            </svg>
+            <div className="absolute bottom-1 left-1/2 -translate-x-1/2 w-10 h-2 rounded-full bg-neutral-300/60 house-shadow" />
+          </div>
+          <p className="text-neutral-600 text-sm">Chargement du formulaire de publication...</p>
+          <style jsx>{`
+            @keyframes house-bounce {
+              0%, 100% { transform: translateY(0); }
+              50% { transform: translateY(-10px); }
+            }
+            @keyframes shadow-pulse {
+              0%, 100% { transform: translateX(-50%) scaleX(1); opacity: .6; }
+              50% { transform: translateX(-50%) scaleX(.85); opacity: .4; }
+            }
+            .house-bounce { animation: house-bounce 0.6s ease-in-out infinite; }
+            .house-shadow { animation: shadow-pulse 0.6s ease-in-out infinite; }
+          `}</style>
+        </div>
+      </div>
+    }>
       <NouvelleAnnonce />
     </Suspense>
   );

@@ -130,31 +130,31 @@ export default function ConnexionClient() {
   }
 
   return (
-    <div className="min-h-screen vh-stable bg-gradient-to-b from-neutral-50 to-white">
+    <div className="min-h-screen vh-stable bg-gradient-to-b from-neutral-50 to-white font-sans font-medium md:font-normal">
       <div className="max-w-[520px] mx-auto px-4 py-10">
         {/* Back controls: icon on mobile, button on desktop */}
         <div className="flex items-center gap-2 mb-4">
           <div className="block md:hidden">
-            <button onClick={goBack} aria-label="Retour" className="inline-flex items-center justify-center border border-black/10 bg-white/95 rounded-full w-10 h-10 chip-glass">
+            <button onClick={goBack} aria-label="Retour" className="inline-flex items-center justify-center rounded-full w-10 h-10 bg-neutral-100 hover:bg-neutral-200 shadow-sm">
               <IconBack className="w-5 h-5" />
             </button>
           </div>
           <div className="hidden md:block">
-            <button onClick={goBack} className="inline-flex items-center gap-2 chip-glass px-3 py-1.5">
+            <button onClick={goBack} className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-neutral-100 hover:bg-neutral-200 shadow-sm">
               <IconBack className="w-4 h-4" />
               Retour
             </button>
           </div>
         </div>
         <div className="text-center mb-6">
-          <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-[#4A9B8E] text-white font-bold text-lg">M</div>
-          <h1 className="mt-3 text-base font-semibold">Connexion</h1>
-          <p className="mt-1 text-xs text-neutral-600">Accédez à votre espace client</p>
+          <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-neutral-800 text-white font-bold text-lg">M</div>
+          <h1 className="mt-3 text-[22px] leading-7 md:text-base font-semibold text-neutral-900">Connexion</h1>
+          <p className="mt-1 text-[12px] text-neutral-600">Accédez à votre espace client</p>
         </div>
 
-        <form onSubmit={onSubmit} className="rounded-2xl border border-black/10 bg-white/70 p-4 space-y-4">
+        <form onSubmit={onSubmit} className="rounded-2xl bg-neutral-50 shadow-sm p-4 space-y-4">
           <div>
-            <label className="text-sm font-medium">Numéro de téléphone (225xxxxxxxxx)</label>
+            <label className="text-[15px] font-semibold text-neutral-900">Numéro de téléphone (225xxxxxxxxx)</label>
             <div className="relative mt-1">
               <div className="absolute left-3 top-0 bottom-0 flex items-center text-neutral-500 pointer-events-none">
                 +225
@@ -168,30 +168,30 @@ export default function ConnexionClient() {
                   setPhone('225' + value);
                 }}
                 placeholder="0700000000"
-                className="w-full h-11 pl-14 pr-3 rounded-xl border border-black/10 bg-white/90 outline-none"
+                className="w-full h-11 pl-14 pr-3 rounded-xl bg-[#F5F5F5] outline-none text-[16px] placeholder:text-neutral-600 placeholder:font-medium shadow-inner focus:bg-[#EDEDED]"
                 maxLength={10}
               />
             </div>
           </div>
           <div>
-            <label className="text-sm font-medium">Mot de passe</label>
+            <label className="text-[15px] font-semibold text-neutral-900">Mot de passe</label>
             <div className="mt-1 relative">
               <input
                 type={showPwd? 'text':'password'}
                 value={password}
                 onChange={(e)=>setPassword(e.target.value)}
                 placeholder="Votre mot de passe"
-                className="w-full h-11 px-3 pr-12 rounded-xl border border-black/10 bg-white/90 outline-none"
+                className="w-full h-11 px-3 pr-20 rounded-xl bg-[#F5F5F5] outline-none text-[16px] placeholder:text-neutral-600 placeholder:font-medium shadow-inner focus:bg-[#EDEDED]"
               />
-              <button type="button" onClick={()=>setShowPwd(v=>!v)} className="absolute right-2 top-1/2 -translate-y-1/2 chip-glass px-2 h-8 text-xs">{showPwd? 'Masquer':'Afficher'}</button>
+              <button type="button" onClick={()=>setShowPwd(v=>!v)} className="absolute right-2 top-1/2 -translate-y-1/2 px-3 h-8 text-xs rounded-full bg-neutral-100 hover:bg-neutral-200 shadow-sm">{showPwd? 'Masquer':'Afficher'}</button>
             </div>
           </div>
           <div className="flex items-center justify-between text-sm">
-            <a href="#" className="text-[#4A9B8E] hover:underline">Mot de passe oublié ?</a>
-            <a href="/clients/inscription" className="text-[#4A9B8E] hover:underline">Créer un compte</a>
+            <a href="#" className="text-[#4A9B8E] hover:underline font-semibold">Mot de passe oublié ?</a>
+            <a href="/clients/inscription" className="text-[#4A9B8E] hover:underline font-semibold">Créer un compte</a>
           </div>
           <div className="pt-2">
-            <button type="submit" className="w-full h-11 rounded-full bg-[#4A9B8E] text-white font-medium disabled:opacity-60" disabled={submitting}>{submitting ? "Connexion..." : "Se connecter"}</button>
+            <button type="submit" className="w-full h-11 rounded-full bg-neutral-800 hover:bg-neutral-700 text-white font-semibold disabled:opacity-60 shadow-sm" disabled={submitting}>{submitting ? "Connexion..." : "Se connecter"}</button>
           </div>
         </form>
         
@@ -200,8 +200,8 @@ export default function ConnexionClient() {
           type={notification.type}
           onClose={closeNotification}
         />
-        <div className="mt-6 text-center text-sm text-neutral-600">
-          Pas encore de compte ? <a href="/clients/inscription" className="text-[#4A9B8E] hover:underline">Créer un compte</a>
+        <div className="mt-6 text-center text-[15px] text-neutral-600">
+          Pas encore de compte ? <a href="/clients/inscription" className="text-[#4A9B8E] hover:underline font-semibold">Créer un compte</a>
         </div>
       </div>
     </div>

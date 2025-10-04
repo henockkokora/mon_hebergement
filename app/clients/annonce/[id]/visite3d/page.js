@@ -55,9 +55,9 @@ function Visite3DPage() {
     <div className="min-h-screen vh-stable bg-gradient-to-b from-neutral-50 to-white text-neutral-900">
       <div className="max-w-[1200px] mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
-          <h1 className="text-2xl font-bold">Visite 3D</h1>
+          <h1 className="text-[22px] leading-7 md:text-2xl font-semibold text-neutral-900">Visite 3D</h1>
           <span className="hidden lg:inline">
-            <a href=".." className="chip-glass px-3 py-1.5 inline-flex items-center gap-2"><IconBack className="w-4 h-4"/> Retour</a>
+            <a href=".." className="chip-glass px-3 py-1.5 inline-flex items-center gap-2 text-[13px] font-medium"><IconBack className="w-4 h-4"/> Retour</a>
           </span>
         </div>
       </div>
@@ -77,16 +77,16 @@ function Visite3DPage() {
             <PerspectiveCamera makeDefault position={[3, 2, 6]} fov={60} />
           </Canvas>
           {hint && (
-            <div className="absolute top-3 left-3 chip-glass px-3 py-1.5 text-sm">Astuce: pincez pour zoomer, glissez pour pivoter, double-tapez pour recadrer.</div>
+            <div className="absolute top-3 left-3 chip-glass px-3 py-1.5 text-[13px]">Astuce: pincez pour zoomer, glissez pour pivoter, double-tapez pour recadrer.</div>
           )}
         </div>
       </div>
       <div className="max-w-[1200px] mx-auto px-4 py-3 flex items-center gap-2">
-        <button onClick={()=>setHint(false)} className="chip-glass px-3 py-1.5">Masquer l’astuce</button>
-        <a href="#" className="chip-glass px-3 py-1.5">Visite extérieure</a>
-        <a href="#" className="chip-glass px-3 py-1.5">Salon</a>
-        <a href="#" className="chip-glass px-3 py-1.5">Cuisine</a>
-        <a href="#" className="chip-glass px-3 py-1.5">Chambre</a>
+        <button onClick={()=>setHint(false)} className="chip-glass px-3 py-1.5 text-[13px] font-medium">Masquer l’astuce</button>
+        <a href="#" className="chip-glass px-3 py-1.5 text-[13px] font-medium">Visite extérieure</a>
+        <a href="#" className="chip-glass px-3 py-1.5 text-[13px] font-medium">Salon</a>
+        <a href="#" className="chip-glass px-3 py-1.5 text-[13px] font-medium">Cuisine</a>
+        <a href="#" className="chip-glass px-3 py-1.5 text-[13px] font-medium">Chambre</a>
       </div>
     </div>
   );

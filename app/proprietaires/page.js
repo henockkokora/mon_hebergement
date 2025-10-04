@@ -86,32 +86,19 @@ function Kpi({ label, value, icon: Icon, color = "emerald" }) {
   const colors = colorClasses[color] || colorClasses.emerald;
 
   return (
-    <div className={`relative overflow-hidden rounded-xl border ${colors.border} ${colors.bg} p-5 transition-all duration-300 hover:shadow-md group`}>
-      {/* Décoration d'angle */}
-      <div className={`absolute top-0 right-0 w-12 h-12 -mr-6 -mt-6 rounded-full ${colors.icon} opacity-10`}></div>
+    <div className={`relative overflow-hidden rounded-3xl bg-neutral-50 shadow-sm p-5 transition-all duration-300 hover:shadow group border-none`}>
       
       <div className="flex items-start justify-between">
         <div>
           <p className="text-sm font-medium text-gray-500">{label}</p>
           <p className="mt-1 text-2xl font-bold text-gray-900">{value}</p>
         </div>
-        <div className={`p-2.5 rounded-lg ${colors.border} bg-white/50 border`}>
+        <div className="p-2.5 rounded-full bg-[#F5F5F5] shadow-inner border-none">
           <Icon className={`w-5 h-5 ${colors.icon}`} />
         </div>
       </div>
       
-      {/* Barre de progression décorative */}
-      <div className="mt-4 h-1.5 bg-gray-100 rounded-full overflow-hidden">
-        <div 
-          className={`h-full ${colors.icon.replace('text-', 'bg-')} bg-opacity-50 transition-all duration-500 group-hover:w-full`}
-          style={{ width: '70%' }}
-        ></div>
-      </div>
-      
-      {/* Effet de particules flottantes */}
-      <div className="absolute top-4 right-4 opacity-20 group-hover:opacity-40 transition-opacity duration-300">
-        <div className="w-1.5 h-1.5 bg-current rounded-full animate-pulse" />
-      </div>
+      {/* Tracés décoratifs supprimés pour un rendu Flat (profondeur par ombre uniquement) */}
     </div>
   );
 }
@@ -203,7 +190,7 @@ export default function ProprietairesDashboard() {
         <div className="flex gap-2 items-center">
           <button
             onClick={() => setSupportModalOpen(true)}
-            className="inline-flex items-center gap-2 h-11 px-4 rounded-full border border-[#4A9B8E] text-[#4A9B8E] hover:bg-[#e7f6f3] transition-all font-medium"
+            className="inline-flex items-center gap-2 h-11 px-4 rounded-full bg-[#F5F5F5] hover:bg-[#EDEDED] text-[#24766A] transition-all font-semibold shadow"
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-1c0-1.1.9-2 2-2s2-.9 2-2-1-2-2-2-2 .9-2 2"/><circle cx="12" cy="18" r="1.2"/></svg>
             <span className="hidden sm:inline">Support</span>
@@ -212,7 +199,7 @@ export default function ProprietairesDashboard() {
           {/* Modal Support */}
           {supportModalOpen && (
             <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 min-h-screen py-8">
-              <div className="bg-white rounded-2xl shadow-2xl w-full max-w-[420px] mx-4 p-6 relative my-auto">
+              <div className="bg-neutral-50 rounded-2xl shadow-sm w-full max-w-[420px] mx-4 p-6 relative my-auto">
                 <button
                   className="absolute top-4 right-4 text-neutral-400 hover:text-neutral-700 transition-colors"
                   onClick={() => {
@@ -223,11 +210,11 @@ export default function ProprietairesDashboard() {
                 >
                   <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M6 6l12 12M6 18L18 6"/></svg>
                 </button>
-                <h2 className="text-2xl font-bold mb-5 text-[#24766A]">Contacter le support</h2>
+                <h2 className="text-2xl font-bold mb-5 text-neutral-900">Contacter le support</h2>
                 <form onSubmit={handleSupportSubmit} className="space-y-4">
                   <div>
                     <textarea 
-                      className="w-full border border-neutral-300 rounded-lg px-4 py-3 min-h-[120px] focus:ring-2 focus:ring-[#4A9B8E] focus:border-transparent outline-none resize-none text-base" 
+                      className="w-full rounded-lg px-4 py-3 min-h-[120px] bg-[#F5F5F5] text-base text-neutral-900 placeholder:text-neutral-500 shadow-inner focus:outline-none focus:bg-[#EDEDED] resize-none" 
                       placeholder="Décrivez votre problème ou posez votre question..." 
                       required 
                       value={supportMessage} 
@@ -236,7 +223,7 @@ export default function ProprietairesDashboard() {
                   </div>
                   <button 
                     type="submit" 
-                    className="w-full bg-[#24766A] text-white rounded-lg py-3 font-semibold hover:bg-[#1b5e4e] transition-all text-base shadow-md" 
+                    className="w-full bg-neutral-800 text-white rounded-full py-3 font-semibold hover:bg-neutral-700 transition-colors text-base shadow-sm" 
                     disabled={supportLoading}
                   >
                     {supportLoading ? 'Envoi en cours...' : 'Envoyer'}
@@ -259,7 +246,7 @@ export default function ProprietairesDashboard() {
               </div>
             </div>
           )}
-          <a href="/proprietaires/nouvelle" className="inline-flex items-center gap-2 h-11 px-5 rounded-full bg-[#4A9B8E] text-white font-medium shadow-[0_10px_20px_rgba(74,155,142,0.25)] hover:shadow-[0_15px_30px_rgba(74,155,142,0.35)] transition-all duration-300 hover:scale-105">
+          <a href="/proprietaires/nouvelle" className="inline-flex items-center gap-2 h-11 px-5 rounded-full bg-neutral-800 text-white font-medium shadow-sm transition-colors hover:bg-neutral-700">
             <IconPin className="w-4 h-4" /> Publier une nouvelle annonce
           </a>
         </div>
@@ -267,7 +254,31 @@ export default function ProprietairesDashboard() {
 
       {/* Grille de statistiques stylées */}
       {loading ? (
-        <div className="flex justify-center items-center h-32">Chargement des statistiques...</div>
+        <div className="flex justify-center items-center h-48">
+          <div className="text-center">
+            <div className="relative h-16 w-16 mx-auto mb-2">
+              <svg className="absolute inset-0 w-12 h-12 m-2 text-neutral-800 house-bounce" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                <path d="M3 10.5 12 3l9 7.5" />
+                <path d="M5 10v9a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-9" />
+                <path d="M9 21v-6a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v6" />
+              </svg>
+              <div className="absolute bottom-1 left-1/2 -translate-x-1/2 w-10 h-2 rounded-full bg-neutral-300/60 house-shadow" />
+            </div>
+            <p className="text-neutral-600 text-sm">Chargement des statistiques...</p>
+            <style jsx>{`
+              @keyframes house-bounce {
+                0%, 100% { transform: translateY(0); }
+                50% { transform: translateY(-10px); }
+              }
+              @keyframes shadow-pulse {
+                0%, 100% { transform: translateX(-50%) scaleX(1); opacity: .6; }
+                50% { transform: translateX(-50%) scaleX(.85); opacity: .4; }
+              }
+              .house-bounce { animation: house-bounce 0.6s ease-in-out infinite; }
+              .house-shadow { animation: shadow-pulse 0.6s ease-in-out infinite; }
+            `}</style>
+          </div>
+        </div>
       ) : error ? (
         <div className="text-red-600 text-center">{error}</div>
       ) : stats ? (
@@ -303,7 +314,7 @@ export default function ProprietairesDashboard() {
         </div>
       ) : null}
 
-      <div className="rounded-2xl border border-black/10 bg-white/70 p-4">
+      <div className="rounded-3xl bg-neutral-50 shadow-sm p-4">
         <h2 className="text-lg font-semibold mb-4">Statut des annonces</h2>
         <div className="h-64 flex items-center justify-center">
           <div className="relative w-48 h-48">

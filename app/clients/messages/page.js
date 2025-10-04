@@ -16,7 +16,26 @@ function IconBack({ className = "w-5 h-5" }) {
 function Loader() {
   return (
     <div className="flex justify-center items-center p-4">
-      <div className="w-5 h-5 border-2 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+      <div className="relative h-12 w-12">
+        <svg className="absolute inset-0 w-10 h-10 m-1 text-neutral-800 house-bounce" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+          <path d="M3 10.5 12 3l9 7.5" />
+          <path d="M5 10v9a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-9" />
+          <path d="M9 21v-6a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v6" />
+        </svg>
+        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-8 h-1.5 rounded-full bg-neutral-300/60 house-shadow" />
+      </div>
+      <style jsx>{`
+        @keyframes house-bounce {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-10px); }
+        }
+        @keyframes shadow-pulse {
+          0%, 100% { transform: translateX(-50%) scaleX(1); opacity: .6; }
+          50% { transform: translateX(-50%) scaleX(.85); opacity: .4; }
+        }
+        .house-bounce { animation: house-bounce 0.6s ease-in-out infinite; }
+        .house-shadow { animation: shadow-pulse 0.6s ease-in-out infinite; }
+      `}</style>
     </div>
   );
 }

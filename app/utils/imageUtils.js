@@ -23,19 +23,22 @@ export function getImageUrl(img) {
   // Si c'est déjà une URL complète (http/https), la retourner telle quelle
   if (url.startsWith('http')) return url;
   
-  // Si c'est un chemin relatif qui commence par /uploads/, le garder tel quel
-  // Next.js servira automatiquement les fichiers du dossier public
+  // URL du backend API
+  const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
+  
+  // Si c'est un chemin relatif qui commence par /uploads/
+  // On doit le servir depuis le backend car les images sont stockées dans backend/uploads/
   if (url.startsWith('/uploads/')) {
-    return url;
+    return `${API_URL}${url}`;
   }
   
-  // Si c'est juste un nom de fichier, l'ajouter au dossier uploads
+  // Si c'est juste un nom de fichier, l'ajouter au dossier uploads du backend
   if (!url.startsWith('/')) {
-    return `/uploads/${url}`;
+    return `${API_URL}/uploads/${url}`;
   }
   
-  // Pour tous les autres chemins relatifs, les retourner tels quels
-  return url;
+  // Pour tous les autres chemins relatifs, les servir depuis le backend
+  return `${API_URL}${url}`;
 }
 
 // Fonction pour obtenir l'URL complète d'une image (pour compatibilité avec l'ancien code)

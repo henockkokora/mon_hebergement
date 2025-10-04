@@ -2,7 +2,7 @@
 import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import apiService from "@/services/api";
-import { getImageUrl } from '../utils/imageUtils';
+import { getImageUrl } from '@/utils/imageUtils';
 
 const STEPS = ["Informations", "Médias", "Durée", "Paiement"];
 

@@ -3,7 +3,7 @@
 import { useRef, useState, useEffect, useLayoutEffect, useMemo, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import CloudinaryImage from "../components/CloudinaryImage";
-import { getImageUrl } from "../utils/imageUtils";
+import { getImageUrl } from "@/utils/imageUtils";
 
 // Titre unique pour la section des annonces récentes
 const sections = [

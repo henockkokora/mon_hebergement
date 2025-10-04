@@ -6,7 +6,7 @@ import { ChevronLeftIcon, ChevronRightIcon, ShareIcon } from '@heroicons/react/2
 import apiService from '@/services/api';
 import toast from 'react-hot-toast';
 import MatterportViewer from '@/components/MatterportViewer';
-import { getImageUrl } from '../../utils/imageUtils';
+import { getImageUrl } from '@/utils/imageUtils';
 
 function IconStar({ className = "w-5 h-5" }) {
   return (

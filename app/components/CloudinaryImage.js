@@ -5,7 +5,7 @@ import { cld, cloudName } from '../cloudinary';
 import { fill } from '@cloudinary/url-gen/actions/resize';
 import { auto } from '@cloudinary/url-gen/qualifiers/format';
 import { auto as qAuto } from '@cloudinary/url-gen/qualifiers/quality';
-import { getImageUrl } from '../utils/imageUtils';
+import { getImageUrl } from '@/utils/imageUtils';
 
 export default function CloudinaryImage({ 
   src, 

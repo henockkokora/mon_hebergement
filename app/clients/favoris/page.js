@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import apiService from "@/services/api";
-import { getImageUrl } from "../utils/imageUtils";
+import { getImageUrl } from "@/utils/imageUtils";
 
 // Fonction withApiUrl supprimée - utilise maintenant getImageUrl() de imageUtils
 

@@ -3,7 +3,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import apiService from '@/services/api';
 import Image from 'next/image';
-import { getImageUrl } from '../utils/imageUtils';
+import { getImageUrl } from '@/utils/imageUtils';
 
 function StatusBadge({ status }) {
   const map = {

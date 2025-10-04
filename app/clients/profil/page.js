@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import apiService from '@/services/api';
-import { getImageUrl } from '../utils/imageUtils';
+import { getImageUrl } from '@/utils/imageUtils';
 
 // Fonction utilitaire pour générer les initiales à partir d'un nom
 const getInitials = (name) => {

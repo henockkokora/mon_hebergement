@@ -471,6 +471,7 @@ function ClientProfil() {
                                   quality={85}
                                   priority={false}
                                   loading="lazy"
+                                  unoptimized={true}
                                 />
                                 <button
                                   className="absolute top-3 right-3 w-9 h-9 rounded-full bg-white shadow text-[16px] flex items-center justify-center transition-all duration-150 text-red-500 hover:scale-110"

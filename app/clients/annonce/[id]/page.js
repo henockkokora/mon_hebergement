@@ -139,7 +139,7 @@ function SimpleCarousel({ images, title }) {
                 setError(true);
               }}
               loading="eager"
-              unoptimized={process.env.NODE_ENV !== 'production'}
+              unoptimized={true}
             />
           </div>
         )}
@@ -191,14 +191,14 @@ function Gallery({ images, title }) {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-4 mb-6">
       <div className="relative h-[280px] sm:h-[380px] lg:h-[420px] rounded-3xl overflow-hidden">
-        <Image src={main} alt={title || 'Photo principale'} fill className="object-cover" sizes="(max-width: 1024px) 100vw, 66vw" />
+        <Image src={main} alt={title || 'Photo principale'} fill className="object-cover" sizes="(max-width: 1024px) 100vw, 66vw" unoptimized={true} />
       </div>
       <div className="grid grid-rows-2 gap-4">
         <div className="relative rounded-3xl overflow-hidden h-[130px] sm:h-[180px] lg:h-[200px]">
-          <Image src={side1} alt="Photo secondaire 1" fill className="object-cover" sizes="(max-width: 1024px) 100vw, 34vw" />
+          <Image src={side1} alt="Photo secondaire 1" fill className="object-cover" sizes="(max-width: 1024px) 100vw, 34vw" unoptimized={true} />
         </div>
         <div className="relative rounded-3xl overflow-hidden h-[130px] sm:h-[180px] lg:h-[200px]">
-          <Image src={side2} alt="Photo secondaire 2" fill className="object-cover" sizes="(max-width: 1024px) 100vw, 34vw" />
+          <Image src={side2} alt="Photo secondaire 2" fill className="object-cover" sizes="(max-width: 1024px) 100vw, 34vw" unoptimized={true} />
         </div>
       </div>
     </div>

@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import apiService from '@/services/api';
 import Image from 'next/image';
+import { getImageUrl } from '../utils/imageUtils';
 
 function StatusBadge({ status }) {
   const map = {
@@ -106,7 +107,7 @@ export default function AdminAds() {
                     <div className="flex items-center gap-3">
                       <div className="w-16 h-10 rounded-md bg-neutral-300/60 overflow-hidden">
                         {a.photos?.[0] ? (
-                          <Image src={a.photos[0]} alt="Photo de l'annonce" width={64} height={40} className="w-full h-full object-cover" onError={(e) => { e.target.onerror = null; e.target.src = '/client.jpg'; }} />
+                          <Image src={getImageUrl(a.photos[0]) || '/client.jpg'} alt="Photo de l'annonce" width={64} height={40} className="w-full h-full object-cover" onError={(e) => { e.target.onerror = null; e.target.src = '/client.jpg'; }} />
                         ) : (
                           <div className="w-full h-full bg-neutral-200 flex items-center justify-center">
                             <span className="text-xs text-neutral-500">Aucune photo</span>

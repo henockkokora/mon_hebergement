@@ -5,6 +5,7 @@ import { cld, cloudName } from '../cloudinary';
 import { fill } from '@cloudinary/url-gen/actions/resize';
 import { auto } from '@cloudinary/url-gen/qualifiers/format';
 import { auto as qAuto } from '@cloudinary/url-gen/qualifiers/quality';
+import { getImageUrl } from '../utils/imageUtils';
 
 export default function CloudinaryImage({ 
   src, 
@@ -14,7 +15,10 @@ export default function CloudinaryImage({
   className = "",
   ...props 
 }) {
-  if (!src) {
+  // Normaliser l'URL de l'image avec getImageUrl
+  const normalizedSrc = getImageUrl(src);
+  
+  if (!normalizedSrc) {
     return (
       <div 
         className={`bg-gray-200 flex items-center justify-center ${className}`}
@@ -25,11 +29,11 @@ export default function CloudinaryImage({
     );
   }
 
-  // Si c'est déjà une URL complète (https://...)
-  if (src.startsWith('http')) {
+  // Si c'est une URL complète (https://...) ou un chemin local (/uploads/...)
+  if (normalizedSrc.startsWith('http') || normalizedSrc.startsWith('/')) {
     return (
       <img 
-        src={src} 
+        src={normalizedSrc} 
         alt={alt} 
         width={width}
         height={height}
@@ -39,12 +43,12 @@ export default function CloudinaryImage({
     );
   }
 
-  // Pour Cloudinary
+  // Pour Cloudinary uniquement si ce n'est pas un chemin local
   try {
     // Si c'est une URL complète Cloudinary, extraire le public_id
-    let publicId = src;
-    if (src.includes('res.cloudinary.com')) {
-      const parts = src.split('/');
+    let publicId = normalizedSrc;
+    if (normalizedSrc.includes('res.cloudinary.com')) {
+      const parts = normalizedSrc.split('/');
       const uploadIndex = parts.findIndex(part => part === 'upload');
       if (uploadIndex > 0) {
         publicId = parts.slice(uploadIndex + 2).join('/').split('.')[0];

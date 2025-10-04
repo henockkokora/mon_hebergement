@@ -5,14 +5,7 @@ import { useRouter } from "next/navigation";
 import apiService from "@/services/api";
 import { getImageUrl } from "../utils/imageUtils";
 
-function withApiUrl(url) {
-  if (!url) return url;
-  const s = typeof url === 'string' ? url : (url.url || '');
-  if (!s) return s;
-  if (s.startsWith('http')) return s;
-  const base = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000').replace(/\/$/, '');
-  return s.startsWith('/') ? `${base}${s}` : `${base}/${s}`;
-}
+// Fonction withApiUrl supprimée - utilise maintenant getImageUrl() de imageUtils
 
 function FavoriteCard({ item, onRemoved }) {
   const [removing, setRemoving] = useState(false);

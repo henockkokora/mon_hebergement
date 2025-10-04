@@ -2,6 +2,7 @@
 import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import apiService from "@/services/api";
+import { getImageUrl } from '../utils/imageUtils';
 
 const STEPS = ["Informations", "Médias", "Durée", "Paiement"];
 
@@ -204,12 +205,7 @@ function NouvelleAnnonce() {
     return 'image/*';
   };
 
-  function withApiUrl(url){
-    const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
-    if (!url) return url;
-    if (url.startsWith("http")) return url;
-    return `${API_URL}${url}`;
-  }
+  // Utilise maintenant getImageUrl() de imageUtils
 
   async function handleFilesSelected(files){
     setMediaError("");
@@ -487,7 +483,7 @@ function NouvelleAnnonce() {
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
                 {photosUploaded.map((u, idx) => (
                   <div key={`p-${idx}`} className="relative group">
-                    <img src={withApiUrl(u)} alt="photo" className="w-full h-28 object-cover rounded-lg" />
+                    <img src={getImageUrl(u)} alt="photo" className="w-full h-28 object-cover rounded-lg" />
                     <button 
                       type="button" 
                       onClick={() => removePhoto(idx)} 

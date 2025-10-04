@@ -6,6 +6,7 @@ import { ChevronLeftIcon, ChevronRightIcon, ShareIcon } from '@heroicons/react/2
 import apiService from '@/services/api';
 import toast from 'react-hot-toast';
 import MatterportViewer from '@/components/MatterportViewer';
+import { getImageUrl } from '../../utils/imageUtils';
 
 function IconStar({ className = "w-5 h-5" }) {
   return (
@@ -23,38 +24,7 @@ function IconBack({ className = "w-5 h-5" }) {
   );
 }
 
-// Fonction utilitaire pour corriger l'URL des images
-function getImageUrl(img) {
-  if (!img) return null;
-  
-  // Si c'est une chaîne vide ou un objet vide, on retourne null
-  if (typeof img === 'string' && img.trim() === '') return null;
-  if (typeof img === 'object' && Object.keys(img).length === 0) return null;
-  
-  // Gestion des différents formats d'image
-  let url = '';
-  if (typeof img === 'string') {
-    url = img;
-  } else if (img && typeof img === 'object' && img.url) {
-    url = img.url;
-  } else {
-    return null;
-  }
-  
-  // Nettoyage de l'URL
-  url = url.trim();
-  if (!url) return null;
-  
-  // Construction de l'URL complète si nécessaire
-  if (url.startsWith('http')) return url;
-  if (url.startsWith('/')) {
-    // Suppression des doubles slashes
-    const baseUrl = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000').replace(/\/$/, '');
-    return `${baseUrl}${url}`;
-  }
-  
-  return url;
-}
+// Utilise maintenant la fonction utilitaire commune
 
 function SimpleCarousel({ images, title }) {
   // Nettoyage et normalisation des images

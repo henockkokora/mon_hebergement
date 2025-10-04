@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import apiService from "@/services/api";
+import { getImageUrl } from "../utils/imageUtils";
 
 function withApiUrl(url) {
   if (!url) return url;
@@ -26,7 +27,7 @@ function FavoriteCard({ item, onRemoved }) {
       <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl bg-neutral-50 shadow-sm">
         {image ? (
           // eslint-disable-next-line @next/next/no-img-element
-          <img src={withApiUrl(typeof image === 'string' ? image : image?.url)} alt={title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+          <img src={getImageUrl(image)} alt={title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
         ) : (
           <div className="w-full h-full grid place-items-center text-neutral-400 text-[13px]">Aucune image</div>
         )}

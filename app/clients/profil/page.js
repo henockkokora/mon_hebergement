@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import apiService from '@/services/api';
+import { getImageUrl } from '../utils/imageUtils';
 
 // Fonction utilitaire pour générer les initiales à partir d'un nom
 const getInitials = (name) => {
@@ -456,13 +457,7 @@ function ClientProfil() {
                     {savedListings.length > 0 ? (
                       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
                         {savedListings.map((item) => {
-                          let imageSrc = item.image || item.images?.[0]?.url || item.images?.[0] || item.photos?.[0]?.url || item.photos?.[0] || item.imagesList?.[0];
-                          if (imageSrc && typeof imageSrc === 'string' && imageSrc.startsWith('/uploads/')) {
-                            imageSrc = `http://localhost:4000${imageSrc}`;
-                          }
-                          if (!imageSrc) {
-                            imageSrc = "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1200&q=60";
-                          }
+                          let imageSrc = getImageUrl(item.image || item.images?.[0]?.url || item.images?.[0] || item.photos?.[0]?.url || item.photos?.[0] || item.imagesList?.[0]) || "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1200&q=60";
                           const prix = item.prixParNuit || item.prix || item.prixParMois || item.price || item.tarif || item.tarifMensuel || (item.details && (item.details.prixParNuit || item.details.prix || item.details.prixParMois || item.details.tarif));
                           return (
                             <div key={item._id || item.id} className="group">

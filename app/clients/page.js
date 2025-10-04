@@ -3,6 +3,7 @@
 import { useRef, useState, useEffect, useLayoutEffect, useMemo, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import CloudinaryImage from "../components/CloudinaryImage";
+import { getImageUrl } from "../utils/imageUtils";
 
 // Titre unique pour la section des annonces récentes
 const sections = [
@@ -993,12 +994,7 @@ function Row({ children, title }) {
 
 function Card({ item, isLoggedIn }) {
   // Gestion du fallback pour les images Cloudinary ou par défaut
-  let imageSrc = item.image || "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1200&q=60";
-  
-  // Si c'est un chemin relatif (commence par /uploads/), on construit l'URL complète
-  if (imageSrc.startsWith('/uploads/')) {
-    imageSrc = `http://localhost:4000${imageSrc}`;
-  }
+  let imageSrc = getImageUrl(item.image) || "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1200&q=60";
 
   // Affichage du prix par mois
   const unitePrix = "par mois";

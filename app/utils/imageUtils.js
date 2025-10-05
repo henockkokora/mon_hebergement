@@ -27,9 +27,9 @@ export function getImageUrl(img) {
   const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
   
   // Si c'est un chemin relatif qui commence par /uploads/
-  // On doit le servir depuis le backend car les images sont stockées dans backend/uploads/
+  // Les images sont maintenant dans public/uploads/ (servies par Next.js)
   if (url.startsWith('/uploads/')) {
-    return `${API_URL}${url}`;
+    return url; // Retourner directement le chemin relatif pour Next.js
   }
   
   // Si c'est juste un nom de fichier, l'ajouter au dossier uploads du backend

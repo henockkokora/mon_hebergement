@@ -121,8 +121,8 @@ function NouvelleAnnonce() {
     setPublishClicked(true);
     
     try {
-      // Vérifier la connexion
-      const token = typeof window !== 'undefined' ? localStorage.getItem('auth_token') : null;
+      // Vérifier la connexion (utiliser le token propriétaire dédié)
+      const token = typeof window !== 'undefined' ? localStorage.getItem('auth_token_owner') : null;
       if (!token) {
         setSubmitting(false);
         setError("Vous devez être connecté pour publier une annonce.");
@@ -210,8 +210,8 @@ function NouvelleAnnonce() {
   async function handleFilesSelected(files){
     setMediaError("");
     if (files.length === 0) return;
-    // Récupérer token
-    const token = typeof window !== 'undefined' ? localStorage.getItem('auth_token') : null;
+    // Récupérer token (propriétaire)
+    const token = typeof window !== 'undefined' ? localStorage.getItem('auth_token_owner') : null;
     if (!token) {
       setMediaError("Vous devez être connecté pour importer des médias.");
       return;

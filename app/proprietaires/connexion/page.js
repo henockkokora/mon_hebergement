@@ -2,7 +2,6 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import apiService from "@/services/api";
-import { Toaster, toast } from 'react-hot-toast';
 
 export default function ConnexionProprietaire() {
   const router = useRouter();
@@ -44,14 +43,9 @@ export default function ConnexionProprietaire() {
         localStorage.setItem("userData_owner", JSON.stringify(userData));
       }
       
-      toast.success('Connexion réussie ! Redirection en cours...', {
-        duration: 2000,
-        position: 'top-center',
-      });
-
       setTimeout(() => {
         window.location.href = "/proprietaires#loggedin";
-      }, 2000);
+      }, 1000);
     } catch (error) {
       console.error('Erreur de connexion:', error);
       
@@ -117,21 +111,6 @@ export default function ConnexionProprietaire() {
 
   return (
     <div className="min-h-screen bg-neutral-50 flex items-center justify-center p-4 relative font-sans font-medium md:font-normal">
-      <Toaster
-        position="top-center"
-        toastOptions={{
-          className: 'rounded-2xl shadow text-[13px] font-medium',
-          style: { background: '#ffffff', color: '#111827' },
-          success: {
-            iconTheme: { primary: '#16a34a', secondary: '#eaffea' },
-            style: { borderLeft: '4px solid #16a34a' }
-          },
-          error: {
-            iconTheme: { primary: '#dc2626', secondary: '#ffecec' },
-            style: { borderLeft: '4px solid #dc2626' }
-          }
-        }}
-      />
       {/* Header right actions: Support & Hamburger */}
       <div className="absolute top-4 right-4 flex items-center gap-2">
         <button

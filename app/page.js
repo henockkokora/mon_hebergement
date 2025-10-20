@@ -128,7 +128,7 @@ export default function Home() {
                 <IconSearch className="w-5 h-5 group-hover:rotate-12 transition-transform" />
                 Chercher un logement
               </a>
-              <a href="/clients/recherche" className="group inline-flex items-center justify-center gap-3 h-14 px-8 rounded-2xl border-2 border-[#4A9B8E] text-[#4A9B8E] font-semibold hover:bg-[#4A9B8E] hover:text-white transition-all duration-300">
+              <a href="/clients" className="group inline-flex items-center justify-center gap-3 h-14 px-8 rounded-2xl border-2 border-[#4A9B8E] text-[#4A9B8E] font-semibold hover:bg-[#4A9B8E] hover:text-white transition-all duration-300">
                 <IconHome className="w-5 h-5" />
                 Visites virtuelles
               </a>
@@ -335,7 +335,7 @@ export default function Home() {
                 <h4 className="text-lg font-semibold mb-4">Liens rapides</h4>
                 <div className="space-y-3">
                   <a href="/clients" className="block text-neutral-300 hover:text-[#4A9B8E] transition-colors">Rechercher un logement</a>
-                  <a href="/clients/recherche" className="block text-neutral-300 hover:text-[#4A9B8E] transition-colors">Visites virtuelles</a>
+                  <a href="/clients" className="block text-neutral-300 hover:text-[#4A9B8E] transition-colors">Visites virtuelles</a>
                   <a href="#" className="block text-neutral-300 hover:text-[#4A9B8E] transition-colors">Comment ça marche</a>
                   <a href="#" className="block text-neutral-300 hover:text-[#4A9B8E] transition-colors">À propos</a>
                 </div>

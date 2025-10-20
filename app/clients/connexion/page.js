@@ -89,25 +89,6 @@ export default function ConnexionClient() {
         
         showNotification("Connexion réussie ! Redirection...", 'success');
         
-        // Notification système native du navigateur
-        if (typeof window !== 'undefined' && 'Notification' in window) {
-          if (Notification.permission === 'granted') {
-            new window.Notification('Connexion réussie !', {
-              body: 'Bienvenue dans votre espace client',
-              icon: '/icon.png'
-            });
-          } else if (Notification.permission !== 'denied') {
-            window.Notification.requestPermission().then(permission => {
-              if (permission === 'granted') {
-                new window.Notification('Connexion réussie !', {
-                  body: 'Bienvenue dans votre espace client',
-                  icon: '/icon.png'
-                });
-              }
-            });
-          }
-        }
-        
         setTimeout(() => router.push("/clients"), 1000);
       } else {
         showNotification(res.message || "Connexion impossible. Veuillez vérifier vos identifiants.");

@@ -107,7 +107,6 @@ import apiService from "../services/api";
 
 export default function ProprietairesDashboard() {
   const [range, setRange] = useState("7d");
-  const [toast, setToast] = useState("");
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -119,11 +118,7 @@ export default function ProprietairesDashboard() {
   const [supportFeedback, setSupportFeedback] = useState(null);
 
   useEffect(() => {
-    if (window.location.hash === "#loggedin") {
-      setToast("Connexion réussie !");
-      setTimeout(()=>setToast(""), 3000);
-      window.location.hash = "";
-    }
+    // Supprimé la gestion du toast de connexion - géré par le layout
   }, []);
 
   // Fonction pour gérer l'envoi du formulaire de support

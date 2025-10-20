@@ -53,7 +53,24 @@ export default function ConnexionProprietaire() {
         window.location.href = "/proprietaires#loggedin";
       }, 2000);
     } catch (error) {
-      setError(error.message || "Erreur de connexion");
+      console.error('Erreur de connexion:', error);
+      
+      // Messages d'erreur plus explicites
+      let errorMessage = "Erreur de connexion";
+      
+      if (error.message) {
+        errorMessage = error.message;
+      } else if (error.response?.message) {
+        errorMessage = error.response.message;
+      } else if (error.status === 401) {
+        errorMessage = "Email ou mot de passe incorrect";
+      } else if (error.status === 400) {
+        errorMessage = "Veuillez vérifier vos informations";
+      } else if (error.status >= 500) {
+        errorMessage = "Problème de serveur. Veuillez réessayer plus tard";
+      }
+      
+      setError(errorMessage);
     } finally {
       setSubmitting(false);
     }

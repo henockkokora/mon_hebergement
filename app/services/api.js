@@ -125,24 +125,47 @@ class ApiService {
       const isError = !response.ok || (responseData && responseData.success === false);
       
       if (isError) {
-        // Journalisation des erreurs
+        // Journalisation des erreurs (pour le développement)
         console.error(`[API] Erreur ${response.status} sur ${endpoint}`, {
           status: response.status,
           statusText: response.statusText,
           response: responseData
         });
         
-        // Construire un message d'erreur informatif
-        const errorMessage = [
-          `Erreur ${response.status || 'inconnue'}`,
-          response.statusText || '',
-          responseData?.message || responseData?.error || 'Erreur inconnue',
-          responseData?.details ? `Détails: ${JSON.stringify(responseData.details)}` : ''
-        ]
-          .filter(Boolean)
-          .join(' - ');
+        // Messages d'erreur conviviaux pour les utilisateurs
+        let userMessage = 'Une erreur est survenue';
         
-        const error = new Error(errorMessage || 'Erreur inconnue du serveur');
+        if (response.status === 400) {
+          if (responseData?.message) {
+            userMessage = responseData.message;
+          } else if (responseData?.errors && Array.isArray(responseData.errors)) {
+            // Gérer les erreurs de validation
+            const firstError = responseData.errors[0];
+            if (firstError?.msg) {
+              userMessage = firstError.msg;
+            } else if (firstError?.message) {
+              userMessage = firstError.message;
+            }
+          } else {
+            userMessage = 'Données invalides. Vérifiez vos informations.';
+          }
+        } else if (response.status === 401) {
+          userMessage = responseData?.message || 'Identifiants incorrects. Vérifiez votre email et mot de passe.';
+        } else if (response.status === 403) {
+          userMessage = 'Accès refusé. Vous n\'avez pas les permissions nécessaires.';
+        } else if (response.status === 404) {
+          userMessage = 'Ressource non trouvée.';
+        } else if (response.status === 409) {
+          userMessage = responseData?.message || 'Cette information est déjà utilisée.';
+        } else if (response.status === 422) {
+          userMessage = responseData?.message || 'Données non conformes.';
+        } else if (response.status >= 500) {
+          userMessage = 'Erreur du serveur. Veuillez réessayer plus tard.';
+        } else if (responseData?.message) {
+          userMessage = responseData.message;
+        }
+        
+        const error = new Error(userMessage);
         error.status = response.status || 500;
         error.response = responseData || {};
         error.isApiError = true;

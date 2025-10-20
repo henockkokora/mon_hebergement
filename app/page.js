@@ -102,7 +102,16 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="font-sans min-h-screen bg-gradient-to-br from-neutral-50 via-white to-neutral-100">
+    <div className="font-sans min-h-screen bg-gradient-to-br from-neutral-50 via-white to-neutral-100 relative overflow-hidden">
+      {/* Particules flottantes */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-20 left-10 w-2 h-2 bg-[#4A9B8E]/20 rounded-full animate-pulse"></div>
+        <div className="absolute top-40 right-20 w-3 h-3 bg-[#4A9B8E]/15 rounded-full animate-bounce" style={{animationDelay: '1s'}}></div>
+        <div className="absolute top-60 left-1/4 w-1 h-1 bg-[#4A9B8E]/25 rounded-full animate-pulse" style={{animationDelay: '2s'}}></div>
+        <div className="absolute top-80 right-1/3 w-2 h-2 bg-[#4A9B8E]/20 rounded-full animate-bounce" style={{animationDelay: '0.5s'}}></div>
+        <div className="absolute top-96 left-1/2 w-1 h-1 bg-[#4A9B8E]/30 rounded-full animate-pulse" style={{animationDelay: '1.5s'}}></div>
+        <div className="absolute top-32 right-1/4 w-2 h-2 bg-[#4A9B8E]/15 rounded-full animate-bounce" style={{animationDelay: '2.5s'}}></div>
+      </div>
       {/* Hero */}
       <section className="relative px-6 pt-6 pb-12 sm:pt-8 sm:pb-16 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-[#4A9B8E]/5 via-transparent to-[#4A9B8E]/10"></div>
@@ -217,32 +226,50 @@ export default function Home() {
       {/* Avantages */}
       <section id="avantages" className="px-6 py-12 bg-gradient-to-br from-[#4A9B8E]/5 to-white text-neutral-900">
         <div className="max-w-6xl mx-auto text-center">
-          <h2 className="text-3xl sm:text-4xl font-bold mb-4">Pourquoi choisir Mon Hebergement ?</h2>
-          <p className="text-lg text-neutral-600 mb-12 max-w-3xl mx-auto">
-            La première plateforme de location immobilière avec visites virtuelles en Côte d'Ivoire
-          </p>
+          <div 
+            data-reveal
+            id="avantages-title"
+            className={`transition-all duration-1000 ${isVisible['avantages-title'] ? 'translate-y-0 opacity-100' : 'translate-y-12 opacity-0'}`}
+          >
+            <h2 className="text-3xl sm:text-4xl font-bold mb-4">Pourquoi choisir Mon Hebergement ?</h2>
+            <p className="text-lg text-neutral-600 mb-12 max-w-3xl mx-auto">
+              La première plateforme de location immobilière avec visites virtuelles en Côte d'Ivoire
+            </p>
+          </div>
           <div className="grid gap-8 md:grid-cols-3">
-            <div className="text-center">
-              <div className="w-16 h-16 bg-gradient-to-br from-[#4A9B8E] to-[#3a8b7e] rounded-2xl flex items-center justify-center mx-auto mb-4">
-                <IconShield className="w-8 h-8 text-white" />
+            <div 
+              data-reveal
+              id="avantage-1"
+              className={`text-center transition-all duration-1000 delay-200 hover:scale-105 hover:-translate-y-2 ${isVisible['avantage-1'] ? 'translate-y-0 opacity-100' : 'translate-y-12 opacity-0'}`}
+            >
+              <div className="w-16 h-16 bg-gradient-to-br from-[#4A9B8E] to-[#3a8b7e] rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:rotate-12 transition-transform duration-300 shadow-lg hover:shadow-xl">
+                <IconShield className="w-8 h-8 text-white group-hover:scale-110 transition-transform duration-300" />
               </div>
               <h3 className="text-xl font-bold mb-3">Sécurité garantie</h3>
               <p className="text-neutral-600">
                 Tous nos propriétaires sont vérifiés. Vos données personnelles sont protégées et sécurisées.
               </p>
             </div>
-            <div className="text-center">
-              <div className="w-16 h-16 bg-gradient-to-br from-[#4A9B8E] to-[#3a8b7e] rounded-2xl flex items-center justify-center mx-auto mb-4">
-                <IconStar className="w-8 h-8 text-white" />
+            <div 
+              data-reveal
+              id="avantage-2"
+              className={`text-center transition-all duration-1000 delay-400 hover:scale-105 hover:-translate-y-2 ${isVisible['avantage-2'] ? 'translate-y-0 opacity-100' : 'translate-y-12 opacity-0'}`}
+            >
+              <div className="w-16 h-16 bg-gradient-to-br from-[#4A9B8E] to-[#3a8b7e] rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:rotate-12 transition-transform duration-300 shadow-lg hover:shadow-xl">
+                <IconStar className="w-8 h-8 text-white group-hover:scale-110 transition-transform duration-300" />
               </div>
               <h3 className="text-xl font-bold mb-3">Qualité premium</h3>
               <p className="text-neutral-600">
                 Des biens sélectionnés avec des photos et vidéos de qualité pour une expérience optimale.
               </p>
             </div>
-            <div className="text-center">
-              <div className="w-16 h-16 bg-gradient-to-br from-[#4A9B8E] to-[#3a8b7e] rounded-2xl flex items-center justify-center mx-auto mb-4">
-                <IconClock className="w-8 h-8 text-white" />
+            <div 
+              data-reveal
+              id="avantage-3"
+              className={`text-center transition-all duration-1000 delay-600 hover:scale-105 hover:-translate-y-2 ${isVisible['avantage-3'] ? 'translate-y-0 opacity-100' : 'translate-y-12 opacity-0'}`}
+            >
+              <div className="w-16 h-16 bg-gradient-to-br from-[#4A9B8E] to-[#3a8b7e] rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:rotate-12 transition-transform duration-300 shadow-lg hover:shadow-xl">
+                <IconClock className="w-8 h-8 text-white group-hover:scale-110 transition-transform duration-300" />
               </div>
               <h3 className="text-xl font-bold mb-3">Gain de temps</h3>
               <p className="text-neutral-600">
@@ -256,15 +283,23 @@ export default function Home() {
       {/* Comment ça marche */}
       <section id="comment-ca-marche" className="px-6 py-12 bg-white text-neutral-900">
         <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
+          <div 
+            data-reveal
+            id="comment-title"
+            className={`text-center mb-12 transition-all duration-1000 ${isVisible['comment-title'] ? 'translate-y-0 opacity-100' : 'translate-y-12 opacity-0'}`}
+          >
             <h2 className="text-3xl sm:text-4xl font-bold mb-4">Comment ça marche ?</h2>
             <p className="text-lg text-neutral-600 max-w-2xl mx-auto">
               Trouvez votre logement idéal en 3 étapes simples
             </p>
           </div>
           <div className="grid gap-8 md:grid-cols-3">
-            <div className="text-center">
-              <div className="w-20 h-20 bg-gradient-to-br from-[#4A9B8E] to-[#3a8b7e] rounded-full flex items-center justify-center mx-auto mb-6 text-white text-2xl font-bold">
+            <div 
+              data-reveal
+              id="step-1"
+              className={`text-center transition-all duration-1000 delay-200 hover:scale-105 hover:-translate-y-2 ${isVisible['step-1'] ? 'translate-y-0 opacity-100' : 'translate-y-12 opacity-0'}`}
+            >
+              <div className="w-20 h-20 bg-gradient-to-br from-[#4A9B8E] to-[#3a8b7e] rounded-full flex items-center justify-center mx-auto mb-6 text-white text-2xl font-bold shadow-lg hover:shadow-xl hover:rotate-12 transition-all duration-300">
                 1
               </div>
               <h3 className="text-xl font-bold mb-3">Recherchez</h3>
@@ -272,8 +307,12 @@ export default function Home() {
                 Utilisez nos filtres avancés pour trouver des logements qui correspondent à vos critères : ville, quartier, prix, type de bien.
               </p>
             </div>
-            <div className="text-center">
-              <div className="w-20 h-20 bg-gradient-to-br from-[#4A9B8E] to-[#3a8b7e] rounded-full flex items-center justify-center mx-auto mb-6 text-white text-2xl font-bold">
+            <div 
+              data-reveal
+              id="step-2"
+              className={`text-center transition-all duration-1000 delay-400 hover:scale-105 hover:-translate-y-2 ${isVisible['step-2'] ? 'translate-y-0 opacity-100' : 'translate-y-12 opacity-0'}`}
+            >
+              <div className="w-20 h-20 bg-gradient-to-br from-[#4A9B8E] to-[#3a8b7e] rounded-full flex items-center justify-center mx-auto mb-6 text-white text-2xl font-bold shadow-lg hover:shadow-xl hover:rotate-12 transition-all duration-300">
                 2
               </div>
               <h3 className="text-xl font-bold mb-3">Explorez</h3>
@@ -281,8 +320,12 @@ export default function Home() {
                 Découvrez chaque logement avec nos visites virtuelles 360°. Explorez toutes les pièces comme si vous y étiez.
               </p>
             </div>
-            <div className="text-center">
-              <div className="w-20 h-20 bg-gradient-to-br from-[#4A9B8E] to-[#3a8b7e] rounded-full flex items-center justify-center mx-auto mb-6 text-white text-2xl font-bold">
+            <div 
+              data-reveal
+              id="step-3"
+              className={`text-center transition-all duration-1000 delay-600 hover:scale-105 hover:-translate-y-2 ${isVisible['step-3'] ? 'translate-y-0 opacity-100' : 'translate-y-12 opacity-0'}`}
+            >
+              <div className="w-20 h-20 bg-gradient-to-br from-[#4A9B8E] to-[#3a8b7e] rounded-full flex items-center justify-center mx-auto mb-6 text-white text-2xl font-bold shadow-lg hover:shadow-xl hover:rotate-12 transition-all duration-300">
                 3
               </div>
               <h3 className="text-xl font-bold mb-3">Contactez</h3>
@@ -291,9 +334,13 @@ export default function Home() {
               </p>
             </div>
           </div>
-          <div className="text-center mt-12">
-            <a href="/clients" className="inline-flex items-center justify-center gap-3 h-14 px-8 rounded-2xl bg-gradient-to-r from-[#4A9B8E] to-[#3a8b7e] text-white font-semibold shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300">
-              <IconSearch className="w-5 h-5" />
+          <div 
+            data-reveal
+            id="cta-button"
+            className={`text-center mt-12 transition-all duration-1000 delay-800 ${isVisible['cta-button'] ? 'translate-y-0 opacity-100' : 'translate-y-12 opacity-0'}`}
+          >
+            <a href="/clients" className="inline-flex items-center justify-center gap-3 h-14 px-8 rounded-2xl bg-gradient-to-r from-[#4A9B8E] to-[#3a8b7e] text-white font-semibold shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300 group">
+              <IconSearch className="w-5 h-5 group-hover:rotate-12 transition-transform duration-300" />
               Commencer ma recherche
             </a>
           </div>
@@ -301,31 +348,47 @@ export default function Home() {
       </section>
 
       {/* Footer */}
-      <footer className="relative bg-gradient-to-br from-neutral-900 to-neutral-800 text-white overflow-hidden">
+      <footer 
+        data-reveal
+        id="footer"
+        className={`relative bg-gradient-to-br from-neutral-900 to-neutral-800 text-white overflow-hidden transition-all duration-1000 ${isVisible['footer'] ? 'translate-y-0 opacity-100' : 'translate-y-12 opacity-0'}`}
+      >
         <div className="absolute inset-0 bg-gradient-to-r from-[#4A9B8E]/10 to-transparent"></div>
         <div className="relative px-6 py-12">
           <div className="max-w-7xl mx-auto">
             <div className="grid gap-10 md:grid-cols-4 mb-10">
               <div className="md:col-span-2">
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-[#4A9B8E] to-[#3a8b7e] flex items-center justify-center">
-                    <span className="text-white font-bold text-lg">M</span>
+                <div className="flex items-center gap-3 mb-6 group">
+                  <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-[#4A9B8E] to-[#3a8b7e] flex items-center justify-center group-hover:rotate-12 group-hover:scale-110 transition-all duration-300 shadow-lg hover:shadow-xl">
+                    <span className="text-white font-bold text-lg group-hover:scale-110 transition-transform duration-300">M</span>
                   </div>
-                  <span className="text-2xl font-bold">Mon Hebergement</span>
+                  <span className="text-2xl font-bold group-hover:text-[#4A9B8E] transition-colors duration-300">Mon Hebergement</span>
                 </div>
                 <p className="text-neutral-300 text-lg leading-relaxed mb-6">
                   La plateforme de référence pour trouver votre logement idéal grâce aux visites virtuelles 360° en Côte d'Ivoire.
                 </p>
                 <div className="flex items-center gap-6">
-                  <div className="text-center">
+                  <div 
+                    data-reveal
+                    id="stat-1"
+                    className={`text-center transition-all duration-1000 delay-300 hover:scale-110 ${isVisible['stat-1'] ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'}`}
+                  >
                     <div className="text-2xl font-bold text-[#4A9B8E]">100+</div>
                     <div className="text-sm text-neutral-400">Biens publiés</div>
                   </div>
-                  <div className="text-center">
+                  <div 
+                    data-reveal
+                    id="stat-2"
+                    className={`text-center transition-all duration-1000 delay-500 hover:scale-110 ${isVisible['stat-2'] ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'}`}
+                  >
                     <div className="text-2xl font-bold text-[#4A9B8E]">5K+</div>
                     <div className="text-sm text-neutral-400">Clients</div>
                   </div>
-                  <div className="text-center">
+                  <div 
+                    data-reveal
+                    id="stat-3"
+                    className={`text-center transition-all duration-1000 delay-700 hover:scale-110 ${isVisible['stat-3'] ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'}`}
+                  >
                     <div className="text-2xl font-bold text-[#4A9B8E]">95%</div>
                     <div className="text-sm text-neutral-400">Satisfaction</div>
                   </div>

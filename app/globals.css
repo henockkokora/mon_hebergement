@@ -1,0 +1,150 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Mobile stability & readability */
+html, body {
+  height: 100%;
+  -webkit-text-size-adjust: 100%; /* Prevent iOS auto-zooming text */
+  overscroll-behavior: none; /* Avoid pull-to-refresh layout shift */
+}
+
+/* Prefer small viewport height to avoid jump when URL bar shows/hides */
+.vh-stable { min-height: 100svh; }
+
+/* Safe-area padding for bottom fixed bars */
+.safe-bottom { padding-bottom: env(safe-area-inset-bottom); }
+
+/* Prevent iOS zoom on focus by keeping input text >=16px on mobile */
+@media (max-width: 640px) {
+  input, select, textarea { font-size: 16px; }
+}
+
+/* Utilities */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.hide-scrollbar {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+/* Liquid glass highlight animation for the search bar slider */
+.liquid-glass {
+  position: absolute;
+  inset: -20% -30%;
+  background:
+    radial-gradient(60% 120% at 20% 20%, rgba(255,255,255,0.35) 0%, rgba(255,255,255,0) 60%),
+    radial-gradient(50% 100% at 80% 60%, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0) 60%);
+  filter: blur(12px);
+  animation: liquid-move 6s infinite linear;
+  pointer-events: none;
+}
+
+@keyframes liquid-move {
+  0% { transform: translateX(0); }
+  50% { transform: translateX(20%); }
+  100% { transform: translateX(0); }
+}
+
+/* Glassy chip with dilation on hover */
+/* Base chip: neutral by default (no glass) */
+.chip-glass {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  border: 1px solid rgba(0,0,0,0.1);
+  background: rgba(255,255,255,0.9);
+  overflow: hidden;
+}
+
+
+/* Apply liquid glass only to interactive elements */
+a.chip-glass,
+button.chip-glass,
+.chip-glass[role="button"] {
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  background: rgba(255,255,255,0.65);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.6), 0 8px 16px rgba(0,0,0,0.06);
+  transition: transform 220ms ease, padding 220ms ease, box-shadow 220ms ease;
+}
+
+
+a.chip-glass::after,
+button.chip-glass::after,
+.chip-glass[role="button"]::after {
+  content: "";
+  position: absolute;
+  inset: -40% -30% -40% -30%;
+  background:
+    radial-gradient(60% 120% at 20% 20%, rgba(255,255,255,0.35) 0%, rgba(255,255,255,0) 60%),
+    radial-gradient(50% 100% at 80% 60%, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0) 60%);
+  filter: blur(12px);
+  animation: liquid-move 6s infinite linear;
+  pointer-events: none;
+}
+
+a.chip-glass:hover,
+button.chip-glass:hover,
+.chip-glass[role="button"]:hover {
+  transform: scale(1.06);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.7), 0 12px 24px rgba(0,0,0,0.10);
+}
+
+/* ---------------------------------------
+   Typographic scale (responsive)
+   --------------------------------------- */
+/* Paragraphs */
+p {
+  font-size: 16px;
+  line-height: 1.6;
+}
+@media (min-width: 640px) {
+  p { font-size: 17px; }
+}
+@media (min-width: 1024px) {
+  p { font-size: 18px; }
+}
+
+/* Headings */
+h1 { font-size: 28px; line-height: 1.2; font-weight: 800; }
+h2 { font-size: 24px; line-height: 1.25; font-weight: 700; }
+h3 { font-size: 20px; line-height: 1.3; font-weight: 700; }
+h4 { font-size: 18px; line-height: 1.35; font-weight: 600; }
+@media (min-width: 640px) {
+  h1 { font-size: 36px; }
+  h2 { font-size: 28px; }
+  h3 { font-size: 22px; }
+  h4 { font-size: 20px; }
+}
+@media (min-width: 1024px) {
+  h1 { font-size: 40px; }
+  h2 { font-size: 32px; }
+  h3 { font-size: 24px; }
+  h4 { font-size: 22px; }
+}
+
+/* Menus & buttons helper */
+.text-menu { font-size: 14.5px; }
+@media (min-width: 640px) {
+  .text-menu { font-size: 15px; }
+}
+@media (min-width: 1024px) {
+  .text-menu { font-size: 16px; }
+}

@@ -117,20 +117,20 @@ export default function Home() {
               <span className="text-sm font-medium text-[#4A9B8E]">Meilleur plateforme de location</span>
             </div>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight bg-gradient-to-r from-neutral-900 via-neutral-700 to-neutral-900 bg-clip-text text-transparent">
-              Louer et vendre plus vite grâce aux 
+              Trouvez votre logement idéal avec des 
               <span className="text-[#4A9B8E]"> visites virtuelles</span>
             </h1>
             <p className="text-lg text-neutral-600 leading-relaxed max-w-2xl">
-              Révolutionnez votre expérience immobilière avec des visites 360°, des publications intelligentes et une plateforme qui connecte propriétaires et clients en toute simplicité.
+              Découvrez des milliers de biens immobiliers avec des visites 360°, explorez chaque pièce depuis chez vous et trouvez votre futur logement en toute simplicité.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
-              <a href="/proprietaires/inscription" className="group inline-flex items-center justify-center gap-3 h-14 px-8 rounded-2xl bg-gradient-to-r from-[#4A9B8E] to-[#3a8b7e] text-white font-semibold shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300">
-                <IconRocket className="w-5 h-5 group-hover:rotate-12 transition-transform" />
-                Espace propriétaire
+              <a href="/clients" className="group inline-flex items-center justify-center gap-3 h-14 px-8 rounded-2xl bg-gradient-to-r from-[#4A9B8E] to-[#3a8b7e] text-white font-semibold shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300">
+                <IconSearch className="w-5 h-5 group-hover:rotate-12 transition-transform" />
+                Chercher un logement
               </a>
-              <a href="/clients" className="group inline-flex items-center justify-center gap-3 h-14 px-8 rounded-2xl border-2 border-[#4A9B8E] text-[#4A9B8E] font-semibold hover:bg-[#4A9B8E] hover:text-white transition-all duration-300">
-                <IconSearch className="w-5 h-5" />
-                Parcourir les biens
+              <a href="/clients/recherche" className="group inline-flex items-center justify-center gap-3 h-14 px-8 rounded-2xl border-2 border-[#4A9B8E] text-[#4A9B8E] font-semibold hover:bg-[#4A9B8E] hover:text-white transition-all duration-300">
+                <IconHome className="w-5 h-5" />
+                Visites virtuelles
               </a>
             </div>
           </div>
@@ -180,9 +180,9 @@ export default function Home() {
             <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-br from-[#4A9B8E] to-[#3a8b7e] text-white mb-4 group-hover:scale-110 transition-transform duration-300 mx-auto">
               <IconUpload className="w-6 h-6" />
             </div>
-            <h3 className="text-xl font-bold text-neutral-900 mb-3">Publication facile</h3>
+            <h3 className="text-xl font-bold text-neutral-900 mb-3">Recherche intelligente</h3>
             <p className="text-neutral-600 leading-relaxed">
-              Uploadez vos photos/vidéos, précisez la localisation et le type de bien. Mise en ligne en quelques minutes.
+              Filtrez par ville, quartier, prix et type de logement. Trouvez exactement ce qui correspond à vos critères.
             </p>
           </div>
           <div 
@@ -193,9 +193,9 @@ export default function Home() {
             <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-br from-[#4A9B8E] to-[#3a8b7e] text-white mb-4 group-hover:scale-110 transition-transform duration-300 mx-auto">
               <IconClock className="w-6 h-6" />
             </div>
-            <h3 className="text-xl font-bold text-neutral-900 mb-3">Durée flexible</h3>
+            <h3 className="text-xl font-bold text-neutral-900 mb-3">Visites 360°</h3>
             <p className="text-neutral-600 leading-relaxed">
-              Choisissez 7, 15 ou 30 jours. À expiration, l'annonce est retirée automatiquement, avec option de renouvellement.
+              Explorez chaque pièce en détail avec nos visites virtuelles immersives. Plus besoin de vous déplacer pour découvrir un logement.
             </p>
           </div>
           <div 
@@ -206,77 +206,95 @@ export default function Home() {
             <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-br from-[#4A9B8E] to-[#3a8b7e] text-white mb-4 group-hover:scale-110 transition-transform duration-300 mx-auto">
               <IconSearch className="w-6 h-6" />
             </div>
-            <h3 className="text-xl font-bold text-neutral-900 mb-3">Recherche avancée</h3>
+            <h3 className="text-xl font-bold text-neutral-900 mb-3">Contact direct</h3>
             <p className="text-neutral-600 leading-relaxed">
-              Filtrez par ville, quartier, prix et type de bien. Visionnez les médias et contactez le propriétaire.
+              Contactez directement les propriétaires, posez vos questions et organisez vos visites en toute simplicité.
             </p>
           </div>
         </div>
       </section>
 
-      {/* Propriétaires */}
-      <section id="proprietaires" className="px-6 py-12 bg-[var(--background)] text-[var(--foreground)]">
-        <div className="max-w-6xl mx-auto grid gap-8 md:grid-cols-2 items-center">
-          <div 
-            data-reveal
-            id="proprietaires-text"
-            className={`transition-all duration-1000 ${isVisible['proprietaires-text'] ? 'translate-x-0 opacity-100' : '-translate-x-12 opacity-0'}`}
-          >
-            <h2 className="text-2xl sm:text-3xl font-bold">Espace propriétaire</h2>
-            <ul className="mt-4 space-y-2 text-sm text-neutral-700 list-disc pl-5">
-              <li>Publiez en quelques étapes (photos/vidéos, localisation, prix).</li>
-              <li>Payez les frais de publication (ex. 500–1 000 FCFA) selon la durée.</li>
-              <li>Renouvelez pour prolonger la visibilité.</li>
-            </ul>
-            <a href="/proprietaires/inscription" className="mt-6 inline-flex h-11 px-5 items-center justify-center rounded-full bg-[#4A9B8E] text-white font-medium">
-              Commencer une annonce
-            </a>
-          </div>
-          <div 
-            data-reveal
-            id="proprietaires-image"
-            className={`transition-all duration-1000 delay-300 ${isVisible['proprietaires-image'] ? 'translate-x-0 opacity-100' : 'translate-x-12 opacity-0'}`}
-          >
-            <div className="rounded-2xl overflow-hidden">
-              <img 
-                src="/proprietaire.jpg" 
-                alt="Espace propriétaire" 
-                className="w-full h-72 object-cover"
-              />
+      {/* Avantages */}
+      <section id="avantages" className="px-6 py-12 bg-gradient-to-br from-[#4A9B8E]/5 to-white text-neutral-900">
+        <div className="max-w-6xl mx-auto text-center">
+          <h2 className="text-3xl sm:text-4xl font-bold mb-4">Pourquoi choisir Mon Hebergement ?</h2>
+          <p className="text-lg text-neutral-600 mb-12 max-w-3xl mx-auto">
+            La première plateforme de location immobilière avec visites virtuelles en Côte d'Ivoire
+          </p>
+          <div className="grid gap-8 md:grid-cols-3">
+            <div className="text-center">
+              <div className="w-16 h-16 bg-gradient-to-br from-[#4A9B8E] to-[#3a8b7e] rounded-2xl flex items-center justify-center mx-auto mb-4">
+                <IconShield className="w-8 h-8 text-white" />
+              </div>
+              <h3 className="text-xl font-bold mb-3">Sécurité garantie</h3>
+              <p className="text-neutral-600">
+                Tous nos propriétaires sont vérifiés. Vos données personnelles sont protégées et sécurisées.
+              </p>
+            </div>
+            <div className="text-center">
+              <div className="w-16 h-16 bg-gradient-to-br from-[#4A9B8E] to-[#3a8b7e] rounded-2xl flex items-center justify-center mx-auto mb-4">
+                <IconStar className="w-8 h-8 text-white" />
+              </div>
+              <h3 className="text-xl font-bold mb-3">Qualité premium</h3>
+              <p className="text-neutral-600">
+                Des biens sélectionnés avec des photos et vidéos de qualité pour une expérience optimale.
+              </p>
+            </div>
+            <div className="text-center">
+              <div className="w-16 h-16 bg-gradient-to-br from-[#4A9B8E] to-[#3a8b7e] rounded-2xl flex items-center justify-center mx-auto mb-4">
+                <IconClock className="w-8 h-8 text-white" />
+              </div>
+              <h3 className="text-xl font-bold mb-3">Gain de temps</h3>
+              <p className="text-neutral-600">
+                Plus besoin de vous déplacer pour chaque visite. Découvrez vos futurs logements depuis chez vous.
+              </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Clients */}
-      <section id="clients" className="px-6 py-12 bg-white text-neutral-900">
-        <div className="max-w-6xl mx-auto grid gap-8 md:grid-cols-2 items-center">
-          <div 
-            data-reveal
-            id="clients-image"
-            className={`order-2 md:order-1 transition-all duration-1000 ${isVisible['clients-image'] ? 'translate-x-0 opacity-100' : '-translate-x-12 opacity-0'}`}
-          >
-            <div className="rounded-2xl overflow-hidden">
-              <img 
-                src="/client.jpg" 
-                alt="Espace client" 
-                className="w-full h-72 object-cover"
-              />
+      {/* Comment ça marche */}
+      <section id="comment-ca-marche" className="px-6 py-12 bg-white text-neutral-900">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl sm:text-4xl font-bold mb-4">Comment ça marche ?</h2>
+            <p className="text-lg text-neutral-600 max-w-2xl mx-auto">
+              Trouvez votre logement idéal en 3 étapes simples
+            </p>
+          </div>
+          <div className="grid gap-8 md:grid-cols-3">
+            <div className="text-center">
+              <div className="w-20 h-20 bg-gradient-to-br from-[#4A9B8E] to-[#3a8b7e] rounded-full flex items-center justify-center mx-auto mb-6 text-white text-2xl font-bold">
+                1
+              </div>
+              <h3 className="text-xl font-bold mb-3">Recherchez</h3>
+              <p className="text-neutral-600">
+                Utilisez nos filtres avancés pour trouver des logements qui correspondent à vos critères : ville, quartier, prix, type de bien.
+              </p>
+            </div>
+            <div className="text-center">
+              <div className="w-20 h-20 bg-gradient-to-br from-[#4A9B8E] to-[#3a8b7e] rounded-full flex items-center justify-center mx-auto mb-6 text-white text-2xl font-bold">
+                2
+              </div>
+              <h3 className="text-xl font-bold mb-3">Explorez</h3>
+              <p className="text-neutral-600">
+                Découvrez chaque logement avec nos visites virtuelles 360°. Explorez toutes les pièces comme si vous y étiez.
+              </p>
+            </div>
+            <div className="text-center">
+              <div className="w-20 h-20 bg-gradient-to-br from-[#4A9B8E] to-[#3a8b7e] rounded-full flex items-center justify-center mx-auto mb-6 text-white text-2xl font-bold">
+                3
+              </div>
+              <h3 className="text-xl font-bold mb-3">Contactez</h3>
+              <p className="text-neutral-600">
+                Contactez directement le propriétaire pour poser vos questions et organiser une visite physique si nécessaire.
+              </p>
             </div>
           </div>
-          <div 
-            data-reveal
-            id="clients-text"
-            className={`order-1 md:order-2 transition-all duration-1000 delay-300 ${isVisible['clients-text'] ? 'translate-x-0 opacity-100' : 'translate-x-12 opacity-0'}`}
-          >
-            <h2 className="text-2xl sm:text-3xl font-bold">Espace client</h2>
-            <ul className="mt-4 space-y-2 text-sm text-neutral-700 list-disc pl-5">
-              <li>Recherchez par ville, quartier, prix, type de bien.</li>
-              <li>Visionnez les photos et vidéos avant de vous déplacer.</li>
-              <li>Contactez le propriétaire en toute simplicité.</li>
-            </ul>
-            <a href="/clients" className="mt-6 inline-flex h-11 px-5 items-center justify-center rounded-full border border-[#4A9B8E] text-[#4A9B8E] hover:bg-[#4A9B8E]/10 font-medium">
-              Chercher un bien
+          <div className="text-center mt-12">
+            <a href="/clients" className="inline-flex items-center justify-center gap-3 h-14 px-8 rounded-2xl bg-gradient-to-r from-[#4A9B8E] to-[#3a8b7e] text-white font-semibold shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300">
+              <IconSearch className="w-5 h-5" />
+              Commencer ma recherche
             </a>
           </div>
         </div>
@@ -296,7 +314,7 @@ export default function Home() {
                   <span className="text-2xl font-bold">Mon Hebergement</span>
                 </div>
                 <p className="text-neutral-300 text-lg leading-relaxed mb-6">
-                  La plateforme de référence pour louer et vendre vos biens immobiliers grâce aux visites virtuelles 360°.
+                  La plateforme de référence pour trouver votre logement idéal grâce aux visites virtuelles 360° en Côte d'Ivoire.
                 </p>
                 <div className="flex items-center gap-6">
                   <div className="text-center">
@@ -316,9 +334,9 @@ export default function Home() {
               <div>
                 <h4 className="text-lg font-semibold mb-4">Liens rapides</h4>
                 <div className="space-y-3">
-                  <a href="/proprietaires/inscription" className="block text-neutral-300 hover:text-[#4A9B8E] transition-colors">Espace propriétaire</a>
-                  <a href="/clients" className="block text-neutral-300 hover:text-[#4A9B8E] transition-colors">Espace client</a>
-                  <a href="#" className="block text-neutral-300 hover:text-[#4A9B8E] transition-colors">Tarifs</a>
+                  <a href="/clients" className="block text-neutral-300 hover:text-[#4A9B8E] transition-colors">Rechercher un logement</a>
+                  <a href="/clients/recherche" className="block text-neutral-300 hover:text-[#4A9B8E] transition-colors">Visites virtuelles</a>
+                  <a href="#" className="block text-neutral-300 hover:text-[#4A9B8E] transition-colors">Comment ça marche</a>
                   <a href="#" className="block text-neutral-300 hover:text-[#4A9B8E] transition-colors">À propos</a>
                 </div>
               </div>

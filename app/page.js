@@ -108,7 +108,7 @@ export default function Home() {
         <div className="absolute inset-0 bg-gradient-to-br from-[#4A9B8E]/5 via-transparent to-[#4A9B8E]/10"></div>
         <div className="relative max-w-7xl mx-auto grid gap-8 lg:grid-cols-2 items-center">
           <div 
-            data-reveal
+            data-reveal 
             id="hero-text"
             className={`space-y-6 transition-all duration-1000 ${isVisible['hero-text'] ? 'translate-y-0 opacity-100' : 'translate-y-12 opacity-0'}`}
           >

@@ -805,10 +805,10 @@ export default function InscriptionProprietaire() {
         </button>
       )}
       
-      {error && (
-        <div className="mt-3 text-sm text-red-600 text-center w-full">{error}</div>
-      )}
     </div>
+    {error && (
+      <div className="mt-3 text-sm text-red-600 text-center">{error}</div>
+    )}
     <div className="mt-6 text-center text-[15px] text-neutral-600">
       Vous avez déjà un compte ? <a href="/proprietaires/connexion" className="text-[#4A9B8E] hover:underline">Se connecter</a>
     </div>

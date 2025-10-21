@@ -793,7 +793,7 @@ export default function AnnonceDetails() {
                 </div>
                 <button 
                   onClick={handleContactHost}
-                  className="mt-3 w-full px-3 py-2 rounded-full bg-[#F5F5F5] hover:bg-[#EDEDED] transition-colors text-[13px] font-semibold shadow-sm"
+                  className="mt-3 w-full px-3 py-2 rounded-full bg-[#4A9B8E] hover:bg-[#3a8b7e] text-white text-[13px] font-semibold shadow-sm animate-pulse hover:animate-none transition-all duration-300"
                 >
                   Contacter l'hôte
                 </button>
@@ -809,7 +809,7 @@ export default function AnnonceDetails() {
                 </div>
                 <div className="space-y-3">
                   <button
-                    className="w-full bg-[#F5F5F5] hover:bg-[#EDEDED] text-neutral-900 py-3 rounded-full font-semibold text-lg transition-colors flex items-center justify-center gap-2 shadow-sm"
+                    className="w-full bg-[#4A9B8E] hover:bg-[#3a8b7e] text-white py-3 rounded-full font-semibold text-lg animate-pulse hover:animate-none transition-all duration-300 flex items-center justify-center gap-2 shadow-sm"
                     onClick={() => {
                       if (annonce?.matterportModelId || annonce?.matterportShareUrl) {
                         router.push(`/clients/annonce/${id}/visite3d`);

@@ -126,11 +126,11 @@ export default function Home() {
               <span className="text-sm font-medium text-[#4A9B8E]">Meilleur plateforme de location</span>
             </div>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight bg-gradient-to-r from-neutral-900 via-neutral-700 to-neutral-900 bg-clip-text text-transparent">
-              Trouvez votre logement idéal avec des 
-              <span className="text-[#4A9B8E]"> visites virtuelles</span>
+              Visitez votre futur logement 
+              <span className="text-[#4A9B8E]"> sans bouger de chez vous</span>
             </h1>
             <p className="text-lg text-neutral-600 leading-relaxed max-w-2xl">
-              Découvrez des milliers de biens immobiliers avec des visites 360°, explorez chaque pièce depuis chez vous et trouvez votre futur logement en toute simplicité.
+              Découvrez des milliers de biens immobiliers depuis votre canapé. Explorez chaque pièce, chaque détail, et trouvez votre logement idéal en toute tranquillité.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <a href="/clients" className="group inline-flex items-center justify-center gap-3 h-14 px-8 rounded-2xl bg-gradient-to-r from-[#4A9B8E] to-[#3a8b7e] text-white font-semibold shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300">
@@ -139,7 +139,7 @@ export default function Home() {
               </a>
               <a href="/clients" className="group inline-flex items-center justify-center gap-3 h-14 px-8 rounded-2xl border-2 border-[#4A9B8E] text-[#4A9B8E] font-semibold hover:bg-[#4A9B8E] hover:text-white transition-all duration-300">
                 <IconHome className="w-5 h-5" />
-                Visites virtuelles
+                Découvrir les logements
               </a>
             </div>
           </div>
@@ -166,7 +166,7 @@ export default function Home() {
               <div className="absolute top-6 left-6 bg-white/95 backdrop-blur-md px-4 py-2 rounded-2xl shadow-lg">
                 <div className="flex items-center gap-2">
                   <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></div>
-                  <span className="text-sm font-semibold text-neutral-800">🏠 Visite 360° en direct</span>
+                  <span className="text-sm font-semibold text-neutral-800">🏠 Exploration en direct</span>
                 </div>
               </div>
               <div className="absolute bottom-6 right-6 bg-gradient-to-r from-black/70 to-black/50 backdrop-blur text-white px-4 py-2 rounded-2xl shadow-lg">
@@ -202,9 +202,9 @@ export default function Home() {
             <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-br from-[#4A9B8E] to-[#3a8b7e] text-white mb-4 group-hover:scale-110 transition-transform duration-300 mx-auto">
               <IconClock className="w-6 h-6" />
             </div>
-            <h3 className="text-xl font-bold text-neutral-900 mb-3">Visites 360°</h3>
+            <h3 className="text-xl font-bold text-neutral-900 mb-3">Exploration immersive</h3>
             <p className="text-neutral-600 leading-relaxed">
-              Explorez chaque pièce en détail avec nos visites virtuelles immersives. Plus besoin de vous déplacer pour découvrir un logement.
+              Explorez chaque pièce en détail depuis votre écran. Plus besoin de vous déplacer pour découvrir un logement.
             </p>
           </div>
           <div 
@@ -233,7 +233,7 @@ export default function Home() {
           >
             <h2 className="text-3xl sm:text-4xl font-bold mb-4">Pourquoi choisir Mon Hebergement ?</h2>
             <p className="text-lg text-neutral-600 mb-12 max-w-3xl mx-auto">
-              La première plateforme de location immobilière avec visites virtuelles en Côte d'Ivoire
+              La première plateforme qui vous permet de découvrir votre logement idéal depuis votre domicile
             </p>
           </div>
           <div className="grid gap-8 md:grid-cols-3">
@@ -271,9 +271,9 @@ export default function Home() {
               <div className="w-16 h-16 bg-gradient-to-br from-[#4A9B8E] to-[#3a8b7e] rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:rotate-12 transition-transform duration-300 shadow-lg hover:shadow-xl">
                 <IconClock className="w-8 h-8 text-white group-hover:scale-110 transition-transform duration-300" />
               </div>
-              <h3 className="text-xl font-bold mb-3">Gain de temps</h3>
+              <h3 className="text-xl font-bold mb-3">Confort total</h3>
               <p className="text-neutral-600">
-                Plus besoin de vous déplacer pour chaque visite. Découvrez vos futurs logements depuis chez vous.
+                Restez chez vous et explorez tranquillement. Fini les déplacements inutiles et les visites décevantes.
               </p>
             </div>
           </div>
@@ -317,7 +317,7 @@ export default function Home() {
               </div>
               <h3 className="text-xl font-bold mb-3">Explorez</h3>
               <p className="text-neutral-600">
-                Découvrez chaque logement avec nos visites virtuelles 360°. Explorez toutes les pièces comme si vous y étiez.
+                Découvrez chaque logement depuis votre écran. Explorez toutes les pièces comme si vous y étiez, sans quitter votre domicile.
               </p>
             </div>
             <div 
@@ -365,7 +365,7 @@ export default function Home() {
                   <span className="text-2xl font-bold group-hover:text-[#4A9B8E] transition-colors duration-300">Mon Hebergement</span>
                 </div>
                 <p className="text-neutral-300 text-lg leading-relaxed mb-6">
-                  La plateforme de référence pour trouver votre logement idéal grâce aux visites virtuelles 360° en Côte d'Ivoire.
+                  La plateforme de référence pour découvrir votre logement idéal depuis votre domicile en Côte d'Ivoire.
                 </p>
                 <div className="flex items-center gap-6">
                   <div 
@@ -398,7 +398,7 @@ export default function Home() {
                 <h4 className="text-lg font-semibold mb-4">Liens rapides</h4>
                 <div className="space-y-3">
                   <a href="/clients" className="block text-neutral-300 hover:text-[#4A9B8E] transition-colors">Rechercher un logement</a>
-                  <a href="/clients" className="block text-neutral-300 hover:text-[#4A9B8E] transition-colors">Visites virtuelles</a>
+                  <a href="/clients" className="block text-neutral-300 hover:text-[#4A9B8E] transition-colors">Découvrir les logements</a>
                   <a href="#" className="block text-neutral-300 hover:text-[#4A9B8E] transition-colors">Comment ça marche</a>
                   <a href="#" className="block text-neutral-300 hover:text-[#4A9B8E] transition-colors">À propos</a>
                 </div>

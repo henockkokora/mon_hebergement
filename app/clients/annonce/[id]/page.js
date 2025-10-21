@@ -207,6 +207,22 @@ function Gallery({ images, title }) {
 
 export default function AnnonceDetails() {
   const router = useRouter();
+  
+  // CSS pour l'animation rapide
+  useEffect(() => {
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes fastPulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.7; }
+      }
+    `;
+    document.head.appendChild(style);
+    
+    return () => {
+      document.head.removeChild(style);
+    };
+  }, []);
   const params = useParams();
   const id = params?.id;
 
@@ -761,7 +777,7 @@ export default function AnnonceDetails() {
             </div>
             <div className="rounded-3xl bg-neutral-50 shadow-sm p-6">
               <h3 className="text-[15px] font-semibold mb-3 text-neutral-900">Description</h3>
-              <p className="text-[13px] text-neutral-700 leading-relaxed">{annonce.description || 'Description non renseignée.'}</p>
+              <p className="text-[16px] text-neutral-700 leading-relaxed">{annonce.description || 'Description non renseignée.'}</p>
             </div>
           </div>
 
@@ -793,7 +809,10 @@ export default function AnnonceDetails() {
                 </div>
                 <button 
                   onClick={handleContactHost}
-                  className="mt-3 w-full px-3 py-2 rounded-full bg-[#4A9B8E] hover:bg-[#3a8b7e] text-white text-[13px] font-semibold shadow-sm animate-pulse hover:animate-none transition-all duration-300"
+                  className="mt-3 w-full px-3 py-2 rounded-full bg-[#4A9B8E] hover:bg-[#3a8b7e] text-white text-[13px] font-semibold shadow-sm fast-pulse hover:animate-none transition-all duration-300"
+                  style={{
+                    animation: 'fastPulse 1s ease-in-out infinite'
+                  }}
                 >
                   Contacter l'hôte
                 </button>
@@ -809,7 +828,10 @@ export default function AnnonceDetails() {
                 </div>
                 <div className="space-y-3">
                   <button
-                    className="w-full bg-[#4A9B8E] hover:bg-[#3a8b7e] text-white py-3 rounded-full font-semibold text-lg animate-pulse hover:animate-none transition-all duration-300 flex items-center justify-center gap-2 shadow-sm"
+                    className="w-full bg-[#4A9B8E] hover:bg-[#3a8b7e] text-white py-3 rounded-full font-semibold text-lg hover:animate-none transition-all duration-300 flex items-center justify-center gap-2 shadow-sm"
+                    style={{
+                      animation: 'fastPulse 1s ease-in-out infinite'
+                    }}
                     onClick={() => {
                       if (annonce?.matterportModelId || annonce?.matterportShareUrl) {
                         router.push(`/clients/annonce/${id}/visite3d`);

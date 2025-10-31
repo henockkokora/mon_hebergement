@@ -293,7 +293,7 @@ export default function AnnonceDetails() {
     try {
       const token = typeof window !== 'undefined' ? localStorage.getItem('auth_token') : null;
       if (!token) {
-        toast.error('Veuvez-vous vous connecter pour envoyer un message');
+        toast.error('Veuillez-vous vous connecter pour envoyer un message');
         router.push('/clients/connexion');
         return;
       }

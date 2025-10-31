@@ -371,7 +371,7 @@ export default function InscriptionProprietaire() {
         
       case 2: // Localisation
         if (!form.lieu.trim()) {
-          setError("Veuvez sélectionner votre localisation");
+          setError("Veuillez sélectionner votre localisation");
           return false;
         }
         return true;
@@ -792,7 +792,7 @@ export default function InscriptionProprietaire() {
               } else if (step === 1 && (!form.email || !form.password || form.password !== form.confirmPassword)) {
                 setError("Veuillez vérifier votre email et votre mot de passe");
               } else if (step === 2 && !form.lieu) {
-                setError("Veuvez sélectionner votre localisation");
+                setError("Veuillez sélectionner votre localisation");
               } else if (step === 3 && form.phone.replace(/\D/g, '').length < 10) {
                 setError("Veuillez entrer un numéro de téléphone valide");
               }

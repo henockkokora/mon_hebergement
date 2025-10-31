@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 
 // Icônes SVG
 function IconRocket({ className = "w-6 h-6" }) {
@@ -72,6 +72,8 @@ function IconStar({ className = "w-5 h-5" }) {
 
 export default function Home() {
   const [isVisible, setIsVisible] = useState({});
+  const heroVideoRef = useRef(null);
+  const videoBannerRef = useRef(null);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -101,327 +103,392 @@ export default function Home() {
     return () => observer.disconnect();
   }, []);
 
+  useEffect(() => {
+    const ensureSmoothLoop = (video) => {
+      if (!video) return () => {};
+
+      const threshold = 0.12;
+
+      const handleTimeUpdate = () => {
+        if (video.duration && video.currentTime >= video.duration - threshold) {
+          video.currentTime = 0.02;
+          video.play();
+        }
+      };
+
+      const handleLoaded = () => {
+        video.currentTime = 0;
+        video.play();
+      };
+
+      video.addEventListener('timeupdate', handleTimeUpdate);
+      video.addEventListener('loadedmetadata', handleLoaded);
+
+      return () => {
+        video.removeEventListener('timeupdate', handleTimeUpdate);
+        video.removeEventListener('loadedmetadata', handleLoaded);
+      };
+    };
+
+    const cleanupHero = ensureSmoothLoop(heroVideoRef.current);
+    const cleanupBanner = ensureSmoothLoop(videoBannerRef.current);
+
+    return () => {
+      cleanupHero?.();
+      cleanupBanner?.();
+    };
+  }, []);
+
   return (
-    <div className="font-sans min-h-screen bg-gradient-to-br from-neutral-50 via-white to-neutral-100 relative overflow-hidden">
-      {/* Particules flottantes */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-20 left-10 w-2 h-2 bg-[#4A9B8E]/20 rounded-full animate-pulse"></div>
-        <div className="absolute top-40 right-20 w-3 h-3 bg-[#4A9B8E]/15 rounded-full animate-bounce" style={{animationDelay: '1s'}}></div>
-        <div className="absolute top-60 left-1/4 w-1 h-1 bg-[#4A9B8E]/25 rounded-full animate-pulse" style={{animationDelay: '2s'}}></div>
-        <div className="absolute top-80 right-1/3 w-2 h-2 bg-[#4A9B8E]/20 rounded-full animate-bounce" style={{animationDelay: '0.5s'}}></div>
-        <div className="absolute top-96 left-1/2 w-1 h-1 bg-[#4A9B8E]/30 rounded-full animate-pulse" style={{animationDelay: '1.5s'}}></div>
-        <div className="absolute top-32 right-1/4 w-2 h-2 bg-[#4A9B8E]/15 rounded-full animate-bounce" style={{animationDelay: '2.5s'}}></div>
-      </div>
-      {/* Hero */}
-      <section className="relative px-6 pt-6 pb-12 sm:pt-8 sm:pb-16 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-[#4A9B8E]/5 via-transparent to-[#4A9B8E]/10"></div>
-        <div className="relative max-w-7xl mx-auto grid gap-8 lg:grid-cols-2 items-center">
+    <div className="font-sans min-h-screen bg-gradient-to-br from-neutral-50 via-white to-neutral-100">
+      {/* HERO avec image pleine largeur et overlay avec vidéo optionnelle */}
+      <section className="relative min-h-[400px] sm:min-h-[440px] flex items-center overflow-hidden">
+        <div className="absolute inset-0">
+          {/* Vidéo de fond */}
+          <video
+            ref={heroVideoRef}
+            src="/maison.mp4"
+            className="w-full h-full object-cover"
+            autoPlay
+            loop
+            muted
+            playsInline
+            preload="auto"
+            disableRemotePlayback
+            aria-hidden="true"
+          />
+          {/* Overlay avec gradient teal */}
+          <div className="absolute inset-0 bg-gradient-to-br from-[#4A9B8E]/60 via-[#4A9B8E]/40 to-neutral-900/70"></div>
+        </div>
+        <div className="relative max-w-7xl mx-auto px-6 py-6 sm:py-8 w-full z-10">
           <div 
             data-reveal 
-            id="hero-text"
-            className={`space-y-6 transition-all duration-1000 ${isVisible['hero-text'] ? 'translate-y-0 opacity-100' : 'translate-y-12 opacity-0'}`}
+            id="hero-text" 
+            className={`max-w-3xl transition-all duration-1000 ${isVisible['hero-text'] ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'}`}
           >
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#4A9B8E]/10 border border-[#4A9B8E]/20">
-              <IconStar className="w-4 h-4 text-[#4A9B8E]" />
-              <span className="text-sm font-medium text-[#4A9B8E]">Meilleur plateforme de location</span>
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 mb-6">
+              <IconStar className="w-4 h-4 text-white" />
+              <span className="text-sm font-medium text-white">Meilleure plateforme de location</span>
             </div>
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight bg-gradient-to-r from-neutral-900 via-neutral-700 to-neutral-900 bg-clip-text text-transparent">
-              Visitez votre futur logement 
-              <span className="text-[#4A9B8E]"> sans bouger de chez vous</span>
+            <h1 className="text-4xl sm:text-5xl lg:text-7xl font-black text-white leading-tight mb-6">
+              Visitez votre futur logement
+              <span className="block mt-2 bg-gradient-to-r from-white to-white/80 bg-clip-text text-transparent">
+                sans bouger de chez vous
+              </span>
             </h1>
-            <p className="text-lg text-neutral-600 leading-relaxed max-w-2xl">
+            <p className="text-lg sm:text-xl text-white/90 leading-relaxed mb-8 max-w-2xl">
               Découvrez des milliers de biens immobiliers depuis votre canapé. Explorez chaque pièce, chaque détail, et trouvez votre logement idéal en toute tranquillité.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
-              <a href="/clients" className="group inline-flex items-center justify-center gap-3 h-14 px-8 rounded-2xl bg-gradient-to-r from-[#4A9B8E] to-[#3a8b7e] text-white font-semibold shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300">
+              <a 
+                href="#search" 
+                className="group inline-flex items-center justify-center gap-3 h-14 px-8 rounded-2xl bg-gradient-to-r from-[#4A9B8E] to-[#3a8b7e] text-white font-semibold shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300"
+              >
                 <IconSearch className="w-5 h-5 group-hover:rotate-12 transition-transform" />
-                Chercher un logement
+                Commencer la recherche
               </a>
-              <a href="/clients" className="group inline-flex items-center justify-center gap-3 h-14 px-8 rounded-2xl border-2 border-[#4A9B8E] text-[#4A9B8E] font-semibold hover:bg-[#4A9B8E] hover:text-white transition-all duration-300">
+              <a 
+                href="/clients" 
+                className="group inline-flex items-center justify-center gap-3 h-14 px-8 rounded-2xl border-2 border-white/50 text-white font-semibold hover:bg-white/10 backdrop-blur-sm transition-all duration-300"
+              >
                 <IconHome className="w-5 h-5" />
                 Découvrir les logements
               </a>
             </div>
           </div>
-          <div 
-            data-reveal
-            id="hero-video"
-            className={`relative group transition-all duration-1000 delay-300 ${isVisible['hero-video'] ? 'translate-x-0 opacity-100' : 'translate-x-12 opacity-0'}`}
-          >
-            <div className="absolute -inset-4 bg-gradient-to-r from-[#4A9B8E]/20 to-[#3a8b7e]/20 rounded-3xl blur-2xl group-hover:blur-3xl transition-all duration-300"></div>
-            <div className="relative aspect-video w-full rounded-3xl overflow-hidden border-2 border-white/50 bg-black shadow-2xl">
-              <video 
-                className="w-full h-full object-cover"
-                autoPlay
-                muted
-                loop
-                playsInline
-                poster="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=1200&q=80"
-                suppressHydrationWarning={true}
-              >
-                <source src="/360 maison.mp4" type="video/mp4" />
-                <source src="/maison.mp4" type="video/mp4" />
-                Votre navigateur ne supporte pas la lecture vidéo.
-              </video>
-              <div className="absolute top-6 left-6 bg-white/95 backdrop-blur-md px-4 py-2 rounded-2xl shadow-lg">
-                <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></div>
-                  <span className="text-sm font-semibold text-neutral-800">🏠 Exploration en direct</span>
-                </div>
-              </div>
-              <div className="absolute bottom-6 right-6 bg-gradient-to-r from-black/70 to-black/50 backdrop-blur text-white px-4 py-2 rounded-2xl shadow-lg">
-                <span className="text-sm font-medium">✨ Immersion totale</span>
-              </div>
-              <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent"></div>
-            </div>
-          </div>
         </div>
       </section>
 
-      {/* Features */}
-      <section className="px-6 py-10 bg-white text-neutral-900">
-        <div className="max-w-6xl mx-auto grid gap-6 md:grid-cols-3">
-          <div 
-            data-reveal
-            id="feature-1"
-            className={`group p-7 rounded-2xl border border-neutral-200 bg-gradient-to-br from-white to-neutral-50 hover:border-[#4A9B8E]/30 hover:shadow-xl transition-all duration-700 hover:-translate-y-1 text-center ${isVisible['feature-1'] ? 'translate-y-0 opacity-100' : 'translate-y-12 opacity-0'}`}
-          >
-            <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-br from-[#4A9B8E] to-[#3a8b7e] text-white mb-4 group-hover:scale-110 transition-transform duration-300 mx-auto">
-              <IconUpload className="w-6 h-6" />
-            </div>
-            <h3 className="text-xl font-bold text-neutral-900 mb-3">Recherche intelligente</h3>
-            <p className="text-neutral-600 leading-relaxed">
-              Filtrez par ville, quartier, prix et type de logement. Trouvez exactement ce qui correspond à vos critères.
-            </p>
-          </div>
-          <div 
-            data-reveal
-            id="feature-2"
-            className={`group p-7 rounded-2xl border border-neutral-200 bg-gradient-to-br from-white to-neutral-50 hover:border-[#4A9B8E]/30 hover:shadow-xl transition-all duration-700 delay-200 hover:-translate-y-1 text-center ${isVisible['feature-2'] ? 'translate-y-0 opacity-100' : 'translate-y-12 opacity-0'}`}
-          >
-            <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-br from-[#4A9B8E] to-[#3a8b7e] text-white mb-4 group-hover:scale-110 transition-transform duration-300 mx-auto">
-              <IconClock className="w-6 h-6" />
-            </div>
-            <h3 className="text-xl font-bold text-neutral-900 mb-3">Exploration immersive</h3>
-            <p className="text-neutral-600 leading-relaxed">
-              Explorez chaque pièce en détail depuis votre écran. Plus besoin de vous déplacer pour découvrir un logement.
-            </p>
-          </div>
-          <div 
-            data-reveal
-            id="feature-3"
-            className={`group p-7 rounded-2xl border border-neutral-200 bg-gradient-to-br from-white to-neutral-50 hover:border-[#4A9B8E]/30 hover:shadow-xl transition-all duration-700 delay-400 hover:-translate-y-1 text-center ${isVisible['feature-3'] ? 'translate-y-0 opacity-100' : 'translate-y-12 opacity-0'}`}
-          >
-            <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-br from-[#4A9B8E] to-[#3a8b7e] text-white mb-4 group-hover:scale-110 transition-transform duration-300 mx-auto">
-              <IconSearch className="w-6 h-6" />
-            </div>
-            <h3 className="text-xl font-bold text-neutral-900 mb-3">Contact direct</h3>
-            <p className="text-neutral-600 leading-relaxed">
-              Contactez directement les propriétaires, posez vos questions et organisez vos visites en toute simplicité.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* Avantages */}
-      <section id="avantages" className="px-6 py-12 bg-gradient-to-br from-[#4A9B8E]/5 to-white text-neutral-900">
-        <div className="max-w-6xl mx-auto text-center">
-          <div 
-            data-reveal
-            id="avantages-title"
-            className={`transition-all duration-1000 ${isVisible['avantages-title'] ? 'translate-y-0 opacity-100' : 'translate-y-12 opacity-0'}`}
-          >
-            <h2 className="text-3xl sm:text-4xl font-bold mb-4">Pourquoi choisir Mon Hebergement ?</h2>
-            <p className="text-lg text-neutral-600 mb-12 max-w-3xl mx-auto">
-              La première plateforme qui vous permet de découvrir votre logement idéal depuis votre domicile
-            </p>
-          </div>
-          <div className="grid gap-8 md:grid-cols-3">
-            <div 
-              data-reveal
-              id="avantage-1"
-              className={`text-center transition-all duration-1000 delay-200 hover:scale-105 hover:-translate-y-2 ${isVisible['avantage-1'] ? 'translate-y-0 opacity-100' : 'translate-y-12 opacity-0'}`}
-            >
-              <div className="w-16 h-16 bg-gradient-to-br from-[#4A9B8E] to-[#3a8b7e] rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:rotate-12 transition-transform duration-300 shadow-lg hover:shadow-xl">
-                <IconShield className="w-8 h-8 text-white group-hover:scale-110 transition-transform duration-300" />
-              </div>
-              <h3 className="text-xl font-bold mb-3">Sécurité garantie</h3>
-              <p className="text-neutral-600">
-                Tous nos propriétaires sont vérifiés. Vos données personnelles sont protégées et sécurisées.
-              </p>
-            </div>
-            <div 
-              data-reveal
-              id="avantage-2"
-              className={`text-center transition-all duration-1000 delay-400 hover:scale-105 hover:-translate-y-2 ${isVisible['avantage-2'] ? 'translate-y-0 opacity-100' : 'translate-y-12 opacity-0'}`}
-            >
-              <div className="w-16 h-16 bg-gradient-to-br from-[#4A9B8E] to-[#3a8b7e] rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:rotate-12 transition-transform duration-300 shadow-lg hover:shadow-xl">
-                <IconStar className="w-8 h-8 text-white group-hover:scale-110 transition-transform duration-300" />
-              </div>
-              <h3 className="text-xl font-bold mb-3">Qualité premium</h3>
-              <p className="text-neutral-600">
-                Des biens sélectionnés avec des photos et vidéos de qualité pour une expérience optimale.
-              </p>
-            </div>
-            <div 
-              data-reveal
-              id="avantage-3"
-              className={`text-center transition-all duration-1000 delay-600 hover:scale-105 hover:-translate-y-2 ${isVisible['avantage-3'] ? 'translate-y-0 opacity-100' : 'translate-y-12 opacity-0'}`}
-            >
-              <div className="w-16 h-16 bg-gradient-to-br from-[#4A9B8E] to-[#3a8b7e] rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:rotate-12 transition-transform duration-300 shadow-lg hover:shadow-xl">
-                <IconClock className="w-8 h-8 text-white group-hover:scale-110 transition-transform duration-300" />
-              </div>
-              <h3 className="text-xl font-bold mb-3">Confort total</h3>
-              <p className="text-neutral-600">
-                Restez chez vous et explorez tranquillement. Fini les déplacements inutiles et les visites décevantes.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Comment ça marche */}
-      <section id="comment-ca-marche" className="px-6 py-12 bg-white text-neutral-900">
+      {/* COMMENT ÇA MARCHE */}
+      <section className="px-6 py-16 bg-gradient-to-br from-neutral-50 to-white">
         <div className="max-w-6xl mx-auto">
           <div 
             data-reveal
-            id="comment-title"
-            className={`text-center mb-12 transition-all duration-1000 ${isVisible['comment-title'] ? 'translate-y-0 opacity-100' : 'translate-y-12 opacity-0'}`}
+            id="services-title"
+            className={`text-center mb-12 transition-all duration-1000 ${isVisible['services-title'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
           >
-            <h2 className="text-3xl sm:text-4xl font-bold mb-4">Comment ça marche ?</h2>
+            <h2 className="text-3xl sm:text-4xl font-bold text-neutral-900 mb-4">Comment ça marche</h2>
             <p className="text-lg text-neutral-600 max-w-2xl mx-auto">
-              Trouvez votre logement idéal en 3 étapes simples
+              Suivez trois étapes simples pour trouver et réserver votre prochain logement en toute sérénité.
             </p>
           </div>
-          <div className="grid gap-8 md:grid-cols-3">
-            <div 
-              data-reveal
-              id="step-1"
-              className={`text-center transition-all duration-1000 delay-200 hover:scale-105 hover:-translate-y-2 ${isVisible['step-1'] ? 'translate-y-0 opacity-100' : 'translate-y-12 opacity-0'}`}
-            >
-              <div className="w-20 h-20 bg-gradient-to-br from-[#4A9B8E] to-[#3a8b7e] rounded-full flex items-center justify-center mx-auto mb-6 text-white text-2xl font-bold shadow-lg hover:shadow-xl hover:rotate-12 transition-all duration-300">
-                1
+          <div className="grid gap-8 sm:grid-cols-3">
+            {[
+              {title:'1. Créez votre compte', icon:<IconRocket className="w-8 h-8" />, desc:'Inscrivez-vous ou connectez-vous pour accéder à toutes nos fonctionnalités.'},
+              {title:'2. Explorez nos biens', icon:<IconSearch className="w-8 h-8" />, desc:'Parcourez nos annonces détaillées et découvrez chaque logement en visite virtuelle.'},
+              {title:'3. Visitez et réservez', icon:<IconHome className="w-8 h-8" />, desc:'Planifiez une visite, contactez le propriétaire et finalisez votre réservation.'},
+            ].map((step, idx) => (
+              <div 
+                key={idx}
+                data-reveal
+                id={`service-${idx}`}
+                className={`group p-8 rounded-2xl bg-white border-2 border-neutral-200 shadow-lg hover:shadow-2xl hover:border-[#4A9B8E] transition-all duration-500 hover:-translate-y-2 text-center ${isVisible[`service-${idx}`] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
+              >
+                <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-2xl bg-gradient-to-br from-[#4A9B8E] to-[#3a8b7e] text-white shadow-lg group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
+                  {step.icon}
+                </div>
+                <h3 className="text-xl font-bold text-neutral-900 mb-3">{step.title}</h3>
+                <div className="h-1 w-16 bg-gradient-to-r from-[#4A9B8E] to-[#3a8b7e] mx-auto mb-4"></div>
+                <p className="text-neutral-600 leading-relaxed">{step.desc}</p>
               </div>
-              <h3 className="text-xl font-bold mb-3">Recherchez</h3>
-              <p className="text-neutral-600">
-                Utilisez nos filtres avancés pour trouver des logements qui correspondent à vos critères : ville, quartier, prix, type de bien.
-              </p>
-            </div>
-            <div 
-              data-reveal
-              id="step-2"
-              className={`text-center transition-all duration-1000 delay-400 hover:scale-105 hover:-translate-y-2 ${isVisible['step-2'] ? 'translate-y-0 opacity-100' : 'translate-y-12 opacity-0'}`}
-            >
-              <div className="w-20 h-20 bg-gradient-to-br from-[#4A9B8E] to-[#3a8b7e] rounded-full flex items-center justify-center mx-auto mb-6 text-white text-2xl font-bold shadow-lg hover:shadow-xl hover:rotate-12 transition-all duration-300">
-                2
-              </div>
-              <h3 className="text-xl font-bold mb-3">Explorez</h3>
-              <p className="text-neutral-600">
-                Découvrez chaque logement depuis votre écran. Explorez toutes les pièces comme si vous y étiez, sans quitter votre domicile.
-              </p>
-            </div>
-            <div 
-              data-reveal
-              id="step-3"
-              className={`text-center transition-all duration-1000 delay-600 hover:scale-105 hover:-translate-y-2 ${isVisible['step-3'] ? 'translate-y-0 opacity-100' : 'translate-y-12 opacity-0'}`}
-            >
-              <div className="w-20 h-20 bg-gradient-to-br from-[#4A9B8E] to-[#3a8b7e] rounded-full flex items-center justify-center mx-auto mb-6 text-white text-2xl font-bold shadow-lg hover:shadow-xl hover:rotate-12 transition-all duration-300">
-                3
-              </div>
-              <h3 className="text-xl font-bold mb-3">Contactez</h3>
-              <p className="text-neutral-600">
-                Contactez directement le propriétaire pour poser vos questions et organiser une visite physique si nécessaire.
-              </p>
-            </div>
-          </div>
-          <div 
-            data-reveal
-            id="cta-button"
-            className={`text-center mt-12 transition-all duration-1000 delay-800 ${isVisible['cta-button'] ? 'translate-y-0 opacity-100' : 'translate-y-12 opacity-0'}`}
-          >
-            <a href="/clients" className="inline-flex items-center justify-center gap-3 h-14 px-8 rounded-2xl bg-gradient-to-r from-[#4A9B8E] to-[#3a8b7e] text-white font-semibold shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300 group">
-              <IconSearch className="w-5 h-5 group-hover:rotate-12 transition-transform duration-300" />
-              Commencer ma recherche
-            </a>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* Footer */}
+      {/* BANDEAU FEATURES SUR IMAGE */}
+      <section className="px-6 py-16">
+        <div className="max-w-7xl mx-auto overflow-hidden rounded-3xl relative shadow-2xl min-h-[520px] lg:min-h-[600px]">
+          <img 
+            src="https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?q=80&w=2200&auto=format&fit=crop" 
+            alt="Luxury interior" 
+            className="w-full h-[520px] lg:h-[600px] object-cover" 
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#4A9B8E]/95 via-[#4A9B8E]/90 to-transparent"></div>
+          <div className="absolute inset-y-0 left-0 w-full sm:w-1/2 flex items-center p-8 sm:p-12 lg:p-16">
+            <div 
+              data-reveal
+              id="awesome-features"
+              className={`max-w-xl text-white transition-all duration-1000 ${isVisible['awesome-features'] ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-4'}`}
+            >
+              <h3 className="text-3xl sm:text-4xl font-bold mb-6">Découvrez la visite virtuelle</h3>
+              <p className="text-lg text-white/90 mb-10 leading-relaxed">
+                Immersion totale, disponibilité 24h/24 et narration guidée : explorez chaque bien comme si vous y étiez réellement avant même de vous déplacer.
+              </p>
+              <div className="space-y-6">
+                {[
+                  {title: 'Immersion 360°', icon: '🌀', desc: 'Déplacez-vous librement dans chaque pièce, changez d’angle et zoomez sur les détails importants.'},
+                  {title: 'Visite à votre rythme', icon: '🕒', desc: 'Revenez autant de fois que nécessaire et partagez le lien avec votre entourage en toute simplicité.'},
+                  {title: 'Décisions éclairées', icon: '🔍', desc: 'Comparez les biens en ligne, prenez des notes et préparez votre shortlist avant toute visite physique.'},
+                ].map((feature, idx) => (
+                  <div key={idx} className="flex items-start gap-4">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-white/15 text-2xl">
+                      <span>{feature.icon}</span>
+                    </div>
+                    <div className="text-left">
+                      <h4 className="text-xl font-semibold mb-2">{feature.title}</h4>
+                      <p className="text-sm sm:text-base text-white/85 leading-relaxed">{feature.desc}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* TESTIMONIALS */}
+      <section className="px-6 py-16 bg-gradient-to-br from-neutral-50 to-white">
+        <div className="max-w-7xl mx-auto">
+          <div 
+            data-reveal
+            id="testimonials-title"
+            className={`text-center mb-12 transition-all duration-1000 ${isVisible['testimonials-title'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
+          >
+            <h2 className="text-3xl sm:text-4xl font-bold text-neutral-900 mb-4">Témoignages clients</h2>
+            <p className="text-lg text-neutral-600 max-w-2xl mx-auto">
+              Découvrez ce que nos clients pensent de leur expérience avec Mon Hebergement
+            </p>
+          </div>
+          <div className="grid gap-8 sm:grid-cols-3">
+            {[
+              {name: 'Sarah Kouassi', role: 'Locataire', img: '/photo1.jpg', quote: "Service rapide et fiable. La visite virtuelle m'a fait gagner beaucoup de temps. J'ai trouvé mon appartement idéal sans me déplacer !"},
+              {name: 'Jean-Pierre Diabaté', role: 'Propriétaire', img: '/photo2.jpg', quote: 'Excellente plateforme pour mettre en location mon bien. Les visites virtuelles sont de qualité et les locataires sont sérieux.'},
+              {name: 'Aminata Traoré', role: 'Locataire', img: '/photo3.jpg', quote: 'Je recommande vivement ! Le processus est simple, transparent et efficace. Mon nouveau logement correspond parfaitement à mes attentes.'},
+            ].map((testimonial, i) => (
+              <div 
+                key={i}
+                data-reveal
+                id={`testimonial-${i}`}
+                className={`group rounded-2xl border-2 border-neutral-200 bg-white p-8 shadow-lg hover:shadow-2xl hover:border-[#4A9B8E] transition-all duration-500 ${isVisible[`testimonial-${i}`] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
+              >
+                <div className="flex items-center justify-center mb-6">
+                  <img 
+                    src={testimonial.img}
+                    alt={testimonial.name}
+                    className="h-20 w-20 rounded-full object-cover border-4 border-[#4A9B8E]/20"
+                  />
+                </div>
+                <div className="flex justify-center mb-4">
+                  {[...Array(5)].map((_, idx) => (
+                    <IconStar key={idx} className="w-5 h-5 text-[#4A9B8E]" />
+                  ))}
+                </div>
+                <p className="text-neutral-700 italic leading-relaxed mb-6 text-center">
+                  "{testimonial.quote}"
+                </p>
+                <div className="text-center">
+                  <div className="font-bold text-neutral-900">{testimonial.name}</div>
+                  <div className="text-sm text-neutral-600">{testimonial.role}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* VIDEO BANNER */}
+      <section className="relative min-h-[500px] flex items-center justify-center overflow-hidden">
+        <div className="absolute inset-0">
+          <video
+            ref={videoBannerRef}
+            src="/360%20maison.mp4"
+            className="w-full h-full object-cover"
+            autoPlay
+            loop
+            muted
+            playsInline
+            preload="auto"
+            disableRemotePlayback
+            aria-hidden="true"
+          />
+          <div className="absolute inset-0 bg-gradient-to-br from-[#4A9B8E]/70 via-neutral-900/80 to-neutral-900/90"></div>
+        </div>
+        <div className="relative z-10 text-center px-6">
+          <div 
+            data-reveal
+            id="video-banner"
+            className={`transition-all duration-1000 ${isVisible['video-banner'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
+          >
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-6">
+              Découvrez nos propriétés en vidéo
+            </h2>
+            <p className="text-lg text-white/90 mb-8 max-w-2xl mx-auto">
+              Explorez chaque détail de nos biens immobiliers avec nos visites virtuelles haute qualité
+            </p>
+            <button className="group inline-flex items-center justify-center w-20 h-20 rounded-full bg-white/95 backdrop-blur-sm text-[#4A9B8E] shadow-2xl hover:scale-110 transition-all duration-300">
+              <svg className="w-10 h-10 ml-1" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M8 5v14l11-7z" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      {/* LATEST BLOG */}
+      <section className="px-6 py-16 bg-white">
+        <div className="max-w-7xl mx-auto">
+          <div 
+            data-reveal
+            id="blog-title"
+            className={`text-center mb-12 transition-all duration-1000 ${isVisible['blog-title'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
+          >
+            <h2 className="text-3xl sm:text-4xl font-bold text-neutral-900 mb-4">Derniers articles</h2>
+            <p className="text-lg text-neutral-600 max-w-2xl mx-auto">
+              Conseils, astuces et inspirations pour votre projet immobilier
+            </p>
+          </div>
+          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+            {[
+              {img: '1570129477492-45c003edd2be', date: '15 Mars 2025', author: 'Admin', title: 'Achat immobilier: erreurs à éviter', desc: 'Découvrez les principales erreurs à éviter lors de l\'achat d\'un bien immobilier et nos conseils pour un investissement réussi.'},
+              {img: '1522708323590-d24dbb6b0267', date: '12 Mars 2025', author: 'Admin', title: 'Comment préparer une visite virtuelle', desc: 'Tous nos conseils pour optimiser votre visite virtuelle et ne rien manquer lors de l\'exploration d\'un bien.'},
+              {img: '1505691723518-36a5ac3be353', date: '10 Mars 2025', author: 'Admin', title: 'Les tendances immobilières 2025', desc: 'Découvrez les tendances qui marquent le secteur immobilier cette année et les opportunités à saisir.'},
+            ].map((article, i) => (
+              <article 
+                key={i}
+                data-reveal
+                id={`blog-${i}`}
+                className={`group rounded-2xl overflow-hidden border-2 border-neutral-200 bg-white shadow-lg hover:shadow-2xl hover:border-[#4A9B8E] transition-all duration-500 hover:-translate-y-2 ${isVisible[`blog-${i}`] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
+              >
+                <div className="relative overflow-hidden">
+                  <img 
+                    src={`https://images.unsplash.com/photo-${article.img}?q=80&w=800&auto=format&fit=crop`} 
+                    alt={article.title}
+                    className="h-56 w-full object-cover group-hover:scale-110 transition-transform duration-700" 
+                  />
+                  <div className="absolute top-4 left-4">
+                    <span className="px-3 py-1.5 text-xs font-semibold rounded-lg bg-[#4A9B8E] text-white shadow-lg">
+                      Article
+                    </span>
+                  </div>
+                </div>
+                <div className="p-6">
+                  <div className="text-xs text-neutral-500 mb-3">
+                    {article.author} • {article.date}
+                  </div>
+                  <h3 className="font-bold text-xl text-neutral-900 mb-3 group-hover:text-[#4A9B8E] transition-colors">
+                    {article.title}
+                  </h3>
+                  <p className="text-neutral-600 leading-relaxed mb-4">
+                    {article.desc}
+                  </p>
+                  <a 
+                    href="#"
+                    className="inline-flex items-center gap-2 text-[#4A9B8E] font-semibold hover:underline"
+                  >
+                    Lire la suite
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
+                    </svg>
+                  </a>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* FOOTER */}
       <footer 
-        data-reveal
-        id="footer"
-        className={`relative bg-gradient-to-br from-neutral-900 to-neutral-800 text-white overflow-hidden transition-all duration-1000 ${isVisible['footer'] ? 'translate-y-0 opacity-100' : 'translate-y-12 opacity-0'}`}
+        data-reveal 
+        id="footer" 
+        className={`relative bg-gradient-to-br from-neutral-900 via-neutral-800 to-neutral-900 text-white overflow-hidden transition-all duration-1000 ${isVisible['footer'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
       >
         <div className="absolute inset-0 bg-gradient-to-r from-[#4A9B8E]/10 to-transparent"></div>
-        <div className="relative px-6 py-12">
-          <div className="max-w-7xl mx-auto">
-            <div className="grid gap-10 md:grid-cols-4 mb-10">
-              <div className="md:col-span-2">
-                <div className="flex items-center gap-3 mb-6 group">
-                  <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-[#4A9B8E] to-[#3a8b7e] flex items-center justify-center group-hover:rotate-12 group-hover:scale-110 transition-all duration-300 shadow-lg hover:shadow-xl">
-                    <span className="text-white font-bold text-lg group-hover:scale-110 transition-transform duration-300">M</span>
-                  </div>
-                  <span className="text-2xl font-bold group-hover:text-[#4A9B8E] transition-colors duration-300">Mon Hebergement</span>
+        <div className="relative max-w-7xl mx-auto px-6 py-16">
+          <div className="grid gap-12 sm:grid-cols-2 lg:grid-cols-4 mb-12">
+            <div className="lg:col-span-2">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="h-12 w-12 rounded-2xl bg-gradient-to-br from-[#4A9B8E] to-[#3a8b7e] flex items-center justify-center shadow-lg">
+                  <span className="text-white font-bold text-xl">MH</span>
                 </div>
-                <p className="text-neutral-300 text-lg leading-relaxed mb-6">
-                  La plateforme de référence pour découvrir votre logement idéal depuis votre domicile en Côte d'Ivoire.
-                </p>
-                <div className="flex items-center gap-6">
-                  <div 
-                    data-reveal
-                    id="stat-1"
-                    className={`text-center transition-all duration-1000 delay-300 hover:scale-110 ${isVisible['stat-1'] ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'}`}
-                  >
-                    <div className="text-2xl font-bold text-[#4A9B8E]">100+</div>
-                    <div className="text-sm text-neutral-400">Biens publiés</div>
-                  </div>
-                  <div 
-                    data-reveal
-                    id="stat-2"
-                    className={`text-center transition-all duration-1000 delay-500 hover:scale-110 ${isVisible['stat-2'] ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'}`}
-                  >
-                    <div className="text-2xl font-bold text-[#4A9B8E]">5K+</div>
-                    <div className="text-sm text-neutral-400">Clients</div>
-                  </div>
-                  <div 
-                    data-reveal
-                    id="stat-3"
-                    className={`text-center transition-all duration-1000 delay-700 hover:scale-110 ${isVisible['stat-3'] ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'}`}
-                  >
-                    <div className="text-2xl font-bold text-[#4A9B8E]">95%</div>
-                    <div className="text-sm text-neutral-400">Satisfaction</div>
-                  </div>
-                </div>
+                <span className="text-2xl font-bold">Mon Hebergement</span>
               </div>
-              <div>
-                <h4 className="text-lg font-semibold mb-4">Liens rapides</h4>
-                <div className="space-y-3">
-                  <a href="/clients" className="block text-neutral-300 hover:text-[#4A9B8E] transition-colors">Rechercher un logement</a>
-                  <a href="/clients" className="block text-neutral-300 hover:text-[#4A9B8E] transition-colors">Découvrir les logements</a>
-                  <a href="#" className="block text-neutral-300 hover:text-[#4A9B8E] transition-colors">Comment ça marche</a>
-                  <a href="#" className="block text-neutral-300 hover:text-[#4A9B8E] transition-colors">À propos</a>
+              <p className="text-white/80 leading-relaxed mb-6 max-w-md">
+                La plateforme de référence pour découvrir votre logement idéal depuis votre domicile en Côte d'Ivoire. Explorez, visitez virtuellement et trouvez votre bien en toute simplicité.
+              </p>
+              <div className="flex items-center gap-6">
+                <div className="text-center">
+                  <div className="text-3xl font-bold text-[#4A9B8E]">100+</div>
+                  <div className="text-sm text-white/70">Biens publiés</div>
                 </div>
-              </div>
-              <div>
-                <h4 className="text-lg font-semibold mb-4">Support</h4>
-                <div className="space-y-3">
-                  <a href="#" className="block text-neutral-300 hover:text-[#4A9B8E] transition-colors">Centre d'aide</a>
-                  <a href="#" className="block text-neutral-300 hover:text-[#4A9B8E] transition-colors">Contact</a>
-                  <a href="#" className="block text-neutral-300 hover:text-[#4A9B8E] transition-colors">FAQ</a>
-                  <a href="#" className="block text-neutral-300 hover:text-[#4A9B8E] transition-colors">Guide vidéo</a>
+                <div className="text-center">
+                  <div className="text-3xl font-bold text-[#4A9B8E]">5K+</div>
+                  <div className="text-sm text-white/70">Clients satisfaits</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-3xl font-bold text-[#4A9B8E]">95%</div>
+                  <div className="text-sm text-white/70">Satisfaction</div>
                 </div>
               </div>
             </div>
-            <div className="border-t border-neutral-700 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-              <p className="text-neutral-400">
-                © {new Date().getFullYear()} Mon Hebergement — Tous droits réservés
-              </p>
-              <div className="flex gap-6">
-                <a href="#" className="text-neutral-400 hover:text-[#4A9B8E] transition-colors">Conditions</a>
-                <a href="#" className="text-neutral-400 hover:text-[#4A9B8E] transition-colors">Confidentialité</a>
-                <a href="#" className="text-neutral-400 hover:text-[#4A9B8E] transition-colors">Cookies</a>
-              </div>
+            <div>
+              <h4 className="text-lg font-bold mb-4">Liens rapides</h4>
+              <ul className="space-y-3 text-white/70">
+                <li><a href="/clients" className="hover:text-[#4A9B8E] transition-colors">Rechercher un logement</a></li>
+                <li><a href="/clients" className="hover:text-[#4A9B8E] transition-colors">Découvrir les logements</a></li>
+                <li><a href="#" className="hover:text-[#4A9B8E] transition-colors">Comment ça marche</a></li>
+                <li><a href="#" className="hover:text-[#4A9B8E] transition-colors">À propos de nous</a></li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="text-lg font-bold mb-4">Support</h4>
+              <ul className="space-y-3 text-white/70">
+                <li><a href="#" className="hover:text-[#4A9B8E] transition-colors">Centre d'aide</a></li>
+                <li><a href="#" className="hover:text-[#4A9B8E] transition-colors">Nous contacter</a></li>
+                <li><a href="#" className="hover:text-[#4A9B8E] transition-colors">FAQ</a></li>
+                <li><a href="#" className="hover:text-[#4A9B8E] transition-colors">Guide vidéo</a></li>
+              </ul>
+            </div>
+          </div>
+          <div className="border-t border-white/10 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <p className="text-white/60 text-sm">
+              © {new Date().getFullYear()} Mon Hebergement — Tous droits réservés
+            </p>
+            <div className="flex gap-6 text-sm">
+              <a href="#" className="text-white/60 hover:text-[#4A9B8E] transition-colors">Conditions d'utilisation</a>
+              <a href="#" className="text-white/60 hover:text-[#4A9B8E] transition-colors">Confidentialité</a>
+              <a href="#" className="text-white/60 hover:text-[#4A9B8E] transition-colors">Cookies</a>
             </div>
           </div>
         </div>

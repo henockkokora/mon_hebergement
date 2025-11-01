@@ -72,6 +72,7 @@ function IconStar({ className = "w-5 h-5" }) {
 
 export default function Home() {
   const [isVisible, setIsVisible] = useState({});
+  const [showVideo, setShowVideo] = useState(false);
   const heroVideoRef = useRef(null);
   const videoBannerRef = useRef(null);
 
@@ -247,7 +248,7 @@ export default function Home() {
               className="w-full h-full object-cover"
               loading="lazy"
             />
-            <div className="absolute inset-0 bg-gradient-to-r from-[#4A9B8E]/50 via-[#4A9B8E]/40 md:from-[#4A9B8E]/95 md:via-[#4A9B8E]/90 to-transparent"></div>
+            <div className="absolute inset-0 bg-gradient-to-r from-[#4A9B8E]/40 via-[#4A9B8E]/30 md:from-[#4A9B8E]/95 md:via-[#4A9B8E]/90 to-transparent"></div>
             
             {/* Contenu responsive : mobile en dessous, desktop à gauche */}
             <div className="absolute inset-0 flex flex-col md:flex-row items-center md:items-center">
@@ -352,7 +353,7 @@ export default function Home() {
             disableRemotePlayback
             aria-hidden="true"
           />
-          <div className="absolute inset-0 bg-gradient-to-br from-[#4A9B8E]/70 via-neutral-900/80 to-neutral-900/90"></div>
+          <div className={`absolute inset-0 bg-gradient-to-br from-[#4A9B8E]/70 via-neutral-900/80 to-neutral-900/90 transition-opacity duration-500 ${showVideo ? 'opacity-0' : 'opacity-100'}`}></div>
         </div>
         <div className="relative z-10 text-center px-4 sm:px-6 py-8 sm:py-12">
           <div 
@@ -360,13 +361,16 @@ export default function Home() {
             id="video-banner"
             className={`transition-all duration-1000 ${isVisible['video-banner'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
           >
-            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 sm:mb-6">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 sm:mb-6 drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]">
               Découvrez nos propriétés en vidéo
             </h2>
-            <p className="text-base sm:text-lg text-white/90 mb-6 sm:mb-8 max-w-2xl mx-auto px-4">
+            <p className="text-base sm:text-lg text-white/90 mb-6 sm:mb-8 max-w-2xl mx-auto px-4 drop-shadow-[0_2px_6px_rgba(0,0,0,0.8)]">
               Explorez chaque détail de nos biens immobiliers avec nos visites virtuelles haute qualité
             </p>
-            <button className="group inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-white/95 backdrop-blur-sm text-[#4A9B8E] shadow-2xl hover:scale-110 active:scale-95 transition-all duration-300">
+            <button 
+              onClick={() => setShowVideo(!showVideo)}
+              className="group inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-white/95 backdrop-blur-sm text-[#4A9B8E] shadow-2xl hover:scale-110 active:scale-95 transition-all duration-300"
+            >
               <svg className="w-8 h-8 sm:w-10 sm:h-10 ml-0.5 sm:ml-1" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M8 5v14l11-7z" />
               </svg>

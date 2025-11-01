@@ -247,19 +247,19 @@ export default function Home() {
               className="w-full h-full object-cover"
               loading="lazy"
             />
-            <div className="absolute inset-0 bg-gradient-to-r from-[#4A9B8E]/70 via-[#4A9B8E]/60 md:from-[#4A9B8E]/95 md:via-[#4A9B8E]/90 to-transparent"></div>
+            <div className="absolute inset-0 bg-gradient-to-b from-neutral-900/20 via-transparent to-neutral-900/30 md:bg-gradient-to-r md:from-[#4A9B8E]/95 md:via-[#4A9B8E]/90 md:to-transparent"></div>
             
-            {/* Contenu responsive : mobile en dessous, desktop à gauche */}
-            <div className="absolute inset-0 flex flex-col md:flex-row items-center md:items-center">
-              {/* Sur mobile : centré verticalement, sur desktop : à gauche */}
-              <div className="w-full md:w-1/2 flex items-center md:items-center justify-center md:justify-start p-6 sm:p-8 md:p-12 lg:p-16">
+            {/* Contenu responsive : mobile full height, desktop à gauche */}
+            <div className="absolute inset-0 flex flex-col md:flex-row items-start md:items-center">
+              {/* Sur mobile : prend toute la hauteur avec padding, sur desktop : à gauche */}
+              <div className="w-full md:w-1/2 flex items-start md:items-center justify-start md:justify-start h-full md:h-auto p-6 sm:p-8 md:p-12 lg:p-16">
                 <div 
                   data-reveal
                   id="awesome-features"
-                  className={`max-w-xl text-white transition-all duration-1000 ${isVisible['awesome-features'] ? 'opacity-100 translate-x-0 translate-y-0' : 'opacity-0 -translate-x-4 md:-translate-x-4 translate-y-4 md:translate-y-0'}`}
+                  className={`w-full max-w-xl text-white transition-all duration-1000 ${isVisible['awesome-features'] ? 'opacity-100 translate-x-0 translate-y-0' : 'opacity-0 -translate-x-4 md:-translate-x-4 translate-y-4 md:translate-y-0'}`}
                 >
-                  <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 sm:mb-6">Découvrez la visite virtuelle</h3>
-                  <p className="text-base sm:text-lg text-white/90 mb-6 sm:mb-10 leading-relaxed">
+                  <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 sm:mb-6 drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)] md:drop-shadow-none">Découvrez la visite virtuelle</h3>
+                  <p className="text-base sm:text-lg text-white/90 mb-6 sm:mb-10 leading-relaxed drop-shadow-[0_2px_6px_rgba(0,0,0,0.8)] md:drop-shadow-none">
                     Immersion totale, disponibilité 24h/24 et narration guidée : explorez chaque bien comme si vous y étiez réellement avant même de vous déplacer.
                   </p>
                   <div className="space-y-4 sm:space-y-6">
@@ -269,12 +269,12 @@ export default function Home() {
                       {title: 'Décisions éclairées', icon: '🔍', desc: 'Comparez les biens en ligne, prenez des notes et préparez votre shortlist avant toute visite physique.'},
                     ].map((feature, idx) => (
                       <div key={idx} className="flex items-start gap-3 sm:gap-4">
-                        <div className="flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-lg sm:rounded-xl bg-white/15 text-xl sm:text-2xl flex-shrink-0">
+                        <div className="flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-lg sm:rounded-xl bg-white/20 backdrop-blur-sm md:bg-white/15 md:backdrop-blur-none text-xl sm:text-2xl flex-shrink-0 drop-shadow-[0_2px_4px_rgba(0,0,0,0.6)] md:drop-shadow-none">
                           <span>{feature.icon}</span>
                         </div>
                         <div className="text-left flex-1">
-                          <h4 className="text-lg sm:text-xl font-semibold mb-1 sm:mb-2">{feature.title}</h4>
-                          <p className="text-sm sm:text-base text-white/85 leading-relaxed">{feature.desc}</p>
+                          <h4 className="text-lg sm:text-xl font-semibold mb-1 sm:mb-2 drop-shadow-[0_2px_6px_rgba(0,0,0,0.8)] md:drop-shadow-none">{feature.title}</h4>
+                          <p className="text-sm sm:text-base text-white/85 leading-relaxed drop-shadow-[0_1px_4px_rgba(0,0,0,0.7)] md:drop-shadow-none">{feature.desc}</p>
                         </div>
                       </div>
                     ))}

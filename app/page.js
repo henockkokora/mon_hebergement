@@ -258,8 +258,8 @@ export default function Home() {
                   id="awesome-features"
                   className={`max-w-xl text-white transition-all duration-1000 ${isVisible['awesome-features'] ? 'opacity-100 translate-x-0 translate-y-0' : 'opacity-0 -translate-x-4 md:-translate-x-4 translate-y-4 md:translate-y-0'}`}
                 >
-                  <h3 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 sm:mb-6">Découvrez la visite virtuelle</h3>
-                  <p className="text-lg sm:text-xl text-white/90 mb-6 sm:mb-10 leading-relaxed">
+                  <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 sm:mb-6">Découvrez la visite virtuelle</h3>
+                  <p className="text-base sm:text-lg text-white/90 mb-6 sm:mb-10 leading-relaxed">
                     Immersion totale, disponibilité 24h/24 et narration guidée : explorez chaque bien comme si vous y étiez réellement avant même de vous déplacer.
                   </p>
                   <div className="space-y-4 sm:space-y-6">
@@ -269,12 +269,12 @@ export default function Home() {
                       {title: 'Décisions éclairées', icon: '🔍', desc: 'Comparez les biens en ligne, prenez des notes et préparez votre shortlist avant toute visite physique.'},
                     ].map((feature, idx) => (
                       <div key={idx} className="flex items-start gap-3 sm:gap-4">
-                        <div className="flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-xl bg-white/15 text-2xl sm:text-3xl flex-shrink-0">
+                        <div className="flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-lg sm:rounded-xl bg-white/15 text-xl sm:text-2xl flex-shrink-0">
                           <span>{feature.icon}</span>
                         </div>
                         <div className="text-left flex-1">
-                          <h4 className="text-xl sm:text-2xl font-semibold mb-2">{feature.title}</h4>
-                          <p className="text-base sm:text-lg text-white/85 leading-relaxed">{feature.desc}</p>
+                          <h4 className="text-lg sm:text-xl font-semibold mb-1 sm:mb-2">{feature.title}</h4>
+                          <p className="text-sm sm:text-base text-white/85 leading-relaxed">{feature.desc}</p>
                         </div>
                       </div>
                     ))}

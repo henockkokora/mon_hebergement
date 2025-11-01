@@ -181,7 +181,7 @@ export default function Home() {
             </p>
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
               <a 
-                href="#search" 
+                href="/clients" 
                 className="group inline-flex items-center justify-center gap-2 sm:gap-3 h-12 sm:h-14 px-6 sm:px-8 rounded-xl sm:rounded-2xl bg-gradient-to-r from-[#4A9B8E] to-[#3a8b7e] text-white text-sm sm:text-base font-semibold shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300"
               >
                 <IconSearch className="w-4 h-4 sm:w-5 sm:h-5 group-hover:rotate-12 transition-transform" />
@@ -240,7 +240,7 @@ export default function Home() {
       <section className="px-4 sm:px-6 py-12 sm:py-16">
         <div className="max-w-7xl mx-auto overflow-hidden rounded-2xl sm:rounded-3xl relative shadow-2xl">
           {/* Image avec overlay */}
-          <div className="relative min-h-[400px] sm:min-h-[500px] md:min-h-[520px] lg:min-h-[600px]">
+          <div className="relative min-h-[600px] sm:min-h-[500px] md:min-h-[520px] lg:min-h-[600px]">
             <img 
               src="https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?q=80&w=2200&auto=format&fit=crop" 
               alt="Luxury interior" 

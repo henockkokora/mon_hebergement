@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState, useRef } from 'react';
+import Link from 'next/link';
 
 // Icônes SVG
 function IconRocket({ className = "w-6 h-6" }) {
@@ -215,15 +216,16 @@ export default function Home() {
           </div>
           <div className="grid gap-6 sm:gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
             {[
-              {title:'1. Créez votre compte', icon:<IconRocket className="w-8 h-8" />, desc:'Inscrivez-vous ou connectez-vous pour accéder à toutes nos fonctionnalités.'},
-              {title:'2. Explorez nos biens', icon:<IconSearch className="w-8 h-8" />, desc:'Parcourez nos annonces détaillées et découvrez chaque logement en visite virtuelle.'},
-              {title:'3. Visitez et réservez', icon:<IconHome className="w-8 h-8" />, desc:'Planifiez une visite, contactez le propriétaire et finalisez votre réservation.'},
+              {title:'1. Créez votre compte', icon:<IconRocket className="w-8 h-8" />, desc:'Inscrivez-vous ou connectez-vous pour accéder à toutes nos fonctionnalités.', href:'/clients/inscription'},
+              {title:'2. Explorez nos biens', icon:<IconSearch className="w-8 h-8" />, desc:'Parcourez nos annonces détaillées et découvrez chaque logement en visite virtuelle.', href:'/clients'},
+              {title:'3. Visitez et réservez', icon:<IconHome className="w-8 h-8" />, desc:'Planifiez une visite, contactez le propriétaire et finalisez votre réservation.', href:'/clients'},
             ].map((step, idx) => (
-              <div 
+              <Link 
                 key={idx}
+                href={step.href}
                 data-reveal
                 id={`service-${idx}`}
-                className={`group p-6 sm:p-8 rounded-xl sm:rounded-2xl bg-white border-2 border-neutral-200 shadow-lg hover:shadow-2xl hover:border-[#4A9B8E] transition-all duration-500 hover:-translate-y-2 text-center ${isVisible[`service-${idx}`] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
+                className={`group block p-6 sm:p-8 rounded-xl sm:rounded-2xl bg-white border-2 border-neutral-200 shadow-lg hover:shadow-2xl hover:border-[#4A9B8E] transition-all duration-500 hover:-translate-y-2 text-center cursor-pointer ${isVisible[`service-${idx}`] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
               >
                 <div className="mx-auto mb-4 sm:mb-6 flex h-16 w-16 sm:h-20 sm:w-20 items-center justify-center rounded-xl sm:rounded-2xl bg-gradient-to-br from-[#4A9B8E] to-[#3a8b7e] text-white shadow-lg group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
                   {step.icon}
@@ -231,7 +233,7 @@ export default function Home() {
                 <h3 className="text-lg sm:text-xl font-bold text-neutral-900 mb-2 sm:mb-3">{step.title}</h3>
                 <div className="h-1 w-16 bg-gradient-to-r from-[#4A9B8E] to-[#3a8b7e] mx-auto mb-3 sm:mb-4"></div>
                 <p className="text-sm sm:text-base text-neutral-600 leading-relaxed">{step.desc}</p>
-              </div>
+              </Link>
             ))}
           </div>
         </div>

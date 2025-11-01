@@ -238,40 +238,48 @@ export default function Home() {
 
       {/* BANDEAU FEATURES SUR IMAGE */}
       <section className="px-4 sm:px-6 py-12 sm:py-16">
-        <div className="max-w-7xl mx-auto overflow-hidden rounded-2xl sm:rounded-3xl relative shadow-2xl min-h-[400px] sm:min-h-[520px] lg:min-h-[600px]">
-          <img 
-            src="https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?q=80&w=2200&auto=format&fit=crop" 
-            alt="Luxury interior" 
-            className="w-full h-full object-cover min-h-[400px] sm:min-h-[520px] lg:min-h-[600px]" 
-            loading="lazy"
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-[#4A9B8E]/95 via-[#4A9B8E]/90 to-transparent"></div>
-          <div className="absolute inset-y-0 left-0 w-full sm:w-1/2 flex items-center p-6 sm:p-8 md:p-12 lg:p-16">
-            <div 
-              data-reveal
-              id="awesome-features"
-              className={`max-w-xl text-white transition-all duration-1000 ${isVisible['awesome-features'] ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-4'}`}
-            >
-              <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 sm:mb-6">Découvrez la visite virtuelle</h3>
-              <p className="text-base sm:text-lg text-white/90 mb-6 sm:mb-10 leading-relaxed">
-                Immersion totale, disponibilité 24h/24 et narration guidée : explorez chaque bien comme si vous y étiez réellement avant même de vous déplacer.
-              </p>
-              <div className="space-y-4 sm:space-y-6">
-                {[
-                  {title: 'Immersion 360°', icon: '🌀', desc: 'Déplacez-vous librement dans chaque pièce, changez d\'angle et zoomez sur les détails importants.'},
-                  {title: 'Visite à votre rythme', icon: '🕒', desc: 'Revenez autant de fois que nécessaire et partagez le lien avec votre entourage en toute simplicité.'},
-                  {title: 'Décisions éclairées', icon: '🔍', desc: 'Comparez les biens en ligne, prenez des notes et préparez votre shortlist avant toute visite physique.'},
-                ].map((feature, idx) => (
-                  <div key={idx} className="flex items-start gap-3 sm:gap-4">
-                    <div className="flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-lg sm:rounded-xl bg-white/15 text-xl sm:text-2xl flex-shrink-0">
-                      <span>{feature.icon}</span>
-                    </div>
-                    <div className="text-left">
-                      <h4 className="text-lg sm:text-xl font-semibold mb-1 sm:mb-2">{feature.title}</h4>
-                      <p className="text-xs sm:text-sm md:text-base text-white/85 leading-relaxed">{feature.desc}</p>
-                    </div>
+        <div className="max-w-7xl mx-auto overflow-hidden rounded-2xl sm:rounded-3xl relative shadow-2xl">
+          {/* Image avec overlay */}
+          <div className="relative min-h-[400px] sm:min-h-[500px] md:min-h-[520px] lg:min-h-[600px]">
+            <img 
+              src="https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?q=80&w=2200&auto=format&fit=crop" 
+              alt="Luxury interior" 
+              className="w-full h-full object-cover"
+              loading="lazy"
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-[#4A9B8E]/95 via-[#4A9B8E]/90 md:via-[#4A9B8E]/80 to-transparent"></div>
+            
+            {/* Contenu responsive : mobile en dessous, desktop à gauche */}
+            <div className="absolute inset-0 flex flex-col md:flex-row items-center md:items-center">
+              {/* Sur mobile : centré verticalement, sur desktop : à gauche */}
+              <div className="w-full md:w-1/2 flex items-center p-6 sm:p-8 md:p-12 lg:p-16">
+                <div 
+                  data-reveal
+                  id="awesome-features"
+                  className={`max-w-xl text-white transition-all duration-1000 ${isVisible['awesome-features'] ? 'opacity-100 translate-x-0 translate-y-0' : 'opacity-0 -translate-x-4 md:-translate-x-4 translate-y-4 md:translate-y-0'}`}
+                >
+                  <h3 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 sm:mb-6">Découvrez la visite virtuelle</h3>
+                  <p className="text-lg sm:text-xl text-white/90 mb-6 sm:mb-10 leading-relaxed">
+                    Immersion totale, disponibilité 24h/24 et narration guidée : explorez chaque bien comme si vous y étiez réellement avant même de vous déplacer.
+                  </p>
+                  <div className="space-y-4 sm:space-y-6">
+                    {[
+                      {title: 'Immersion 360°', icon: '🌀', desc: "Déplacez-vous librement dans chaque pièce, changez d'angle et zoomez sur les détails importants."},
+                      {title: 'Visite à votre rythme', icon: '🕒', desc: 'Revenez autant de fois que nécessaire et partagez le lien avec votre entourage en toute simplicité.'},
+                      {title: 'Décisions éclairées', icon: '🔍', desc: 'Comparez les biens en ligne, prenez des notes et préparez votre shortlist avant toute visite physique.'},
+                    ].map((feature, idx) => (
+                      <div key={idx} className="flex items-start gap-3 sm:gap-4">
+                        <div className="flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-xl bg-white/15 text-2xl sm:text-3xl flex-shrink-0">
+                          <span>{feature.icon}</span>
+                        </div>
+                        <div className="text-left flex-1">
+                          <h4 className="text-xl sm:text-2xl font-semibold mb-2">{feature.title}</h4>
+                          <p className="text-base sm:text-lg text-white/85 leading-relaxed">{feature.desc}</p>
+                        </div>
+                      </div>
+                    ))}
                   </div>
-                ))}
+                </div>
               </div>
             </div>
           </div>

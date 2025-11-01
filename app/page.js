@@ -247,7 +247,7 @@ export default function Home() {
               className="w-full h-full object-cover"
               loading="lazy"
             />
-            <div className="absolute inset-0 bg-gradient-to-r from-[#4A9B8E]/70 via-[#4A9B8E]/60 md:from-[#4A9B8E]/95 md:via-[#4A9B8E]/90 to-transparent"></div>
+            <div className="absolute inset-0 bg-gradient-to-r from-[#4A9B8E]/50 via-[#4A9B8E]/40 md:from-[#4A9B8E]/95 md:via-[#4A9B8E]/90 to-transparent"></div>
             
             {/* Contenu responsive : mobile en dessous, desktop à gauche */}
             <div className="absolute inset-0 flex flex-col md:flex-row items-center md:items-center">
@@ -256,10 +256,10 @@ export default function Home() {
                 <div 
                   data-reveal
                   id="awesome-features"
-                  className={`max-w-xl text-neutral-900 transition-all duration-1000 ${isVisible['awesome-features'] ? 'opacity-100 translate-x-0 translate-y-0' : 'opacity-0 -translate-x-4 md:-translate-x-4 translate-y-4 md:translate-y-0'}`}
+                  className={`max-w-xl text-white transition-all duration-1000 ${isVisible['awesome-features'] ? 'opacity-100 translate-x-0 translate-y-0' : 'opacity-0 -translate-x-4 md:-translate-x-4 translate-y-4 md:translate-y-0'}`}
                 >
                   <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 sm:mb-6">Découvrez la visite virtuelle</h3>
-                  <p className="text-base sm:text-lg text-neutral-900 mb-6 sm:mb-10 leading-relaxed">
+                  <p className="text-base sm:text-lg text-white/90 mb-6 sm:mb-10 leading-relaxed">
                     Immersion totale, disponibilité 24h/24 et narration guidée : explorez chaque bien comme si vous y étiez réellement avant même de vous déplacer.
                   </p>
                   <div className="space-y-4 sm:space-y-6">
@@ -274,7 +274,7 @@ export default function Home() {
                         </div>
                         <div className="text-left flex-1">
                           <h4 className="text-lg sm:text-xl font-semibold mb-1 sm:mb-2">{feature.title}</h4>
-                          <p className="text-sm sm:text-base text-neutral-900 leading-relaxed">{feature.desc}</p>
+                          <p className="text-sm sm:text-base text-white/85 leading-relaxed">{feature.desc}</p>
                         </div>
                       </div>
                     ))}
@@ -342,7 +342,7 @@ export default function Home() {
         <div className="absolute inset-0">
           <video
             ref={videoBannerRef}
-            src="/360%20maison.mp4"
+            src="/video_virtuelle%20(online-video-cutter.com).mp4"
             className="w-full h-full object-cover"
             autoPlay
             loop

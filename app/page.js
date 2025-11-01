@@ -71,6 +71,18 @@ function IconStar({ className = "w-5 h-5" }) {
   );
 }
 
+function Icon360({ className = "w-6 h-6" }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+      <circle cx="12" cy="12" r="10"/>
+      <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+      <path d="M2 12h20"/>
+      <circle cx="12" cy="12" r="4"/>
+      <path d="m8 10 4 4 4-4"/>
+    </svg>
+  );
+}
+
 export default function Home() {
   const [isVisible, setIsVisible] = useState({});
   const [showVideo, setShowVideo] = useState(false);
@@ -268,13 +280,13 @@ export default function Home() {
                   </p>
                   <div className="space-y-5 sm:space-y-6">
                     {[
-                      {title: 'Immersion 360°', icon: '🌀', desc: "Déplacez-vous librement dans chaque pièce, changez d'angle et zoomez sur les détails importants."},
-                      {title: 'Visite à votre rythme', icon: '🕒', desc: 'Revenez autant de fois que nécessaire et partagez le lien avec votre entourage en toute simplicité.'},
-                      {title: 'Décisions éclairées', icon: '🔍', desc: 'Comparez les biens en ligne, prenez des notes et préparez votre shortlist avant toute visite physique.'},
+                      {title: 'Immersion 360°', icon: <Icon360 className="w-6 h-6" />, desc: "Déplacez-vous librement dans chaque pièce, changez d'angle et zoomez sur les détails importants."},
+                      {title: 'Visite à votre rythme', icon: <IconClock className="w-6 h-6" />, desc: 'Revenez autant de fois que nécessaire et partagez le lien avec votre entourage en toute simplicité.'},
+                      {title: 'Décisions éclairées', icon: <IconSearch className="w-6 h-6" />, desc: 'Comparez les biens en ligne, prenez des notes et préparez votre shortlist avant toute visite physique.'},
                     ].map((feature, idx) => (
                       <div key={idx} className="flex items-start gap-3 sm:gap-4">
-                        <div className="flex h-11 w-11 sm:h-12 sm:w-12 items-center justify-center rounded-lg sm:rounded-xl bg-white/20 backdrop-blur-sm text-xl sm:text-2xl flex-shrink-0 shadow-lg">
-                          <span>{feature.icon}</span>
+                        <div className="flex h-11 w-11 sm:h-12 sm:w-12 items-center justify-center rounded-lg sm:rounded-xl bg-white/20 backdrop-blur-sm text-white flex-shrink-0 shadow-lg">
+                          {feature.icon}
                         </div>
                         <div className="text-left flex-1 pt-0.5">
                           <h4 className="text-base sm:text-lg md:text-xl font-semibold mb-1.5 sm:mb-2 text-white">{feature.title}</h4>

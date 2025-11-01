@@ -247,10 +247,12 @@ export default function Home() {
               className="w-full h-full object-cover"
               loading="lazy"
             />
+            <div className="absolute inset-0 bg-gradient-to-r from-[#4A9B8E]/70 via-[#4A9B8E]/60 md:from-[#4A9B8E]/95 md:via-[#4A9B8E]/90 to-transparent"></div>
+            
             {/* Contenu responsive : mobile en dessous, desktop à gauche */}
             <div className="absolute inset-0 flex flex-col md:flex-row items-center md:items-center">
               {/* Sur mobile : centré verticalement, sur desktop : à gauche */}
-              <div className="w-full md:w-1/2 flex items-center p-6 sm:p-8 md:p-12 lg:p-16">
+              <div className="w-full md:w-1/2 flex items-center md:items-center justify-center md:justify-start p-6 sm:p-8 md:p-12 lg:p-16">
                 <div 
                   data-reveal
                   id="awesome-features"

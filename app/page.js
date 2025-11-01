@@ -247,7 +247,7 @@ export default function Home() {
               className="w-full h-full object-cover"
               loading="lazy"
             />
-            <div className="absolute inset-0 bg-gradient-to-b from-neutral-900/30 via-neutral-900/20 to-transparent md:bg-gradient-to-r md:from-[#4A9B8E]/95 md:via-[#4A9B8E]/90 md:to-transparent"></div>
+            <div className="absolute inset-0 bg-gradient-to-r from-[#4A9B8E]/70 via-[#4A9B8E]/60 md:from-[#4A9B8E]/95 md:via-[#4A9B8E]/90 to-transparent"></div>
             
             {/* Contenu responsive : mobile en dessous, desktop à gauche */}
             <div className="absolute inset-0 flex flex-col md:flex-row items-center md:items-center">

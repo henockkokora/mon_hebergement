@@ -355,7 +355,7 @@ export default function Home() {
           />
           <div className={`absolute inset-0 bg-gradient-to-br from-[#4A9B8E]/70 via-neutral-900/80 to-neutral-900/90 transition-opacity duration-500 ${showVideo ? 'opacity-0' : 'opacity-100'}`}></div>
         </div>
-        <div className="relative z-10 text-center px-4 sm:px-6 py-8 sm:py-12">
+        <div className={`relative z-10 text-center px-4 sm:px-6 py-8 sm:py-12 transition-opacity duration-500 ${showVideo ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
           <div 
             data-reveal
             id="video-banner"
@@ -377,6 +377,18 @@ export default function Home() {
             </button>
           </div>
         </div>
+        {/* Bouton pour fermer la vidéo */}
+        {showVideo && (
+          <button
+            onClick={() => setShowVideo(false)}
+            className="absolute top-4 right-4 z-20 inline-flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-black/50 backdrop-blur-sm text-white shadow-2xl hover:bg-black/70 active:scale-95 transition-all duration-300"
+            aria-label="Fermer la vidéo"
+          >
+            <svg className="w-6 h-6 sm:w-7 sm:h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        )}
       </section>
 
       {/* LATEST BLOG */}

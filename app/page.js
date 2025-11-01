@@ -344,7 +344,7 @@ export default function Home() {
           <video
             ref={videoBannerRef}
             src="/video_virtuelle%20(online-video-cutter.com).mp4"
-            className="w-full h-full object-cover"
+            className="w-full h-full object-contain"
             autoPlay
             loop
             muted

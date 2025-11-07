@@ -142,6 +142,20 @@ export default function AdminAds() {
                       >
                         Ajouter visite 3D
                       </button>
+                      <button
+                        className={`chip-glass px-3 py-1 ${a.occupee ? 'bg-red-200 text-red-800' : 'bg-green-100 text-green-800'}`}
+                        onClick={async () => {
+                          try {
+                            await apiService.put(`/api/annonces/${a._id}`, { occupee: !a.occupee });
+                            await fetchAds();
+                            alert(a.occupee ? 'Annonce marquée comme disponible.' : 'Annonce marquée comme occupée.');
+                          } catch (err) {
+                            alert('Erreur lors du changement de statut.');
+                          }
+                        }}
+                      >
+                        {a.occupee ? 'Disponible' : 'Marquer comme occupée'}
+                      </button>
                       <button className="chip-glass px-3 py-1">🗑️ Supprimer</button>
                     </div>
                   </td>

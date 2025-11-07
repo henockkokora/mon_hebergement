@@ -205,8 +205,12 @@ router.post('/', authRequired, createAnnonceValidator, async (req, res, next) =>
 router.put('/:id', authRequired, updateAnnonceValidator, async (req, res, next) => {
   try {
     // Si la durée est modifiée, recalculer expiresAt côté modèle (pre-save)
+    const filter = { _id: req.params.id };
+    if (req.user.role !== 'admin') {
+      filter.proprietaireId = req.user.id;
+    }
     const annonce = await Annonce.findOneAndUpdate(
-      { _id: req.params.id, proprietaireId: req.user.id },
+      filter,
       req.body,
       { new: true, runValidators: true }
     );

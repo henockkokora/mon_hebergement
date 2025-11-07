@@ -206,6 +206,7 @@ function Gallery({ images, title }) {
 }
 
 export default function AnnonceDetails() {
+  const [showGallery, setShowGallery] = useState(null);
   const router = useRouter();
   
   // CSS pour l'animation rapide
@@ -288,7 +289,7 @@ export default function AnnonceDetails() {
       vv.removeEventListener('scroll', update);
     };
   }, []);
-  // Fonction pour contacter l'hôte
+  // Fonction pour contacter le propriétaire
   const handleContactHost = async () => {
     try {
       const token = typeof window !== 'undefined' ? localStorage.getItem('auth_token') : null;
@@ -299,7 +300,7 @@ export default function AnnonceDetails() {
       }
 
       if (!annonce?.proprietaireId?._id) {
-        toast.error('Impossible de contacter l\'hôte pour le moment');
+        toast.error('Impossible de contacter le propriétaire pour le moment');
         return;
       }
 
@@ -740,7 +741,48 @@ export default function AnnonceDetails() {
         </div>
 
         {/* --- Galerie conforme à la maquette --- */}
-        <Gallery images={[...(annonce.images || []), ...(annonce.photos || [])]} title={annonce.title || annonce.titre || 'Annonce'} />
+        {showGallery === null && (
+  <div className="flex flex-col items-center justify-center py-10">
+    <div className="mb-6 text-center">
+      <h2 className="text-xl font-semibold mb-2">Que souhaitez-vous faire&nbsp;?</h2>
+      <p className="text-gray-600">Choisissez une option pour continuer :</p>
+    </div>
+    <div className="flex flex-col sm:flex-row gap-4">
+      <button
+        className="px-6 py-3 rounded-full bg-neutral-800 text-white font-semibold text-lg shadow hover:bg-neutral-700 transition"
+        onClick={() => setShowGallery(true)}
+      >
+        Voir les photos
+      </button>
+      <button
+        className="px-6 py-3 rounded-full bg-[#4A9B8E] text-white font-semibold text-lg shadow hover:bg-[#3a8b7e] transition"
+        onClick={() => {
+          if (annonce?.matterportModelId || annonce?.matterportShareUrl) {
+            setShowGallery(false);
+          } else {
+            toast.error('Visite virtuelle non disponible pour cette annonce');
+          }
+        }}
+      >
+        Faire une visite virtuelle
+      </button>
+    </div>
+  </div>
+)}
+{showGallery === true && (
+  <Gallery images={[...(annonce.images || []), ...(annonce.photos || [])]} title={annonce.title || annonce.titre || 'Annonce'} />
+)}
+{showGallery === false && (annonce?.matterportModelId || annonce?.matterportShareUrl) && (
+  <div className="w-full flex flex-col items-center justify-center py-10">
+    <MatterportViewer modelId={annonce.matterportModelId} shareUrl={annonce.matterportShareUrl} />
+    <button
+      className="mt-6 px-6 py-2 rounded-full bg-neutral-800 text-white font-semibold shadow hover:bg-neutral-700 transition"
+      onClick={() => setShowGallery(true)}
+    >
+      Voir les photos
+    </button>
+  </div>
+)}
 
         {/* --- Titre + actions (partager / enregistrer / signaler) --- */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
@@ -772,7 +814,7 @@ export default function AnnonceDetails() {
           <div className="lg:col-span-2 space-y-4">
             <div className="rounded-3xl bg-neutral-50 shadow-sm p-6">
               <h2 className="text-[15px] font-semibold text-neutral-900">
-                {annonce.type || 'Logement'}{annonce.type ? ' · ' : ''}Hôte : {annonce.proprietaireId?.nom || annonce.proprietaire?.nom || 'Non renseigné'}
+                {annonce.type || 'Logement'}{annonce.type ? ' · ' : ''}Propriétaire : {annonce.proprietaireId?.nom || annonce.proprietaire?.nom || 'Non renseigné'}
               </h2>
             </div>
             <div className="rounded-3xl bg-neutral-50 shadow-sm p-6">
@@ -784,9 +826,9 @@ export default function AnnonceDetails() {
           {/* Right Column (Sticky Widget) */}
           <div className="lg:col-span-1">
             <div className="sticky top-24 flex flex-col gap-6">
-              {/* Carte hôte */}
+              {/* Carte propriétaire */}
               <div className="rounded-3xl bg-neutral-50 shadow-sm p-5">
-                <h4 className="text-[15px] font-semibold text-neutral-900 mb-3">Hôte</h4>
+                <h4 className="text-[15px] font-semibold text-neutral-900 mb-3">Propriétaire</h4>
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center gap-3">
                     <div className="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center text-gray-500">
@@ -795,7 +837,7 @@ export default function AnnonceDetails() {
                       </svg>
                     </div>
                     <div className="text-[13px]">
-                      <div className="font-semibold">{annonce.proprietaireId?.nom || 'Hôte'}</div>
+                      <div className="font-semibold">{annonce.proprietaireId?.nom || 'Propriétaire'}</div>
                     </div>
                   </div>
                   <button 
@@ -807,15 +849,23 @@ export default function AnnonceDetails() {
                     <ShareIcon className="w-5 h-5" />
                   </button>
                 </div>
-                <button 
-                  onClick={handleContactHost}
-                  className="mt-3 w-full px-3 py-2 rounded-full bg-[#4A9B8E] hover:bg-[#3a8b7e] text-white text-[13px] font-semibold shadow-sm fast-pulse hover:animate-none transition-all duration-300"
-                  style={{
-                    animation: 'fastPulse 1s ease-in-out infinite'
-                  }}
-                >
-                  Contacter l'hôte
-                </button>
+                {annonce.occupee ? (
+                  <button
+                    disabled
+                    className="mt-3 w-full px-3 py-2 rounded-full bg-gray-300 text-gray-500 text-[13px] font-semibold shadow-sm cursor-not-allowed"
+                    style={{ opacity: 0.8 }}
+                  >
+                    Déjà loué, non disponible
+                  </button>
+                ) : (
+                  <button
+                    onClick={handleContactHost}
+                    className="mt-3 w-full px-3 py-2 rounded-full bg-[#4A9B8E] hover:bg-[#3a8b7e] text-white text-[13px] font-semibold shadow-sm fast-pulse hover:animate-none transition-all duration-300"
+                    style={{ animation: 'fastPulse 1s ease-in-out infinite' }}
+                  >
+                    Intéressé ? Contactez-nous
+                  </button>
+                )}
               </div>
 
               {/* Carte réservation/visite */}

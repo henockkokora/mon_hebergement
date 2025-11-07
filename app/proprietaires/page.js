@@ -180,9 +180,10 @@ export default function ProprietairesDashboard() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between gap-3">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <h1 className="text-2xl font-bold">Tableau de bord</h1>
-        <div className="flex gap-2 items-center">
+        <div className="flex w-full sm:w-auto flex-col sm:flex-row gap-2 items-center sm:items-center mt-4 sm:mt-0">
+
           <button
             onClick={() => setSupportModalOpen(true)}
             className="inline-flex items-center gap-2 h-11 px-4 rounded-full bg-[#F5F5F5] hover:bg-[#EDEDED] text-[#24766A] transition-all font-semibold shadow"
@@ -241,8 +242,13 @@ export default function ProprietairesDashboard() {
               </div>
             </div>
           )}
-          <a href="/proprietaires/nouvelle" className="inline-flex items-center gap-2 h-11 px-5 rounded-full bg-neutral-800 text-white font-medium shadow-sm transition-colors hover:bg-neutral-700">
-            <IconPin className="w-4 h-4" /> Publier une nouvelle annonce
+          <a
+            href="/proprietaires/nouvelle"
+            className="w-full sm:w-auto flex justify-center items-center gap-2 h-12 px-4 sm:px-5 rounded-full bg-neutral-800 text-white font-medium shadow-sm transition-colors hover:bg-neutral-700 text-base sm:text-base text-center mt-2 sm:mt-0"
+            style={{ minWidth: 0 }}
+          >
+            <IconPin className="w-5 h-5" />
+            <span className="truncate">Publier une nouvelle annonce</span>
           </a>
         </div>
       </div>

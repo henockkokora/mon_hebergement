@@ -48,6 +48,7 @@ const AnnonceSchema = new Schema(
     matterportModelId: { type: String, maxlength: 100 },
     matterportShareUrl: { type: String, maxlength: 1000 },
     matterportStatus: { type: String, enum: ['pending', 'ready'], default: 'pending' },
+    occupee: { type: Boolean, default: false },
   },
   { timestamps: true }
 );

@@ -2,7 +2,7 @@
 import { useState } from "react";
 
 const THREADS = [
-  { id: 1, name: "CÉDRIC (Hôte)", time: "10:12" },
+  { id: 1, name: "CÉDRIC (Propriétaire)", time: "10:12" },
   { id: 2, name: "Service Support", time: "Hier" },
 ];
 

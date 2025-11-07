@@ -153,34 +153,29 @@ router.post(
   ],
   async (req, res, next) => {
     try {
-      console.log('Requête de connexion reçue avec le corps:', req.body);
-      
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
-        console.log('Erreurs de validation:', errors.array());
+        if (process.env.NODE_ENV === 'development') {
+          console.log('[dev] /api/auth/login-phone: validation failed');
+        }
         return res.status(400).json({ errors: errors.array() });
       }
 
       const { telephone, password } = req.body;
-      console.log('Tentative de connexion pour le téléphone:', telephone);
-      
       const normalizedPhone = normalizePhoneNumber(telephone);
-      console.log('Numéro normalisé:', normalizedPhone);
-      
       const user = await User.findOne({ telephone: normalizedPhone });
-      console.log('Utilisateur trouvé:', user ? 'Oui' : 'Non');
-      
       if (!user) {
-        console.log('Aucun utilisateur trouvé avec ce numéro');
+        if (process.env.NODE_ENV === 'development') {
+          console.log('[dev] /api/auth/login-phone: invalid credentials (user not found)');
+        }
         return res.status(401).json({ message: 'Identifiants invalides' });
       }
-      
-      console.log('Vérification du mot de passe...');
       const ok = await user.comparePassword(password);
-      console.log('Mot de passe valide:', ok);
       
       if (!ok) {
-        console.log('Mot de passe incorrect');
+        if (process.env.NODE_ENV === 'development') {
+          console.log('[dev] /api/auth/login-phone: invalid credentials (password)');
+        }
         return res.status(401).json({ message: 'Identifiants invalides' });
       }
 
@@ -197,6 +192,9 @@ router.post(
         },
         token,
       });
+      if (process.env.NODE_ENV === 'development') {
+        console.log('[dev] /api/auth/login-phone: success');
+      }
     } catch (err) {
       next(err);
     }
@@ -279,8 +277,10 @@ router.patch('/password', authRequired, async (req, res) => {
 // GET /api/auth/me - Récupérer le profil de l'utilisateur connecté
 // Vérifier si un numéro de téléphone existe déjà
 router.get('/check-phone', async (req, res) => {
-  console.log('API /check-phone appelée avec:', req.query.phone);
   try {
+    if (process.env.NODE_ENV === 'development') {
+      console.log('[dev] /api/auth/check-phone called');
+    }
     const { phone } = req.query;
     
     if (!phone) {

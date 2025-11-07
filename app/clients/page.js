@@ -228,6 +228,131 @@ function IconHouses({ className = "w-5 h-5" }) {
   );
 }
 
+// Additional expressive icons
+function IconCar({ className = "w-5 h-5" }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className={className} aria-hidden>
+      <path d="M3 13l2-5a3 3 0 0 1 2.8-2h6.4A3 3 0 0 1 17 8l2 5" />
+      <path d="M5 13h14a2 2 0 0 1 2 2v3H3v-3a2 2 0 0 1 2-2Z" />
+      <circle cx="7" cy="18" r="1.5" />
+      <circle cx="17" cy="18" r="1.5" />
+    </svg>
+  );
+}
+
+function IconPickup({ className = "w-5 h-5" }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className={className} aria-hidden>
+      <path d="M3 15v-3h8l2 3h6v3H3z" />
+      <path d="M11 12V9a2 2 0 0 0-2-2H6v5" />
+      <circle cx="7" cy="18" r="1.5" />
+      <circle cx="17" cy="18" r="1.5" />
+    </svg>
+  );
+}
+
+function IconSUV({ className = "w-5 h-5" }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className={className} aria-hidden>
+      <path d="M3 14l2-4 4-3h6l4 3 2 4" />
+      <path d="M3 14h18v4H3z" />
+      <circle cx="7" cy="18" r="1.5" />
+      <circle cx="17" cy="18" r="1.5" />
+    </svg>
+  );
+}
+
+function IconTruck({ className = "w-5 h-5" }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className={className} aria-hidden>
+      <path d="M3 16V8h10v8H3z" />
+      <path d="M13 12h5l3 3v3h-8v-6z" />
+      <circle cx="7" cy="19" r="1.5" />
+      <circle cx="17" cy="19" r="1.5" />
+    </svg>
+  );
+}
+
+function IconStore({ className = "w-5 h-5" }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className={className} aria-hidden>
+      <path d="M3 9l2-4h14l2 4" />
+      <path d="M4 9h16v9H4z" />
+      <path d="M8 9v9" />
+    </svg>
+  );
+}
+
+function IconStoreMezz({ className = "w-5 h-5" }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className={className} aria-hidden>
+      <path d="M3 9l2-4h14l2 4" />
+      <path d="M4 9h16v9H4z" />
+      <path d="M4 13h16" />
+    </svg>
+  );
+}
+
+function IconHelmet({ className = "w-5 h-5" }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className={className} aria-hidden>
+      <path d="M4 14a8 8 0 0 1 16 0v2H4v-2z" />
+      <path d="M12 6v4" />
+    </svg>
+  );
+}
+
+function IconForklift({ className = "w-5 h-5" }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className={className} aria-hidden>
+      <path d="M4 16V8h5l3 5h3v3" />
+      <path d="M18 8v8h3" />
+      <circle cx="7" cy="18" r="1.5" />
+      <circle cx="15" cy="18" r="1.5" />
+    </svg>
+  );
+}
+
+function IconBarn({ className = "w-5 h-5" }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className={className} aria-hidden>
+      <path d="M3 20V10l9-6 9 6v10H3z" />
+      <path d="M9 20v-6h6v6" />
+    </svg>
+  );
+}
+
+function IconPickaxe({ className = "w-5 h-5" }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className={className} aria-hidden>
+      <path d="M3 7c6-4 12-4 18 0" />
+      <path d="M12 7v13" />
+      <path d="M10 12l4 4" />
+    </svg>
+  );
+}
+
+function IconTractor({ className = "w-5 h-5" }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className={className} aria-hidden>
+      <circle cx="7" cy="18" r="2.5" />
+      <circle cx="17" cy="16" r="3.5" />
+      <path d="M4 18h1l2-6h6l2 2h2" />
+      <path d="M9 6h4v4H9z" />
+    </svg>
+  );
+}
+
+function IconBriefcase({ className = "w-5 h-5" }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className={className} aria-hidden>
+      <path d="M3 8h18v11H3z" />
+      <path d="M9 8V6a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2" />
+      <path d="M3 12h18" />
+    </svg>
+  );
+}
+
 function Header({ 
   isLoggedIn, 
   setIsLoggedIn, 
@@ -244,6 +369,7 @@ function Header({
   onSelectType = () => {},
   selectedDate,
   onDateSelect,
+  onResetAll = () => {},
   showCalendar,
   setShowCalendar,
   currentMonth,
@@ -596,7 +722,14 @@ function Header({
             {/* Zone segment */}
             <div
               ref={segZoneRef}
-              onClick={() => { setActiveSeg("zone"); setDestOpen(true); setDateOpen(false); destInputRef.current?.focus(); }}
+              onClick={() => { 
+                setActiveSeg("zone"); 
+                setDestOpen(true); 
+                setDateOpen(false);
+                setTypeOpen(false);
+                setShowCalendar(false);
+                destInputRef.current?.focus(); 
+              }}
               className="relative z-10 flex-1 min-w-0 px-6 py-4 cursor-pointer"
             >
               <div className="text-[12px] font-semibold uppercase tracking-wide text-neutral-500">Zone</div>
@@ -617,7 +750,8 @@ function Header({
                 onClick={() => { 
                   setActiveSeg("date"); 
                   setDateOpen(!dateOpen); 
-                  setDestOpen(false); 
+                  setDestOpen(false);
+                  setTypeOpen(false);
                   setShowCalendar(!showCalendar);
                   dateInputRef.current?.focus(); 
                 }}
@@ -665,19 +799,44 @@ function Header({
             {/* Type segment */}
             <div
               ref={segTypeRef}
-              onClick={() => { setActiveSeg("type"); setDestOpen(false); setDateOpen(false); }}
+              onClick={() => { 
+                setActiveSeg("type"); 
+                setDestOpen(false); 
+                setDateOpen(false);
+                setShowCalendar(false);
+              }}
               className="flex-1 min-w-0 px-6 py-4 cursor-pointer relative z-10"
             >
-              <div className="text-[12px] font-semibold uppercase tracking-wide text-neutral-500">Type d’appartement</div>
+              <div className="text-[12px] font-semibold uppercase tracking-wide text-neutral-500">Type d'appartement</div>
               <div 
                 className="w-full text-base outline-none bg-transparent cursor-pointer"
-                onClick={() => setTypeOpen(!typeOpen)}
+                onClick={() => {
+                  setTypeOpen(!typeOpen);
+                  setShowCalendar(false);
+                  setDateOpen(false);
+                }}
               >
                 {selectedType === 'Tous' 
                   ? 'Tous les types' 
                   : selectedType
                 }
               </div>
+            </div>
+            {/* Bouton Réinitialiser tout */}
+            <div className="p-2 flex items-center">
+              <button
+                onClick={onResetAll}
+                className="relative z-10 px-3 py-2 flex items-center justify-center cursor-pointer hover:bg-neutral-100/50 transition-colors rounded-full mr-2"
+                aria-label="Réinitialiser tous les filtres"
+                title="Réinitialiser tous les filtres"
+              >
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5 text-neutral-600">
+                  <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8" />
+                  <path d="M21 3v5h-5" />
+                  <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16" />
+                  <path d="M3 21v-5h5" />
+                </svg>
+              </button>
             </div>
             <div className="p-2 pr-3 flex items-center">
               <button aria-label="Rechercher" className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-[#4A9B8E] text-white shadow-[0_10px_20px_rgba(74,155,142,0.35)]">
@@ -992,6 +1151,193 @@ function Row({ children, title }) {
   );
 }
 
+function CategoryGroups({ annonces, selectedType, setSelectedType }) {
+  const [openGroup, setOpenGroup] = useState(null);
+  const [selectedGroupKey, setSelectedGroupKey] = useState('habitation');
+  const containerRef = useRef(null);
+  const dropdownRef = useRef(null);
+  const groups = [
+    {
+      key: 'habitation',
+      title: 'Habitation',
+      color: 'emerald',
+      icon: <IconHome className="w-6 h-6" />,
+      items: [
+        { name: 'Appartement', value: 'Appartement', count: annonces.filter(a => a.type === 'Appartement').length, icon: <IconBuilding className="w-5 h-5" /> },
+        { name: 'Studio', value: 'Studio', count: annonces.filter(a => a.type === 'Studio').length, icon: <IconBed className="w-5 h-5" /> },
+        { name: 'Chambre', value: 'Chambre', count: annonces.filter(a => a.type === 'Chambre').length, icon: <IconBed className="w-5 h-5" /> },
+      ],
+    },
+    {
+      key: 'bureau',
+      title: 'Bureau',
+      color: 'cyan',
+      icon: <IconBriefcase className="w-6 h-6" />,
+      items: [
+        { name: 'Bureau individuel', value: 'Bureau individuel', count: annonces.filter(a => a.type === 'Bureau individuel').length, icon: <IconBuilding className="w-5 h-5" /> },
+        { name: 'Bureau double', value: 'Bureau double', count: annonces.filter(a => a.type === 'Bureau double').length, icon: <IconBuilding className="w-5 h-5" /> },
+        { name: 'Bureau 3 pièces', value: 'Bureau 3 pièces', count: annonces.filter(a => a.type === 'Bureau 3 pièces').length, icon: <IconBuilding className="w-5 h-5" /> },
+        { name: 'Bureau 4 pièces et plus', value: 'Bureau 4 pièces et plus', count: annonces.filter(a => a.type === 'Bureau 4 pièces et plus').length, icon: <IconBuilding className="w-5 h-5" /> },
+      ],
+    },
+    {
+      key: 'magasin',
+      title: 'Magasin',
+      color: 'violet',
+      icon: <IconStore className="w-6 h-6" />,
+      items: [
+        { name: 'Magasin simple', value: 'Magasin simple', count: annonces.filter(a => a.type === 'Magasin simple').length, icon: <IconStore className="w-5 h-5" /> },
+        { name: 'Magasin en mezzanine', value: 'Magasin en mezzanine', count: annonces.filter(a => a.type === 'Magasin en mezzanine').length, icon: <IconStoreMezz className="w-5 h-5" /> },
+      ],
+    },
+    {
+      key: 'voiture',
+      title: 'Voiture',
+      color: 'amber',
+      icon: <IconCar className="w-6 h-6" />,
+      items: [
+        { name: 'Berline', value: 'Berline', count: annonces.filter(a => a.type === 'Berline').length, icon: <IconCar className="w-5 h-5" /> },
+        { name: 'Pickup', value: 'Pickup', count: annonces.filter(a => a.type === 'Pickup').length, icon: <IconPickup className="w-5 h-5" /> },
+        { name: 'SUV', value: 'SUV', count: annonces.filter(a => a.type === 'SUV').length, icon: <IconSUV className="w-5 h-5" /> },
+      ],
+    },
+    {
+      key: 'engin',
+      title: 'Engin',
+      color: 'lime',
+      icon: <IconHelmet className="w-6 h-6" />,
+      items: [
+        { name: 'Engin de chantier', value: 'Engin de chantier', count: annonces.filter(a => a.type === 'Engin de chantier').length, icon: <IconHelmet className="w-5 h-5" /> },
+        { name: 'Engin de manutention', value: 'Engin de manutention', count: annonces.filter(a => a.type === 'Engin de manutention').length, icon: <IconForklift className="w-5 h-5" /> },
+        { name: "Engin d'élevage", value: "Engin d'élevage", count: annonces.filter(a => a.type === "Engin d'élevage").length, icon: <IconBarn className="w-5 h-5" /> },
+        { name: 'Engin de mine', value: 'Engin de mine', count: annonces.filter(a => a.type === 'Engin de mine').length, icon: <IconPickaxe className="w-5 h-5" /> },
+        { name: 'Engin agricole', value: 'Engin agricole', count: annonces.filter(a => a.type === 'Engin agricole').length, icon: <IconTractor className="w-5 h-5" /> },
+      ],
+    },
+    {
+      key: 'camion',
+      title: 'Camion',
+      color: 'rose',
+      icon: <IconTruck className="w-6 h-6" />,
+      items: [
+        { name: 'Camion agricole', value: 'Camion agricole', count: annonces.filter(a => a.type === 'Camion agricole').length, icon: <IconTruck className="w-5 h-5" /> },
+        { name: 'Camion porte-voitures', value: 'Camion porte-voitures', count: annonces.filter(a => a.type === 'Camion porte-voitures').length, icon: <IconTruck className="w-5 h-5" /> },
+        { name: 'Camion de pompier', value: 'Camion de pompier', count: annonces.filter(a => a.type === 'Camion de pompier').length, icon: <IconTruck className="w-5 h-5" /> },
+        { name: 'Camion poubelle', value: 'Camion poubelle', count: annonces.filter(a => a.type === 'Camion poubelle').length, icon: <IconTruck className="w-5 h-5" /> },
+        { name: 'Camion de chantier', value: 'Camion de chantier', count: annonces.filter(a => a.type === 'Camion de chantier').length, icon: <IconTruck className="w-5 h-5" /> },
+        { name: 'Camion malaxeur', value: 'Camion malaxeur', count: annonces.filter(a => a.type === 'Camion malaxeur').length, icon: <IconTruck className="w-5 h-5" /> },
+        { name: 'Camion isotherme', value: 'Camion isotherme', count: annonces.filter(a => a.type === 'Camion isotherme').length, icon: <IconTruck className="w-5 h-5" /> },
+        { name: 'Camion de livraison urbaine', value: 'Camion de livraison urbaine', count: annonces.filter(a => a.type === 'Camion de livraison urbaine').length, icon: <IconTruck className="w-5 h-5" /> },
+      ],
+    },
+  ];
+
+  const colorCls = (base, color) => {
+    const map = {
+      emerald: {
+        card: 'bg-emerald-50 hover:bg-emerald-100',
+        active: 'bg-emerald-100',
+        badge: 'bg-emerald-200 text-emerald-700',
+      },
+      cyan: {
+        card: 'bg-cyan-50 hover:bg-cyan-100',
+        active: 'bg-cyan-100',
+        badge: 'bg-cyan-200 text-cyan-700',
+      },
+      violet: {
+        card: 'bg-violet-50 hover:bg-violet-100',
+        active: 'bg-violet-100',
+        badge: 'bg-violet-200 text-violet-700',
+      },
+      amber: {
+        card: 'bg-amber-50 hover:bg-amber-100',
+        active: 'bg-amber-100',
+        badge: 'bg-amber-200 text-amber-700',
+      },
+      lime: {
+        card: 'bg-lime-50 hover:bg-lime-100',
+        active: 'bg-lime-100',
+        badge: 'bg-lime-200 text-lime-700',
+      },
+      rose: {
+        card: 'bg-rose-50 hover:bg-rose-100',
+        active: 'bg-rose-100',
+        badge: 'bg-rose-200 text-rose-700',
+      },
+    };
+    return map[color]?.[base] || '';
+  };
+
+  // Close dropdown on outside click
+  useEffect(() => {
+    function onDocMouseDown(e) {
+      if (!dropdownRef.current || !containerRef.current) return;
+      if (
+        openGroup &&
+        !dropdownRef.current.contains(e.target) &&
+        !containerRef.current.contains(e.target)
+      ) {
+        setOpenGroup(null);
+      }
+    }
+    document.addEventListener('mousedown', onDocMouseDown);
+    return () => document.removeEventListener('mousedown', onDocMouseDown);
+  }, [openGroup]);
+
+  const selectedGroup = groups.find(g => g.key === selectedGroupKey) || groups[0];
+  return (
+    <div className="px-2 md:px-0 relative" ref={containerRef}>
+      {/* Horizontal top-level groups */}
+      <div className="flex items-center gap-2 overflow-x-auto hide-scrollbar pb-1">
+        <button
+          onClick={() => { setSelectedType('Tous'); setOpenGroup(null); }}
+          className={`inline-flex items-center gap-2 px-3 h-10 rounded-xl border text-sm whitespace-nowrap flex-shrink-0 ${selectedType==='Tous' ? 'bg-neutral-900 text-white border-neutral-900' : 'bg-white text-neutral-800 border-neutral-200 hover:bg-neutral-50'}`}
+        >
+          <IconSearch className="w-4 h-4" />
+          <span className="font-medium">Tous</span>
+          <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-neutral-100 text-neutral-700">{annonces.length}</span>
+        </button>
+
+        {groups.map(g => (
+          <button
+            key={g.key}
+            onClick={() => {
+              setSelectedGroupKey(g.key);
+              setOpenGroup(prev => (prev === g.key ? null : g.key));
+            }}
+            className={`inline-flex items-center gap-2 px-3 h-10 rounded-xl text-sm whitespace-nowrap border transition-colors flex-shrink-0 ${openGroup===g.key ? `${colorCls('active', g.color)} border-neutral-300` : `${colorCls('card', g.color)} border-neutral-200`}`}
+            title={g.title}
+          >
+            <span className="flex items-center justify-center w-6 h-6 rounded-full bg-white shadow-inner text-neutral-700">{g.icon}</span>
+            <span className="font-medium">{g.title}</span>
+          </button>
+        ))}
+      </div>
+
+      {/* Dropdown with subcategories */}
+      {openGroup && (
+        <div ref={dropdownRef} className="absolute left-0 right-0 mt-2 rounded-2xl bg-white border border-black/10 shadow-[0_24px_40px_rgba(0,0,0,0.12)] p-3 z-30">
+          <div className={`${colorCls('active', selectedGroup.color)} rounded-xl p-2`}>
+            <div className="flex gap-2 flex-wrap">
+              {selectedGroup.items.map(item => (
+                <button
+                  key={item.value}
+                  onClick={() => { setSelectedType(item.value); setOpenGroup(null); }}
+                  className={`inline-flex items-center gap-2 px-3 h-9 rounded-xl text-sm whitespace-nowrap border transition-colors ${selectedType===item.value? 'bg-neutral-900 text-white border-neutral-900' : 'bg-white text-neutral-800 border-neutral-200 hover:bg-neutral-50'}`}
+                >
+                  <span className="flex items-center justify-center w-6 h-6 rounded-full bg-neutral-100 text-neutral-700">{item.icon}</span>
+                  <span className="font-medium">{item.name}</span>
+                  <span className={`text-[10px] px-1.5 py-0.5 rounded-full ${colorCls('badge', selectedGroup.color)}`}>{item.count}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 function Card({ item, isLoggedIn }) {
   // Gestion du fallback pour les images Cloudinary ou par défaut
   let imageSrc = getImageUrl(item.image) || "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1200&q=60";
@@ -1256,6 +1602,15 @@ function ClientsPageContent() {
     setSelectedDate(date);
     setShowCalendar(false);
   };
+
+  // Réinitialiser tous les filtres
+  const handleResetAll = () => {
+    setSelectedDate(null);
+    setSelectedQuartierVille('Tous');
+    setSelectedType('Tous');
+    setPriceRange({ min: '', max: '' });
+    setShowCalendar(false);
+  };
   
   // Références pour le calendrier
   const calendarRef = useRef(null);
@@ -1422,6 +1777,7 @@ function ClientsPageContent() {
             onSelectType={setSelectedType}
             selectedDate={selectedDate}
             onDateSelect={handleDateSelect}
+            onResetAll={handleResetAll}
             showCalendar={showCalendar}
             setShowCalendar={setShowCalendar}
             currentMonth={currentMonth}
@@ -1450,59 +1806,7 @@ function ClientsPageContent() {
         <div className="space-y-4">
           <h2 className="text-[22px] leading-7 md:text-xl font-semibold text-neutral-900 md:text-neutral-800 px-4">Catégories populaires</h2>
           <div className="relative">
-            <div className="flex w-full space-x-4 overflow-x-auto pb-3 px-2 -mx-2 md:mx-0 md:flex md:justify-between md:space-x-0 md:w-full md:overflow-visible md:pb-0 md:px-0">
-              {[
-                { name: 'Maisons', value: 'Maison', icon: (<IconHome className="w-8 h-8" />), count: annonces.filter(a => a.type === 'Maison').length },
-                { name: 'Appartements', value: 'Appartement', icon: (<IconBuilding className="w-8 h-8" />), count: annonces.filter(a => a.type === 'Appartement').length },
-                { name: 'Bureau', value: 'Bureau', icon: (<IconBuilding className="w-8 h-8" />), count: annonces.filter(a => a.type === 'Bureau').length },
-                { name: 'Villas', value: 'Villa', icon: (<IconHome className="w-8 h-8" />), count: annonces.filter(a => a.type === 'Villa').length },
-                { name: 'Studios', value: 'Studio', icon: (<IconBed className="w-8 h-8" />), count: annonces.filter(a => a.type === 'Studio').length },
-                { name: 'Chambres', value: 'Chambre', icon: (<IconBed className="w-8 h-8" />), count: annonces.filter(a => a.type === 'Chambre').length },
-                { 
-                  name: 'Autres', value: 'Autres',
-                  icon: (<IconHouses className="w-8 h-8" />), 
-                  count: annonces.filter(a => !['Maison', 'Appartement', 'Bureau', 'Villa', 'Studio', 'Chambre'].includes(a.type)).length 
-                },
-                { name: 'Tous', value: 'Tous', icon: (<IconSearch className="w-8 h-8" />), count: annonces.length }
-              ].map((category) => (
-                <button
-                  key={category.value}
-                  onClick={() => setSelectedType(category.value)}
-                  className={`flex-shrink-0 w-[120px] md:w-full md:max-w-[120px] flex flex-col items-center justify-center gap-1 p-2 md:py-2 rounded-xl transition-all duration-200 cursor-pointer group
-                    ${ (selectedType === category.value)
-                        ? (
-                            category.name === 'Maisons' ? 'bg-emerald-100 text-neutral-900 shadow' :
-                            category.name === 'Appartements' ? 'bg-sky-100 text-neutral-900 shadow' :
-                            category.name === 'Bureau' ? 'bg-cyan-100 text-neutral-900 shadow' :
-                            category.name === 'Villas' ? 'bg-lime-100 text-neutral-900 shadow' :
-                            category.name === 'Studios' ? 'bg-amber-100 text-neutral-900 shadow' :
-                            category.name === 'Chambres' ? 'bg-rose-100 text-neutral-900 shadow' :
-                            category.name === 'Autres' ? 'bg-violet-100 text-neutral-900 shadow' :
-                            'bg-neutral-200 text-neutral-900 shadow'
-                          )
-                        : (
-                            category.name === 'Maisons' ? 'bg-emerald-50 text-neutral-800 hover:bg-emerald-100 shadow-sm' :
-                            category.name === 'Appartements' ? 'bg-sky-50 text-neutral-800 hover:bg-sky-100 shadow-sm' :
-                            category.name === 'Bureau' ? 'bg-cyan-50 text-neutral-800 hover:bg-cyan-100 shadow-sm' :
-                            category.name === 'Villas' ? 'bg-lime-50 text-neutral-800 hover:bg-lime-100 shadow-sm' :
-                            category.name === 'Studios' ? 'bg-amber-50 text-neutral-800 hover:bg-amber-100 shadow-sm' :
-                            category.name === 'Chambres' ? 'bg-rose-50 text-neutral-800 hover:bg-rose-100 shadow-sm' :
-                            category.name === 'Autres' ? 'bg-violet-50 text-neutral-800 hover:bg-violet-100 shadow-sm' :
-                            'bg-neutral-100 text-neutral-800 hover:bg-neutral-200 shadow-sm'
-                          )
-                      }
-                  `}
-                >
-                  <span className="flex items-center justify-center w-12 h-12 rounded-full bg-white text-neutral-700 shadow-inner mb-0.5">
-                    {category.icon}
-                  </span>
-                  <span className="font-semibold md:font-medium text-neutral-900 md:text-neutral-800 text-[13px] md:text-xs text-center mb-0">{category.name}</span>
-                  <span className="inline-block px-1.5 py-0.5 rounded-full text-[11px] font-medium bg-neutral-200 text-neutral-600">
-                    {category.count}
-                  </span>
-                </button>
-              ))}
-            </div>
+            <CategoryGroups annonces={annonces} selectedType={selectedType} setSelectedType={setSelectedType} />
           </div>
         </div>
 

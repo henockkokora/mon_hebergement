@@ -126,26 +126,7 @@ export default function ConnexionProprietaire() {
           </svg>
           <span className="ml-2 text-[15px]">Support</span>
         </button>
-        <button
-          aria-label="Menu"
-          onClick={() => setMenuOpen(v => !v)}
-          className="w-10 h-10 rounded-full bg-neutral-100 shadow-sm flex items-center justify-center"
-        >
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5" aria-hidden>
-            <line x1="3" y1="6" x2="21" y2="6"></line>
-            <line x1="3" y1="12" x2="21" y2="12"></line>
-            <line x1="3" y1="18" x2="21" y2="18"></line>
-          </svg>
-        </button>
-        {menuOpen && (
-          <div className="absolute right-0 top-12 w-56 rounded-2xl bg-neutral-50 shadow-sm backdrop-blur overflow-hidden z-50">
-            <div className="py-1 text-sm">
-              <a href="/proprietaires" onClick={() => setMenuOpen(false)} className="block px-4 py-3 hover:bg-black/[.04]">Accueil propriétaires</a>
-              <a href="/proprietaires/inscription" onClick={() => setMenuOpen(false)} className="block px-4 py-3 hover:bg-black/[.04]">Créer un compte</a>
-              <a href="/clients" onClick={() => setMenuOpen(false)} className="block px-4 py-3 hover:bg-black/[.04]">Espace clients</a>
-            </div>
-          </div>
-        )}
+        {/* Menu hamburger supprimé sur la page de connexion propriétaire */}
       </div>
       <button 
         onClick={() => router.back()}

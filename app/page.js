@@ -185,13 +185,13 @@ export default function Home() {
               <span className="text-xs sm:text-sm font-medium text-white">Meilleure plateforme de location</span>
             </div>
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black text-white leading-tight mb-4 sm:mb-6">
-              Visitez votre futur logement
+              Trouvez votre bien idéal
               <span className="block mt-1 sm:mt-2 bg-gradient-to-r from-white to-white/80 bg-clip-text text-transparent">
                 sans bouger de chez vous
               </span>
             </h1>
             <p className="text-base sm:text-lg md:text-xl text-white/90 leading-relaxed mb-6 sm:mb-8 max-w-2xl">
-              Découvrez des milliers de biens immobiliers depuis votre canapé. Explorez chaque pièce, chaque détail, et trouvez votre logement idéal en toute tranquillité.
+              Découvrez des milliers de biens depuis votre canapé. Logements, bureaux, magasins, véhicules et engins : explorez chaque détail et trouvez ce qui vous correspond en toute tranquillité.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
               <a 
@@ -206,7 +206,7 @@ export default function Home() {
                 className="group inline-flex items-center justify-center gap-2 sm:gap-3 h-12 sm:h-14 px-6 sm:px-8 rounded-xl sm:rounded-2xl border-2 border-white/50 text-white text-sm sm:text-base font-semibold hover:bg-white/10 backdrop-blur-sm transition-all duration-300"
               >
                 <IconHome className="w-4 h-4 sm:w-5 sm:h-5" />
-                <span className="whitespace-nowrap">Découvrir les logements</span>
+                <span className="whitespace-nowrap">Découvrir les biens</span>
               </a>
             </div>
           </div>
@@ -223,13 +223,13 @@ export default function Home() {
           >
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-neutral-900 mb-3 sm:mb-4">Comment ça marche</h2>
             <p className="text-base sm:text-lg text-neutral-600 max-w-2xl mx-auto px-4">
-              Suivez trois étapes simples pour trouver et réserver votre prochain logement en toute sérénité.
+              Suivez trois étapes simples pour trouver et réserver votre prochain bien en toute sérénité.
             </p>
           </div>
           <div className="grid gap-6 sm:gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
             {[
               {title:'1. Créez votre compte', icon:<IconRocket className="w-8 h-8" />, desc:'Inscrivez-vous ou connectez-vous pour accéder à toutes nos fonctionnalités.', href:'/clients/inscription'},
-              {title:'2. Explorez nos biens', icon:<IconSearch className="w-8 h-8" />, desc:'Parcourez nos annonces détaillées et découvrez chaque logement en visite virtuelle.', href:'/clients'},
+              {title:'2. Explorez nos biens', icon:<IconSearch className="w-8 h-8" />, desc:'Parcourez nos annonces détaillées et découvrez chaque bien en visite virtuelle.', href:'/clients'},
               {title:'3. Visitez et réservez', icon:<IconHome className="w-8 h-8" />, desc:'Planifiez une visite, contactez le propriétaire et finalisez votre réservation.', href:'/clients'},
             ].map((step, idx) => (
               <Link 
@@ -276,13 +276,13 @@ export default function Home() {
                 >
                   <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 sm:mb-6 leading-tight">Découvrez la visite virtuelle</h3>
                   <p className="text-base sm:text-lg text-white/95 mb-6 sm:mb-8 md:mb-10 leading-relaxed">
-                    Immersion totale, disponibilité 24h/24 et narration guidée : explorez chaque bien comme si vous y étiez réellement avant même de vous déplacer.
+                    Immersion totale, disponibilité 24h/24 et narration guidée : explorez chaque bien (logement, bureau, magasin, véhicule ou engin) comme si vous y étiez réellement avant même de vous déplacer.
                   </p>
                   <div className="space-y-5 sm:space-y-6">
                     {[
-                      {title: 'Immersion 360°', icon: <Icon360 className="w-6 h-6" />, desc: "Déplacez-vous librement dans chaque pièce, changez d'angle et zoomez sur les détails importants."},
+                      {title: 'Immersion 360°', icon: <Icon360 className="w-6 h-6" />, desc: "Déplacez-vous librement dans chaque espace, changez d'angle et zoomez sur les détails importants."},
                       {title: 'Visite à votre rythme', icon: <IconClock className="w-6 h-6" />, desc: 'Revenez autant de fois que nécessaire et partagez le lien avec votre entourage en toute simplicité.'},
-                      {title: 'Décisions éclairées', icon: <IconSearch className="w-6 h-6" />, desc: 'Comparez les biens en ligne, prenez des notes et préparez votre shortlist avant toute visite physique.'},
+                      {title: 'Décisions éclairées', icon: <IconSearch className="w-6 h-6" />, desc: 'Comparez les biens en ligne, prenez des notes et préparez votre sélection avant toute visite physique.'},
                     ].map((feature, idx) => (
                       <div key={idx} className="flex items-start gap-3 sm:gap-4">
                         <div className="flex h-11 w-11 sm:h-12 sm:w-12 items-center justify-center rounded-lg sm:rounded-xl bg-white/20 backdrop-blur-sm text-white flex-shrink-0 shadow-lg">
@@ -319,9 +319,9 @@ export default function Home() {
           </div>
           <div className="grid gap-6 sm:gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
             {[
-              {name: 'Sarah Kouassi', role: 'Locataire', img: '/photo1.jpg', quote: "Service rapide et fiable. La visite virtuelle m'a fait gagner beaucoup de temps. J'ai trouvé mon appartement idéal sans me déplacer !"},
-              {name: 'Jean-Pierre Diabaté', role: 'Propriétaire', img: '/photo2.jpg', quote: 'Excellente plateforme pour mettre en location mon bien. Les visites virtuelles sont de qualité et les locataires sont sérieux.'},
-              {name: 'Aminata Traoré', role: 'Locataire', img: '/photo3.jpg', quote: 'Je recommande vivement ! Le processus est simple, transparent et efficace. Mon nouveau logement correspond parfaitement à mes attentes.'},
+              {name: 'Sarah Kouassi', role: 'Client', img: '/photo1.jpg', quote: "Service rapide et fiable. La visite virtuelle m'a fait gagner beaucoup de temps. J'ai trouvé mon bien idéal sans me déplacer !"},
+              {name: 'Jean-Pierre Diabaté', role: 'Propriétaire', img: '/photo2.jpg', quote: 'Excellente plateforme pour mettre en location mon bien. Les visites virtuelles sont de qualité et les clients sont sérieux.'},
+              {name: 'Aminata Traoré', role: 'Client', img: '/photo3.jpg', quote: 'Je recommande vivement ! Le processus est simple, transparent et efficace. Mon nouveau bien correspond parfaitement à mes attentes.'},
             ].map((testimonial, i) => (
               <div 
                 key={i}
@@ -382,7 +382,7 @@ export default function Home() {
               Découvrez nos propriétés en vidéo
             </h2>
             <p className="text-base sm:text-lg text-white/90 mb-6 sm:mb-8 max-w-2xl mx-auto px-4 drop-shadow-[0_2px_6px_rgba(0,0,0,0.8)]">
-              Explorez chaque détail de nos biens immobiliers avec nos visites virtuelles haute qualité
+              Explorez chaque détail de nos biens avec nos visites virtuelles haute qualité
             </p>
             <button 
               onClick={() => setShowVideo(!showVideo)}
@@ -489,7 +489,7 @@ export default function Home() {
                 <span className="text-xl sm:text-2xl font-bold">Mon Hebergement</span>
               </div>
               <p className="text-sm sm:text-base text-white/80 leading-relaxed mb-4 sm:mb-6 max-w-md">
-                La plateforme de référence pour découvrir votre logement idéal depuis votre domicile en Côte d'Ivoire. Explorez, visitez virtuellement et trouvez votre bien en toute simplicité.
+                La plateforme de référence pour découvrir votre bien idéal depuis votre domicile en Côte d'Ivoire. Logements, bureaux, magasins, véhicules et engins : explorez, visitez virtuellement et trouvez ce qui vous correspond en toute simplicité.
               </p>
               <div className="flex flex-wrap items-center gap-4 sm:gap-6">
                 <div className="text-center">
@@ -509,8 +509,8 @@ export default function Home() {
             <div>
               <h4 className="text-base sm:text-lg font-bold mb-3 sm:mb-4">Liens rapides</h4>
               <ul className="space-y-2 sm:space-y-3 text-sm sm:text-base text-white/70">
-                <li><a href="/clients" className="hover:text-[#4A9B8E] transition-colors inline-block">Rechercher un logement</a></li>
-                <li><a href="/clients" className="hover:text-[#4A9B8E] transition-colors inline-block">Découvrir les logements</a></li>
+                <li><a href="/clients" className="hover:text-[#4A9B8E] transition-colors inline-block">Rechercher un bien</a></li>
+                <li><a href="/clients" className="hover:text-[#4A9B8E] transition-colors inline-block">Découvrir les biens</a></li>
                 <li><a href="#" className="hover:text-[#4A9B8E] transition-colors inline-block">Comment ça marche</a></li>
                 <li><a href="#" className="hover:text-[#4A9B8E] transition-colors inline-block">À propos de nous</a></li>
               </ul>

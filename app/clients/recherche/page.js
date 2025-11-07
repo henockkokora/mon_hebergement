@@ -120,8 +120,15 @@ export default function RechercheMobile() {
           acc[t] = (acc[t] || 0) + 1;
           return acc;
         }, {});
-        // Define a preferred order
-        const order = ['Maison','Appartement','Bureau','Villa','Studio','Chambre','Loft','Duplex'];
+        // Define a preferred order (aligned with new categories)
+        const order = [
+          'Appartement','Studio','Chambre',
+          'Bureau individuel','Bureau double','Bureau 3 pièces','Bureau 4 pièces et plus',
+          'Magasin simple','Magasin en mezzanine',
+          'Berline','Pickup','SUV',
+          'Engin de chantier','Engin de manutention','Engin d\'élevage','Engin de mine','Engin agricole',
+          'Camion agricole','Camion porte-voitures','Camion de pompier','Camion poubelle','Camion de chantier','Camion malaxeur','Camion isotherme','Camion de livraison urbaine'
+        ];
         const items = Object.entries(counts)
           .filter(([,c]) => c > 0)
           .sort((a,b) => {

@@ -48,7 +48,20 @@ function Badge({ status }) {
 
 export default function ProprietairesAnnonces() {
   // Types prédéfinis alignés avec la page de publication (hors "Autre")
-  const PREDEFINED_TYPES = ["Appartement", "Maison", "Bureau", "Studio", "Chambre", "Villa"];
+  const PREDEFINED_TYPES = [
+    // Habitation
+    "Appartement", "Studio", "Chambre",
+    // Bureau
+    "Bureau individuel", "Bureau double", "Bureau 3 pièces", "Bureau 4 pièces et plus",
+    // Magasin
+    "Magasin simple", "Magasin en mezzanine",
+    // Voiture
+    "Berline", "Pickup", "SUV",
+    // Engin
+    "Engin de chantier", "Engin de manutention", "Engin d'élevage", "Engin de mine", "Engin agricole",
+    // Camion
+    "Camion agricole", "Camion porte-voitures", "Camion de pompier", "Camion poubelle", "Camion de chantier", "Camion malaxeur", "Camion isotherme", "Camion de livraison urbaine"
+  ];
   
   // Options de tri disponibles
   const SORT_OPTIONS = [
@@ -73,7 +86,11 @@ export default function ProprietairesAnnonces() {
   useEffect(() => {
     const fetchAnnonces = async () => {
       try {
-        const res = await apiService.getMyAnnonces();
+        // Forcer l'utilisation du token propriétaire sur l'espace /proprietaires
+        const ownerToken = typeof window !== 'undefined' ? localStorage.getItem('auth_token_owner') : null;
+        const res = await apiService.request('/api/annonces/my', {
+          headers: ownerToken ? { Authorization: `Bearer ${ownerToken}` } : {}
+        });
         setAnnonces(Array.isArray(res.data) ? res.data : []);
       } catch (err) {
         setError("Erreur lors du chargement des annonces.");

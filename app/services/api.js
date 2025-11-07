@@ -3,7 +3,11 @@ class ApiService {
   // ...
   // Méthode pour récupérer les stats du propriétaire
   async getProprietaireStats() {
-    return this.request('/api/proprietaires/stats');
+    // Toujours utiliser le token propriétaire pour cette requête
+    const ownerToken = typeof window !== 'undefined' ? localStorage.getItem('auth_token_owner') : null;
+    return this.request('/api/proprietaires/stats', {
+      headers: ownerToken ? { Authorization: `Bearer ${ownerToken}` } : {}
+    });
   }
   constructor() {
     // URL directe vers le backend

@@ -342,7 +342,22 @@ function NouvelleAnnonce() {
                 onBlur={() => setTouched({...touched, type: true})}
                 className="mt-1 w-full h-11 px-3 rounded-xl bg-[#F5F5F5] outline-none text-[16px] shadow-inner focus:bg-[#EDEDED]"
               >
-                {['Appartement','Maison','Studio','Chambre','Villa','Autre'].map(t => (
+                {[
+                  // Habitation
+                  'Appartement','Studio','Chambre',
+                  // Bureau
+                  'Bureau individuel','Bureau double','Bureau 3 pièces','Bureau 4 pièces et plus',
+                  // Magasin
+                  'Magasin simple','Magasin en mezzanine',
+                  // Voiture
+                  'Berline','Pickup','SUV',
+                  // Engin
+                  'Engin de chantier','Engin de manutention','Engin d\'élevage','Engin de mine','Engin agricole',
+                  // Camion
+                  'Camion agricole','Camion porte-voitures','Camion de pompier','Camion poubelle','Camion de chantier','Camion malaxeur','Camion isotherme','Camion de livraison urbaine',
+                  // Libre
+                  'Autre'
+                ].map(t => (
                   <option key={t} value={t}>{t}</option>
                 ))}
               </select>

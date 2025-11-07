@@ -515,7 +515,7 @@ function Header({
         {/* Brand + Support */}
         <div className="flex items-center gap-2">
           <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-[#4A9B8E] text-white text-[12px] font-bold">M</span>
-          <span className="font-semibold">Mon Hebergement</span>
+          <span className="font-semibold">GELocation</span>
         </div>
         {/* Mobile hamburger (original) hidden; moved to right actions */}
         <div className="hidden"></div>

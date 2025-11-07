@@ -314,7 +314,7 @@ export default function Home() {
           >
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-neutral-900 mb-3 sm:mb-4">Témoignages clients</h2>
             <p className="text-base sm:text-lg text-neutral-600 max-w-2xl mx-auto px-4">
-              Découvrez ce que nos clients pensent de leur expérience avec Mon Hebergement
+              Découvrez ce que nos clients pensent de leur expérience avec GELocation
             </p>
           </div>
           <div className="grid gap-6 sm:gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
@@ -486,7 +486,7 @@ export default function Home() {
                 <div className="h-10 w-10 sm:h-12 sm:w-12 rounded-xl sm:rounded-2xl bg-gradient-to-br from-[#4A9B8E] to-[#3a8b7e] flex items-center justify-center shadow-lg">
                   <span className="text-white font-bold text-lg sm:text-xl">MH</span>
                 </div>
-                <span className="text-xl sm:text-2xl font-bold">Mon Hebergement</span>
+                <span className="text-xl sm:text-2xl font-bold">GELocation</span>
               </div>
               <p className="text-sm sm:text-base text-white/80 leading-relaxed mb-4 sm:mb-6 max-w-md">
                 La plateforme de référence pour découvrir votre bien idéal depuis votre domicile en Côte d'Ivoire. Logements, bureaux, magasins, véhicules et engins : explorez, visitez virtuellement et trouvez ce qui vous correspond en toute simplicité.
@@ -527,7 +527,7 @@ export default function Home() {
           </div>
           <div className="border-t border-white/10 pt-6 sm:pt-8 flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-4">
             <p className="text-white/60 text-xs sm:text-sm text-center sm:text-left">
-              © {new Date().getFullYear()} Mon Hebergement — Tous droits réservés
+              © {new Date().getFullYear()} GELocation — Tous droits réservés
             </p>
             <div className="flex flex-wrap justify-center gap-4 sm:gap-6 text-xs sm:text-sm">
               <a href="#" className="text-white/60 hover:text-[#4A9B8E] transition-colors">Conditions d'utilisation</a>

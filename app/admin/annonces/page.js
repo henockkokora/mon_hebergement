@@ -2,6 +2,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import apiService from '@/services/api';
+import { toast } from 'react-hot-toast';
 import Image from 'next/image';
 import { getImageUrl } from '@/utils/imageUtils';
 
@@ -148,13 +149,17 @@ export default function AdminAds() {
                           try {
                             await apiService.put(`/api/annonces/${a._id}`, { occupee: !a.occupee });
                             await fetchAds();
-                            alert(a.occupee ? 'Annonce marquée comme disponible.' : 'Annonce marquée comme occupée.');
+                            import('react-hot-toast').then(({ toast }) => {
+                              toast.success(a.occupee ? 'Annonce marquée comme disponible.' : 'Annonce marquée comme occupée.');
+                            });
                           } catch (err) {
-                            alert('Erreur lors du changement de statut.');
+                            import('react-hot-toast').then(({ toast }) => {
+                              toast.error('Erreur lors du changement de statut.');
+                            });
                           }
                         }}
                       >
-                        {a.occupee ? 'Disponible' : 'Marquer comme occupée'}
+                        {a.occupee ? 'Marquer comme disponible' : 'Marquer comme occupée'}
                       </button>
                       <button className="chip-glass px-3 py-1">🗑️ Supprimer</button>
                     </div>

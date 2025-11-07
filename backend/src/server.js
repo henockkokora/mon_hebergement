@@ -180,7 +180,7 @@ import { Message, MessageThread } from './models/index.js';
 import { initializeAdmin } from './config/initAdmin.js';
 
 const PORT = process.env.PORT || 4000;
-const MONGODB_URI = process.env.MONGODB_URI ||'mongodb://localhost:27017/mon_hebergement';
+const MONGODB_URI = process.env.MONGODB_URI ||'mongodb://localhost:27017/gelocation';
 
 // Start server only after DB is connected
 connectDB(MONGODB_URI)

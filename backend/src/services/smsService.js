@@ -61,7 +61,7 @@ export async function sendOTP(phoneNumber, otpCode) {
     // Normaliser le numéro
     const normalizedPhone = normalizePhoneNumber(phoneNumber);
     
-    const message = `Votre code de verification Mon Hebergement est: ${otpCode}. Ce code expire dans 5 minutes.`;
+    const message = `Votre code de verification GELocation est: ${otpCode}. Ce code expire dans 5 minutes.`;
     
     console.log(`Envoi SMS Yellika vers ${normalizedPhone}: ${otpCode}`);
     

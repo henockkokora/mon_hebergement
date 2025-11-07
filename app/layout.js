@@ -18,7 +18,7 @@ const geistMono = JetBrains_Mono({
 });
 
 export const metadata = {
-  title: "Plateforme immobilière | Mon Hebergement",
+  title: "Plateforme immobilière | GELocation",
   description:
     "Facilitez la location et la vente immobilière : publiez vos biens avec photos/vidéos, choisissez la durée d'affichage, et laissez les clients visiter virtuellement.",
 };

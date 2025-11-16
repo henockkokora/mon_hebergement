@@ -1151,189 +1151,131 @@ function Row({ children, title }) {
   );
 }
 
-function CategoryGroups({ annonces, selectedType, setSelectedType }) {
-  const [openGroup, setOpenGroup] = useState(null);
-  const [selectedGroupKey, setSelectedGroupKey] = useState('habitation');
-  const containerRef = useRef(null);
-  const dropdownRef = useRef(null);
-  const groups = [
-    {
-      key: 'habitation',
-      title: 'Habitation',
-      color: 'emerald',
-      icon: <IconHome className="w-6 h-6" />,
-      items: [
-        { name: 'Appartement', value: 'Appartement', count: annonces.filter(a => a.type === 'Appartement').length, icon: <IconBuilding className="w-5 h-5" /> },
-        { name: 'Studio', value: 'Studio', count: annonces.filter(a => a.type === 'Studio').length, icon: <IconBed className="w-5 h-5" /> },
-        { name: 'Chambre', value: 'Chambre', count: annonces.filter(a => a.type === 'Chambre').length, icon: <IconBed className="w-5 h-5" /> },
-      ],
-    },
-    {
-      key: 'bureau',
-      title: 'Bureau',
-      color: 'cyan',
-      icon: <IconBriefcase className="w-6 h-6" />,
-      items: [
-        { name: 'Bureau individuel', value: 'Bureau individuel', count: annonces.filter(a => a.type === 'Bureau individuel').length, icon: <IconBuilding className="w-5 h-5" /> },
-        { name: 'Bureau double', value: 'Bureau double', count: annonces.filter(a => a.type === 'Bureau double').length, icon: <IconBuilding className="w-5 h-5" /> },
-        { name: 'Bureau 3 pièces', value: 'Bureau 3 pièces', count: annonces.filter(a => a.type === 'Bureau 3 pièces').length, icon: <IconBuilding className="w-5 h-5" /> },
-        { name: 'Bureau 4 pièces et plus', value: 'Bureau 4 pièces et plus', count: annonces.filter(a => a.type === 'Bureau 4 pièces et plus').length, icon: <IconBuilding className="w-5 h-5" /> },
-      ],
-    },
-    {
-      key: 'magasin',
-      title: 'Magasin',
-      color: 'violet',
-      icon: <IconStore className="w-6 h-6" />,
-      items: [
-        { name: 'Magasin simple', value: 'Magasin simple', count: annonces.filter(a => a.type === 'Magasin simple').length, icon: <IconStore className="w-5 h-5" /> },
-        { name: 'Magasin en mezzanine', value: 'Magasin en mezzanine', count: annonces.filter(a => a.type === 'Magasin en mezzanine').length, icon: <IconStoreMezz className="w-5 h-5" /> },
-      ],
-    },
-    {
-      key: 'voiture',
-      title: 'Voiture',
-      color: 'amber',
-      icon: <IconCar className="w-6 h-6" />,
-      items: [
-        { name: 'Berline', value: 'Berline', count: annonces.filter(a => a.type === 'Berline').length, icon: <IconCar className="w-5 h-5" /> },
-        { name: 'Pickup', value: 'Pickup', count: annonces.filter(a => a.type === 'Pickup').length, icon: <IconPickup className="w-5 h-5" /> },
-        { name: 'SUV', value: 'SUV', count: annonces.filter(a => a.type === 'SUV').length, icon: <IconSUV className="w-5 h-5" /> },
-      ],
-    },
-    {
-      key: 'engin',
-      title: 'Engin',
-      color: 'lime',
-      icon: <IconHelmet className="w-6 h-6" />,
-      items: [
-        { name: 'Engin de chantier', value: 'Engin de chantier', count: annonces.filter(a => a.type === 'Engin de chantier').length, icon: <IconHelmet className="w-5 h-5" /> },
-        { name: 'Engin de manutention', value: 'Engin de manutention', count: annonces.filter(a => a.type === 'Engin de manutention').length, icon: <IconForklift className="w-5 h-5" /> },
-        { name: "Engin d'élevage", value: "Engin d'élevage", count: annonces.filter(a => a.type === "Engin d'élevage").length, icon: <IconBarn className="w-5 h-5" /> },
-        { name: 'Engin de mine', value: 'Engin de mine', count: annonces.filter(a => a.type === 'Engin de mine').length, icon: <IconPickaxe className="w-5 h-5" /> },
-        { name: 'Engin agricole', value: 'Engin agricole', count: annonces.filter(a => a.type === 'Engin agricole').length, icon: <IconTractor className="w-5 h-5" /> },
-      ],
-    },
-    {
-      key: 'camion',
-      title: 'Camion',
-      color: 'rose',
-      icon: <IconTruck className="w-6 h-6" />,
-      items: [
-        { name: 'Camion agricole', value: 'Camion agricole', count: annonces.filter(a => a.type === 'Camion agricole').length, icon: <IconTruck className="w-5 h-5" /> },
-        { name: 'Camion porte-voitures', value: 'Camion porte-voitures', count: annonces.filter(a => a.type === 'Camion porte-voitures').length, icon: <IconTruck className="w-5 h-5" /> },
-        { name: 'Camion de pompier', value: 'Camion de pompier', count: annonces.filter(a => a.type === 'Camion de pompier').length, icon: <IconTruck className="w-5 h-5" /> },
-        { name: 'Camion poubelle', value: 'Camion poubelle', count: annonces.filter(a => a.type === 'Camion poubelle').length, icon: <IconTruck className="w-5 h-5" /> },
-        { name: 'Camion de chantier', value: 'Camion de chantier', count: annonces.filter(a => a.type === 'Camion de chantier').length, icon: <IconTruck className="w-5 h-5" /> },
-        { name: 'Camion malaxeur', value: 'Camion malaxeur', count: annonces.filter(a => a.type === 'Camion malaxeur').length, icon: <IconTruck className="w-5 h-5" /> },
-        { name: 'Camion isotherme', value: 'Camion isotherme', count: annonces.filter(a => a.type === 'Camion isotherme').length, icon: <IconTruck className="w-5 h-5" /> },
-        { name: 'Camion de livraison urbaine', value: 'Camion de livraison urbaine', count: annonces.filter(a => a.type === 'Camion de livraison urbaine').length, icon: <IconTruck className="w-5 h-5" /> },
-      ],
-    },
-  ];
+// --- Glass Categories (icônes principales) ---
 
-  const colorCls = (base, color) => {
-    const map = {
-      emerald: {
-        card: 'bg-emerald-50 hover:bg-emerald-100',
-        active: 'bg-emerald-100',
-        badge: 'bg-emerald-200 text-emerald-700',
-      },
-      cyan: {
-        card: 'bg-cyan-50 hover:bg-cyan-100',
-        active: 'bg-cyan-100',
-        badge: 'bg-cyan-200 text-cyan-700',
-      },
-      violet: {
-        card: 'bg-violet-50 hover:bg-violet-100',
-        active: 'bg-violet-100',
-        badge: 'bg-violet-200 text-violet-700',
-      },
-      amber: {
-        card: 'bg-amber-50 hover:bg-amber-100',
-        active: 'bg-amber-100',
-        badge: 'bg-amber-200 text-amber-700',
-      },
-      lime: {
-        card: 'bg-lime-50 hover:bg-lime-100',
-        active: 'bg-lime-100',
-        badge: 'bg-lime-200 text-lime-700',
-      },
-      rose: {
-        card: 'bg-rose-50 hover:bg-rose-100',
-        active: 'bg-rose-100',
-        badge: 'bg-rose-200 text-rose-700',
-      },
-    };
-    return map[color]?.[base] || '';
-  };
+function GlassCategoriesGrid({ groupes, selectedType, setSelectedType }) {
+  const [opened, setOpened] = useState(null); // key du groupe ouvert
+  const popinRef = useRef(null);
+  const btnsRef = useRef({});
+  const scrollRef = useRef(null); // Pour le scroll horizontal
 
-  // Close dropdown on outside click
+  // Clic dehors : ferme le menu déroulant
   useEffect(() => {
-    function onDocMouseDown(e) {
-      if (!dropdownRef.current || !containerRef.current) return;
+    if (!opened) return;
+    function handleClickOutside(e) {
+      const pop = popinRef.current;
+      const btn = btnsRef.current[opened];
       if (
-        openGroup &&
-        !dropdownRef.current.contains(e.target) &&
-        !containerRef.current.contains(e.target)
+        pop && !pop.contains(e.target) &&
+        (!btn || !btn.contains(e.target))
       ) {
-        setOpenGroup(null);
+        setOpened(null);
       }
     }
-    document.addEventListener('mousedown', onDocMouseDown);
-    return () => document.removeEventListener('mousedown', onDocMouseDown);
-  }, [openGroup]);
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [opened]);
 
-  const selectedGroup = groups.find(g => g.key === selectedGroupKey) || groups[0];
+  // Gère l'ouverture/fermeture animation
+  const toggleOpen = (key) => setOpened(opened === key ? null : key);
+
   return (
-    <div className="px-2 md:px-0 relative" ref={containerRef}>
-      {/* Horizontal top-level groups */}
-      <div className="flex items-center gap-2 overflow-x-auto hide-scrollbar pb-1">
+    <div ref={scrollRef} className="w-full flex flex-row gap-x-8 overflow-x-auto hide-scrollbar px-2 py-6 items-start justify-start scroll-snap-x">
+      {/* Bouton "Tous" en premier */}
+      <div className="flex flex-col items-center min-w-[90px] md:min-w-[120px] snap-start">
         <button
-          onClick={() => { setSelectedType('Tous'); setOpenGroup(null); }}
-          className={`inline-flex items-center gap-2 px-3 h-10 rounded-xl border text-sm whitespace-nowrap flex-shrink-0 ${selectedType==='Tous' ? 'bg-neutral-900 text-white border-neutral-900' : 'bg-white text-neutral-800 border-neutral-200 hover:bg-neutral-50'}`}
+          type="button"
+          onClick={() => setSelectedType('Tous')}
+          className={`relative group focus:outline-none transition-all duration-300 active:scale-95 hover:scale-105 \
+             ${selectedType==='Tous'
+              ? 'shadow-[0_0_20px_6px_#4A9B8E55] bg-white/60'
+              : 'hover:border hover:border-[#4A9B8E]/50'}
+             rounded-full`}
+          aria-label="Tous"
+          style={{
+            border: selectedType==='Tous' ? '1.5px solid #4A9B8E44' : undefined
+          }}
         >
-          <IconSearch className="w-4 h-4" />
-          <span className="font-medium">Tous</span>
-          <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-neutral-100 text-neutral-700">{annonces.length}</span>
+          <span className="absolute inset-0 z-0 rounded-full pointer-events-none glass-bg" />
+          <span className="relative z-10 flex items-center justify-center w-20 h-20 md:w-24 md:h-24 rounded-full border border-white/40 bg-white/10 shadow-[0_4px_40px_rgba(0,0,0,0.13)] backdrop-blur-[6px] group-hover:bg-white/20 transition-colors">
+            {/* Icône loupe générique */}
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-9 h-9 md:w-12 md:h-12 text-neutral-600"><circle cx="11" cy="11" r="7" /><path d="M21 21l-3.8-3.8" /></svg>
+          </span>
         </button>
-
-        {groups.map(g => (
-          <button
-            key={g.key}
-            onClick={() => {
-              setSelectedGroupKey(g.key);
-              setOpenGroup(prev => (prev === g.key ? null : g.key));
-            }}
-            className={`inline-flex items-center gap-2 px-3 h-10 rounded-xl text-sm whitespace-nowrap border transition-colors flex-shrink-0 ${openGroup===g.key ? `${colorCls('active', g.color)} border-neutral-300` : `${colorCls('card', g.color)} border-neutral-200`}`}
-            title={g.title}
-          >
-            <span className="flex items-center justify-center w-6 h-6 rounded-full bg-white shadow-inner text-neutral-700">{g.icon}</span>
-            <span className="font-medium">{g.title}</span>
-          </button>
-        ))}
+        <span className="mt-3 text-base font-bold text-neutral-900 text-center md:text-lg md:font-bold">Tous</span>
       </div>
-
-      {/* Dropdown with subcategories */}
-      {openGroup && (
-        <div ref={dropdownRef} className="absolute left-0 right-0 mt-2 rounded-2xl bg-white border border-black/10 shadow-[0_24px_40px_rgba(0,0,0,0.12)] p-3 z-30">
-          <div className={`${colorCls('active', selectedGroup.color)} rounded-xl p-2`}>
-            <div className="flex gap-2 flex-wrap">
-              {selectedGroup.items.map(item => (
+      {/* Autres catégories */}
+      {groupes.map(grp => (
+        <div key={grp.key} className="flex flex-col items-center min-w-[90px] md:min-w-[120px] snap-start">
+          <button
+            ref={el => btnsRef.current[grp.key] = el}
+            type="button"
+            onClick={() => toggleOpen(grp.key)}
+            className={
+              `relative group focus:outline-none \n              transition-transform active:scale-95 \n              hover:scale-105 ${opened===grp.key ? 'scale-105' : ''}`}
+            aria-label={grp.title}
+          >
+            <span className="absolute inset-0 z-0 rounded-2xl pointer-events-none glass-bg" />
+            <span className="relative z-10 flex items-center justify-center w-20 h-20 md:w-24 md:h-24 rounded-2xl \
+              border border-white/40 bg-white/10 shadow-[0_4px_40px_rgba(0,0,0,0.13)] backdrop-blur-[6px] \
+              group-hover:bg-white/20 transition-colors">
+              {grp.icon}
+            </span>
+          </button>
+          <span className="mt-3 text-base font-bold text-neutral-900 text-center md:text-lg md:font-bold">
+            {grp.title}
+          </span>
+          {opened === grp.key && (
+            <div
+              ref={popinRef}
+              style={{
+                opacity: 1,
+                transform: 'translateY(10px) scale(1)',
+                filter: 'blur(0px)'
+              }}
+              className="mt-4 w-[90vw] max-w-xs md:w-64 md:max-w-[96vw] p-4 rounded-2xl glass-bg backdrop-blur-[7px] \
+                 border border-white/40 shadow-[0_4px_40px_rgba(0,0,0,0.22)] \
+                 flex flex-col items-stretch gap-3 z-20 animate-glassFade"
+            >
+              {grp.items.map(item => (
                 <button
                   key={item.value}
-                  onClick={() => { setSelectedType(item.value); setOpenGroup(null); }}
-                  className={`inline-flex items-center gap-2 px-3 h-9 rounded-xl text-sm whitespace-nowrap border transition-colors ${selectedType===item.value? 'bg-neutral-900 text-white border-neutral-900' : 'bg-white text-neutral-800 border-neutral-200 hover:bg-neutral-50'}`}
+                  className={
+                    `flex items-center gap-3 px-3 py-2 min-w-0 rounded-xl text-left \
+                    bg-white/40 hover:bg-white/60 transition \
+                    ${selectedType === item.value ? 'ring-2 ring-[#4A9B8E] font-bold bg-white/80' : ''}`
+                  }
+                  onClick={() => setSelectedType(item.value)}
                 >
-                  <span className="flex items-center justify-center w-6 h-6 rounded-full bg-neutral-100 text-neutral-700">{item.icon}</span>
-                  <span className="font-medium">{item.name}</span>
-                  <span className={`text-[10px] px-1.5 py-0.5 rounded-full ${colorCls('badge', selectedGroup.color)}`}>{item.count}</span>
+                  <span className="w-7 h-7 flex items-center justify-center">{item.icon}</span>
+                  <span className="break-words whitespace-normal flex-1">{item.name}</span>
+                  <span className="ml-auto text-xs bg-neutral-200/70 rounded px-2 py-0.5 text-neutral-700">
+                    {item.count}
+                  </span>
                 </button>
               ))}
             </div>
-          </div>
+          )}
         </div>
-      )}
+      ))}
+      <style jsx global>{`
+        .glass-bg {
+          background: linear-gradient(135deg, rgba(255,255,255,0.17), rgba(36,36,49,0.30)), rgba(21,19,49,0.26);
+          box-shadow: 0 4px 44px 0 rgba(0,0,0,0.09), inset 0 -1px 6px 0 rgba(255,255,255,0.19);
+        }
+        .glass-bg.rounded-full { border-radius: 9999px; }
+        @keyframes glassFade {
+          from { opacity: 0; transform: translateY(40px) scale(0.95); filter: blur(6px); }
+          to { opacity: 1; transform: translateY(10px) scale(1); filter: blur(0px); }
+        }
+        .animate-glassFade {
+          animation: glassFade 0.30s cubic-bezier(.48,.42,.46,1.14);
+        }
+        .hide-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .scroll-snap-x { scroll-snap-type: x mandatory; }
+        .snap-start { scroll-snap-align: start; }
+      `}</style>
     </div>
   );
 }
@@ -1806,7 +1748,80 @@ function ClientsPageContent() {
         <div className="space-y-4">
           <h2 className="text-[22px] leading-7 md:text-xl font-semibold text-neutral-900 md:text-neutral-800 px-4">Catégories populaires</h2>
           <div className="relative">
-            <CategoryGroups annonces={annonces} selectedType={selectedType} setSelectedType={setSelectedType} />
+            {/* Nouvelle grille GlassIcons */}
+            <GlassCategoriesGrid 
+              groupes={[
+                {
+                  key: 'habitation',
+                  title: 'Habitation',
+                  icon: <IconHome className="w-9 h-9 md:w-12 md:h-12 text-neutral-50" />, 
+                  items: [
+                    { name: 'Appartement', value: 'Appartement', count: annonces.filter(a => a.type === 'Appartement').length, icon: <IconBuilding className="w-5 h-5" /> },
+                    { name: 'Studio', value: 'Studio', count: annonces.filter(a => a.type === 'Studio').length, icon: <IconBed className="w-5 h-5" /> },
+                    { name: 'Chambre', value: 'Chambre', count: annonces.filter(a => a.type === 'Chambre').length, icon: <IconBed className="w-5 h-5" /> },
+                  ],
+                },
+                {
+                  key: 'bureau',
+                  title: 'Bureau',
+                  icon: <IconBriefcase className="w-9 h-9 md:w-12 md:h-12 text-neutral-50" />, 
+                  items: [
+                    { name: 'Bureau individuel', value: 'Bureau individuel', count: annonces.filter(a => a.type === 'Bureau individuel').length, icon: <IconBuilding className="w-5 h-5" /> },
+                    { name: 'Bureau double', value: 'Bureau double', count: annonces.filter(a => a.type === 'Bureau double').length, icon: <IconBuilding className="w-5 h-5" /> },
+                    { name: 'Bureau 3 pièces', value: 'Bureau 3 pièces', count: annonces.filter(a => a.type === 'Bureau 3 pièces').length, icon: <IconBuilding className="w-5 h-5" /> },
+                    { name: 'Bureau 4 pièces et plus', value: 'Bureau 4 pièces et plus', count: annonces.filter(a => a.type === 'Bureau 4 pièces et plus').length, icon: <IconBuilding className="w-5 h-5" /> },
+                  ],
+                },
+                {
+                  key: 'magasin',
+                  title: 'Magasin',
+                  icon: <IconStore className="w-9 h-9 md:w-12 md:h-12 text-neutral-50" />, 
+                  items: [
+                    { name: 'Magasin simple', value: 'Magasin simple', count: annonces.filter(a => a.type === 'Magasin simple').length, icon: <IconStore className="w-5 h-5" /> },
+                    { name: 'Magasin en mezzanine', value: 'Magasin en mezzanine', count: annonces.filter(a => a.type === 'Magasin en mezzanine').length, icon: <IconStoreMezz className="w-5 h-5" /> },
+                  ],
+                },
+                {
+                  key: 'voiture',
+                  title: 'Voiture',
+                  icon: <IconCar className="w-9 h-9 md:w-12 md:h-12 text-neutral-50" />, 
+                  items: [
+                    { name: 'Berline', value: 'Berline', count: annonces.filter(a => a.type === 'Berline').length, icon: <IconCar className="w-5 h-5" /> },
+                    { name: 'Pickup', value: 'Pickup', count: annonces.filter(a => a.type === 'Pickup').length, icon: <IconPickup className="w-5 h-5" /> },
+                    { name: 'SUV', value: 'SUV', count: annonces.filter(a => a.type === 'SUV').length, icon: <IconSUV className="w-5 h-5" /> },
+                  ],
+                },
+                {
+                  key: 'engin',
+                  title: 'Engin',
+                  icon: <IconHelmet className="w-9 h-9 md:w-12 md:h-12 text-neutral-50" />, 
+                  items: [
+                    { name: 'Engin de chantier', value: 'Engin de chantier', count: annonces.filter(a => a.type === 'Engin de chantier').length, icon: <IconHelmet className="w-5 h-5" /> },
+                    { name: 'Engin de manutention', value: 'Engin de manutention', count: annonces.filter(a => a.type === 'Engin de manutention').length, icon: <IconForklift className="w-5 h-5" /> },
+                    { name: "Engin d'élevage", value: "Engin d'élevage", count: annonces.filter(a => a.type === "Engin d'élevage").length, icon: <IconBarn className="w-5 h-5" /> },
+                    { name: 'Engin de mine', value: 'Engin de mine', count: annonces.filter(a => a.type === 'Engin de mine').length, icon: <IconPickaxe className="w-5 h-5" /> },
+                    { name: 'Engin agricole', value: 'Engin agricole', count: annonces.filter(a => a.type === 'Engin agricole').length, icon: <IconTractor className="w-5 h-5" /> },
+                  ],
+                },
+                {
+                  key: 'camion',
+                  title: 'Camion',
+                  icon: <IconTruck className="w-9 h-9 md:w-12 md:h-12 text-neutral-50" />, 
+                  items: [
+                    { name: 'Camion agricole', value: 'Camion agricole', count: annonces.filter(a => a.type === 'Camion agricole').length, icon: <IconTruck className="w-5 h-5" /> },
+                    { name: 'Camion porte-voitures', value: 'Camion porte-voitures', count: annonces.filter(a => a.type === 'Camion porte-voitures').length, icon: <IconTruck className="w-5 h-5" /> },
+                    { name: 'Camion de pompier', value: 'Camion de pompier', count: annonces.filter(a => a.type === 'Camion de pompier').length, icon: <IconTruck className="w-5 h-5" /> },
+                    { name: 'Camion poubelle', value: 'Camion poubelle', count: annonces.filter(a => a.type === 'Camion poubelle').length, icon: <IconTruck className="w-5 h-5" /> },
+                    { name: 'Camion de chantier', value: 'Camion de chantier', count: annonces.filter(a => a.type === 'Camion de chantier').length, icon: <IconTruck className="w-5 h-5" /> },
+                    { name: 'Camion malaxeur', value: 'Camion malaxeur', count: annonces.filter(a => a.type === 'Camion malaxeur').length, icon: <IconTruck className="w-5 h-5" /> },
+                    { name: 'Camion isotherme', value: 'Camion isotherme', count: annonces.filter(a => a.type === 'Camion isotherme').length, icon: <IconTruck className="w-5 h-5" /> },
+                    { name: 'Camion de livraison urbaine', value: 'Camion de livraison urbaine', count: annonces.filter(a => a.type === 'Camion de livraison urbaine').length, icon: <IconTruck className="w-5 h-5" /> },
+                  ],
+                },
+              ]}
+              selectedType={selectedType}
+              setSelectedType={setSelectedType}
+            />
           </div>
         </div>
 

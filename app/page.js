@@ -217,19 +217,19 @@ export default function Home() {
       </section>
 
       {/* COMMENT ÇA MARCHE */}
-      <section className="px-4 sm:px-6 py-2 sm:py-4 md:py-6 bg-gradient-to-br from-neutral-50 to-white overflow-hidden">
+      <section className="px-4 sm:px-6 py-12 sm:py-16 md:py-20 bg-gradient-to-br from-neutral-50 to-white overflow-hidden">
         <div className="max-w-6xl mx-auto">
           <div 
             data-reveal
             id="services-title"
-            className={`text-center mb-2 sm:mb-3 md:mb-4 transition-all duration-1000 ${isVisible['services-title'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
+            className={`text-center mb-8 sm:mb-10 md:mb-12 transition-all duration-1000 ${isVisible['services-title'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
           >
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-neutral-900 mb-1 sm:mb-2">Comment ça marche</h2>
-            <p className="text-sm sm:text-base text-neutral-600 max-w-2xl mx-auto px-4">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-neutral-900 mb-3 sm:mb-4">Comment ça marche</h2>
+            <p className="text-base sm:text-lg text-neutral-600 max-w-2xl mx-auto px-4">
               Suivez trois étapes simples pour trouver et réserver votre prochain bien en toute sérénité.
             </p>
           </div>
-          <div className="max-w-5xl mx-auto px-4 md:px-8 -mt-2 -mb-2">
+          <div className="max-w-5xl mx-auto px-4 md:px-8 mt-4 mb-4">
             <ScrollStack 
               useWindowScroll={true} 
               itemDistance={80} 

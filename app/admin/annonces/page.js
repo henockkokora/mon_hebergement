@@ -5,6 +5,7 @@ import apiService from '@/services/api';
 import { toast } from 'react-hot-toast';
 import Image from 'next/image';
 import { getImageUrl } from '@/utils/imageUtils';
+import ConfirmModal from '@/components/ConfirmModal';
 
 function StatusBadge({ status }) {
   const map = {
@@ -30,6 +31,8 @@ export default function AdminAds() {
   const [mpAnnonce, setMpAnnonce] = useState(null);
   const [mpModelId, setMpModelId] = useState('');
   const [mpShareUrl, setMpShareUrl] = useState('');
+  const [confirmOpen, setConfirmOpen] = useState(false);
+  const [annonceToDelete, setAnnonceToDelete] = useState(null);
 
   const fetchAds = async (query = q, st = status, own = owner) => {
     try {
@@ -161,7 +164,15 @@ export default function AdminAds() {
                       >
                         {a.occupee ? 'Marquer comme disponible' : 'Marquer comme occupée'}
                       </button>
-                      <button className="chip-glass px-3 py-1">🗑️ Supprimer</button>
+                      <button 
+                        className="chip-glass px-3 py-1"
+                        onClick={() => {
+                          setAnnonceToDelete(a._id);
+                          setConfirmOpen(true);
+                        }}
+                      >
+                        🗑️ Supprimer
+                      </button>
                     </div>
                   </td>
                 </tr>
@@ -226,6 +237,32 @@ export default function AdminAds() {
           </div>
         </div>
       )}
+
+      <ConfirmModal
+        open={confirmOpen}
+        title="Supprimer l'annonce"
+        description="Cette action est définitive. Voulez-vous supprimer cette annonce ?"
+        confirmText="Supprimer"
+        cancelText="Annuler"
+        onCancel={() => {
+          setConfirmOpen(false);
+          setAnnonceToDelete(null);
+        }}
+        onConfirm={async () => {
+          try {
+            if (!annonceToDelete) return;
+            await apiService.deleteAnnonce(annonceToDelete);
+            setItems(prev => prev.filter(ann => ann._id !== annonceToDelete));
+            toast.success('Annonce supprimée avec succès');
+            setTotal(prev => prev - 1);
+          } catch (e) {
+            toast.error(e?.message || 'Erreur lors de la suppression de l\'annonce');
+          } finally {
+            setConfirmOpen(false);
+            setAnnonceToDelete(null);
+          }
+        }}
+      />
     </div>
   );
 }

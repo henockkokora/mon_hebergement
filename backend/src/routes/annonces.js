@@ -260,10 +260,14 @@ router.post('/:id/view', async (req, res, next) => {
 // DELETE /api/annonces/:id - Supprimer une annonce
 router.delete('/:id', authRequired, async (req, res, next) => {
   try {
-    const annonce = await Annonce.findOneAndDelete({
-      _id: req.params.id,
-      proprietaireId: req.user.id
-    });
+    // Si l'utilisateur est admin, on peut supprimer n'importe quelle annonce
+    // Sinon, on vérifie que l'annonce appartient au propriétaire
+    const query = { _id: req.params.id };
+    if (req.user.role !== 'admin') {
+      query.proprietaireId = req.user.id;
+    }
+
+    const annonce = await Annonce.findOneAndDelete(query);
 
     if (!annonce) {
       return res.status(404).json({

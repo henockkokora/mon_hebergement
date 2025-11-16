@@ -6,6 +6,18 @@ import dynamic from 'next/dynamic';
 import ScrollStack, { ScrollStackItem } from './components/ScrollStack';
 const DynamicStack = dynamic(() => import('./components/Stack'), { ssr: false });
 
+// Hook utilitaire pour détecter le format mobile
+function useIsMobile(breakpoint = 768) {
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < breakpoint);
+    check();
+    window.addEventListener('resize', check);
+    return () => window.removeEventListener('resize', check);
+  }, [breakpoint]);
+  return isMobile;
+}
+
 // Icônes SVG
 function IconRocket({ className = "w-6 h-6" }) {
   return (
@@ -230,86 +242,164 @@ export default function Home() {
             </p>
           </div>
           <div className="max-w-5xl mx-auto px-4 md:px-8 mt-4 mb-4">
-            <ScrollStack 
-              useWindowScroll={true} 
-              itemDistance={80} 
-              itemStackDistance={30} 
-              baseScale={0.88}
-              itemScale={0.02}
-              stackPosition="20%"
-            >
-              <ScrollStackItem itemClassName="bg-gradient-to-br from-[#4A9B8E] via-[#3a8b7e] to-[#2a7b6e] text-white">
-                <div className="flex flex-col h-full justify-center">
-                  <div className="flex items-center gap-4 mb-6">
-                    <div className="flex h-16 w-16 sm:h-20 sm:w-20 items-center justify-center rounded-xl sm:rounded-2xl bg-white/20 backdrop-blur-sm text-white shadow-lg">
-                      <IconRocket className="w-8 h-8 sm:w-10 sm:h-10" />
-                    </div>
-                    <div className="text-6xl md:text-7xl font-bold opacity-90">1</div>
-                  </div>
-                  <h3 className="text-2xl md:text-3xl font-bold mb-4">Créez votre compte</h3>
-                  <p className="text-base md:text-xl leading-relaxed opacity-95">
-                    Inscrivez-vous ou connectez-vous pour accéder à toutes nos fonctionnalités. C'est rapide, simple et gratuit.
-                  </p>
-                  <Link 
-                    href="/clients/inscription"
-                    className="mt-6 inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-white/20 backdrop-blur-sm text-white font-semibold hover:bg-white/30 transition-all duration-300 w-fit"
+            {(function(){
+              const isMobile = useIsMobile();
+              if (!isMobile) {
+                // Version ScrollStack desktop/tablette
+                return (
+                  <ScrollStack 
+                    useWindowScroll={true} 
+                    itemDistance={80} 
+                    itemStackDistance={30} 
+                    baseScale={0.88}
+                    itemScale={0.02}
+                    stackPosition="20%"
                   >
-                    S'inscrire maintenant
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
-                    </svg>
-                  </Link>
-                </div>
-              </ScrollStackItem>
-              
-              <ScrollStackItem itemClassName="bg-white/10 backdrop-blur-md border border-white/20 text-neutral-900">
-                <div className="flex flex-col h-full justify-center">
-                  <div className="flex items-center gap-4 mb-6">
-                    <div className="flex h-16 w-16 sm:h-20 sm:w-20 items-center justify-center rounded-xl sm:rounded-2xl bg-[#4A9B8E]/20 backdrop-blur-sm text-[#4A9B8E] shadow-lg">
-                      <IconSearch className="w-8 h-8 sm:w-10 sm:h-10" />
+                    <ScrollStackItem itemClassName="bg-gradient-to-br from-[#4A9B8E] via-[#3a8b7e] to-[#2a7b6e] text-white">
+                      <div className="flex flex-col h-full justify-center">
+                        <div className="flex items-center gap-4 mb-6">
+                          <div className="flex h-16 w-16 sm:h-20 sm:w-20 items-center justify-center rounded-xl sm:rounded-2xl bg-white/20 backdrop-blur-sm text-white shadow-lg">
+                            <IconRocket className="w-8 h-8 sm:w-10 sm:h-10" />
+                          </div>
+                          <div className="text-6xl md:text-7xl font-bold opacity-90">1</div>
+                        </div>
+                        <h3 className="text-2xl md:text-3xl font-bold mb-4">Créez votre compte</h3>
+                        <p className="text-base md:text-xl leading-relaxed opacity-95">
+                          Inscrivez-vous ou connectez-vous pour accéder à toutes nos fonctionnalités. C'est rapide, simple et gratuit.
+                        </p>
+                        <Link 
+                          href="/clients/inscription"
+                          className="mt-6 inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-white/20 backdrop-blur-sm text-white font-semibold hover:bg-white/30 transition-all duration-300 w-fit"
+                        >
+                          S'inscrire maintenant
+                          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
+                          </svg>
+                        </Link>
+                      </div>
+                    </ScrollStackItem>
+                    <ScrollStackItem itemClassName="bg-white/10 backdrop-blur-md border border-white/20 text-neutral-900">
+                      <div className="flex flex-col h-full justify-center">
+                        <div className="flex items-center gap-4 mb-6">
+                          <div className="flex h-16 w-16 sm:h-20 sm:w-20 items-center justify-center rounded-xl sm:rounded-2xl bg-[#4A9B8E]/20 backdrop-blur-sm text-[#4A9B8E] shadow-lg">
+                            <IconSearch className="w-8 h-8 sm:w-10 sm:h-10" />
+                          </div>
+                          <div className="text-6xl md:text-7xl font-bold text-[#4A9B8E] opacity-90">2</div>
+                        </div>
+                        <h3 className="text-2xl md:text-3xl font-bold mb-4 text-neutral-900">Explorez nos biens</h3>
+                        <p className="text-base md:text-xl leading-relaxed text-neutral-700">
+                          Parcourez nos annonces détaillées et découvrez chaque bien en visite virtuelle. Utilisez nos filtres pour trouver exactement ce que vous cherchez.
+                        </p>
+                        <Link 
+                          href="/clients"
+                          className="mt-6 inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-[#4A9B8E]/20 backdrop-blur-sm text-[#4A9B8E] font-semibold hover:bg-[#4A9B8E]/30 transition-all duration-300 w-fit"
+                        >
+                          Découvrir les biens
+                          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
+                          </svg>
+                        </Link>
+                      </div>
+                    </ScrollStackItem>
+                    <ScrollStackItem itemClassName="bg-gradient-to-br from-[#4A9B8E] via-[#3a8b7e] to-[#2a7b6e] text-white">
+                      <div className="flex flex-col h-full justify-center">
+                        <div className="flex items-center gap-4 mb-6">
+                          <div className="flex h-16 w-16 sm:h-20 sm:w-20 items-center justify-center rounded-xl sm:rounded-2xl bg-white/20 backdrop-blur-sm text-white shadow-lg">
+                            <IconHome className="w-8 h-8 sm:w-10 sm:h-10" />
+                          </div>
+                          <div className="text-6xl md:text-7xl font-bold opacity-90">3</div>
+                        </div>
+                        <h3 className="text-2xl md:text-3xl font-bold mb-4">Visitez et réservez</h3>
+                        <p className="text-base md:text-xl leading-relaxed opacity-95">
+                          Planifiez une visite, contactez le propriétaire via notre messagerie intégrée et finalisez votre réservation en toute simplicité.
+                        </p>
+                        <Link 
+                          href="/clients"
+                          className="mt-6 inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-white/20 backdrop-blur-sm text-white font-semibold hover:bg-white/30 transition-all duration-300 w-fit"
+                        >
+                          Commencer la recherche
+                          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
+                          </svg>
+                        </Link>
+                      </div>
+                    </ScrollStackItem>
+                  </ScrollStack>
+                );
+              } else {
+                // Version mobile sans effet pile : simple colonne, ultra lisible et rapide !
+                return (
+                  <div className="flex flex-col gap-8">
+                    {/* Carte 1 */}
+                    <div className="rounded-3xl shadow-[0_0_32px_rgba(74,155,142,0.17)] bg-gradient-to-br from-[#4A9B8E] via-[#3a8b7e] to-[#2a7b6e] text-white p-6">
+                      <div className="flex items-center gap-3 mb-5">
+                        <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-white/20 backdrop-blur-sm">
+                          <IconRocket className="w-8 h-8" />
+                        </div>
+                        <div className="text-4xl font-bold opacity-90">1</div>
+                      </div>
+                      <h3 className="text-xl font-bold mb-3">Créez votre compte</h3>
+                      <p className="text-sm leading-relaxed opacity-95 mb-4">
+                        Inscrivez-vous ou connectez-vous pour accéder à toutes nos fonctionnalités. C'est rapide, simple et gratuit.
+                      </p>
+                      <Link 
+                        href="/clients/inscription"
+                        className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white/20 font-semibold hover:bg-white/30 transition-all duration-300 text-white text-[15px] w-fit"
+                      >
+                        S'inscrire maintenant
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
+                        </svg>
+                      </Link>
                     </div>
-                    <div className="text-6xl md:text-7xl font-bold text-[#4A9B8E] opacity-90">2</div>
-                  </div>
-                  <h3 className="text-2xl md:text-3xl font-bold mb-4 text-neutral-900">Explorez nos biens</h3>
-                  <p className="text-base md:text-xl leading-relaxed text-neutral-700">
-                    Parcourez nos annonces détaillées et découvrez chaque bien en visite virtuelle. Utilisez nos filtres pour trouver exactement ce que vous cherchez.
-                  </p>
-                  <Link 
-                    href="/clients"
-                    className="mt-6 inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-[#4A9B8E]/20 backdrop-blur-sm text-[#4A9B8E] font-semibold hover:bg-[#4A9B8E]/30 transition-all duration-300 w-fit"
-                  >
-                    Découvrir les biens
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
-                    </svg>
-                  </Link>
-                </div>
-              </ScrollStackItem>
-              
-              <ScrollStackItem itemClassName="bg-gradient-to-br from-[#4A9B8E] via-[#3a8b7e] to-[#2a7b6e] text-white">
-                <div className="flex flex-col h-full justify-center">
-                  <div className="flex items-center gap-4 mb-6">
-                    <div className="flex h-16 w-16 sm:h-20 sm:w-20 items-center justify-center rounded-xl sm:rounded-2xl bg-white/20 backdrop-blur-sm text-white shadow-lg">
-                      <IconHome className="w-8 h-8 sm:w-10 sm:h-10" />
+                    {/* Carte 2 */}
+                    <div className="rounded-3xl shadow-[0_0_32px_rgba(74,155,142,0.09)] bg-white/10 backdrop-blur-md border border-white/20 text-neutral-900 p-6">
+                      <div className="flex items-center gap-3 mb-5">
+                        <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-[#4A9B8E]/20 backdrop-blur-sm">
+                          <IconSearch className="w-8 h-8 text-[#4A9B8E]" />
+                        </div>
+                        <div className="text-4xl font-bold text-[#4A9B8E] opacity-90">2</div>
+                      </div>
+                      <h3 className="text-xl font-bold mb-3 text-neutral-900">Explorez nos biens</h3>
+                      <p className="text-sm leading-relaxed text-neutral-700 mb-4">
+                        Parcourez nos annonces détaillées et découvrez chaque bien en visite virtuelle. Utilisez nos filtres pour trouver exactement ce que vous cherchez.
+                      </p>
+                      <Link 
+                        href="/clients"
+                        className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#4A9B8E]/20 text-[#4A9B8E] font-semibold hover:bg-[#4A9B8E]/30 transition-all duration-300 text-[15px] w-fit"
+                      >
+                        Découvrir les biens
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
+                        </svg>
+                      </Link>
                     </div>
-                    <div className="text-6xl md:text-7xl font-bold opacity-90">3</div>
+                    {/* Carte 3 */}
+                    <div className="rounded-3xl shadow-[0_0_32px_rgba(74,155,142,0.17)] bg-gradient-to-br from-[#4A9B8E] via-[#3a8b7e] to-[#2a7b6e] text-white p-6">
+                      <div className="flex items-center gap-3 mb-5">
+                        <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-white/20 backdrop-blur-sm">
+                          <IconHome className="w-8 h-8" />
+                        </div>
+                        <div className="text-4xl font-bold opacity-90">3</div>
+                      </div>
+                      <h3 className="text-xl font-bold mb-3">Visitez et réservez</h3>
+                      <p className="text-sm leading-relaxed opacity-95 mb-4">
+                        Planifiez une visite, contactez le propriétaire via notre messagerie intégrée et finalisez votre réservation en toute simplicité.
+                      </p>
+                      <Link 
+                        href="/clients"
+                        className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white/20 font-semibold hover:bg-white/30 transition-all duration-300 text-white text-[15px] w-fit"
+                      >
+                        Commencer la recherche
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
+                        </svg>
+                      </Link>
+                    </div>
                   </div>
-                  <h3 className="text-2xl md:text-3xl font-bold mb-4">Visitez et réservez</h3>
-                  <p className="text-base md:text-xl leading-relaxed opacity-95">
-                    Planifiez une visite, contactez le propriétaire via notre messagerie intégrée et finalisez votre réservation en toute simplicité.
-                  </p>
-                  <Link 
-                    href="/clients"
-                    className="mt-6 inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-white/20 backdrop-blur-sm text-white font-semibold hover:bg-white/30 transition-all duration-300 w-fit"
-                  >
-                    Commencer la recherche
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
-                    </svg>
-                  </Link>
-                </div>
-              </ScrollStackItem>
-            </ScrollStack>
+                );
+              }
+            })()}
           </div>
         </div>
       </section>

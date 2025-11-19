@@ -1750,7 +1750,18 @@ function ClientsPageContent() {
         
         {/* Section Catégories */}
         <div className="space-y-4">
-          <h2 className="text-[22px] leading-7 md:text-xl font-semibold text-neutral-900 md:text-neutral-800 px-4">Catégories populaires</h2>
+          <div className="px-4">
+            <h2 className="text-[22px] leading-7 md:text-xl font-semibold text-neutral-900 md:text-neutral-800">Catégories populaires</h2>
+            <p className="text-sm text-neutral-500 mt-1 flex items-center gap-1">
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M7 16l-4-4m0 0l4-4m-4 4h18" />
+              </svg>
+              <span>Défilez pour voir plus de catégories</span>
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </p>
+          </div>
           <div className="relative">
             {/* Nouvelle grille GlassIcons */}
             <GlassCategoriesGrid 

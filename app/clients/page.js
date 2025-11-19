@@ -1,4 +1,5 @@
 "use client";
+import React from 'react';
 
 import { useRef, useState, useEffect, useLayoutEffect, useMemo, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -1180,9 +1181,9 @@ function GlassCategoriesGrid({ groupes, selectedType, setSelectedType }) {
   const toggleOpen = (key) => setOpened(opened === key ? null : key);
 
   return (
-    <div ref={scrollRef} className="w-full flex flex-row gap-x-8 overflow-x-auto hide-scrollbar px-2 py-6 items-start justify-start scroll-snap-x">
+    <div ref={scrollRef} className="w-full flex flex-row gap-x-6 overflow-x-auto hide-scrollbar px-2 py-6 items-start justify-start scroll-snap-x">
       {/* Bouton "Tous" en premier */}
-      <div className="flex flex-col items-center min-w-[90px] md:min-w-[120px] snap-start">
+      <div className="flex flex-col items-center min-w-[90px] md:min-w-[100px] snap-start">
         <button
           type="button"
           onClick={() => setSelectedType('Tous')}
@@ -1197,29 +1198,32 @@ function GlassCategoriesGrid({ groupes, selectedType, setSelectedType }) {
           }}
         >
           <span className="absolute inset-0 z-0 rounded-full pointer-events-none glass-bg" />
-          <span className="relative z-10 flex items-center justify-center w-20 h-20 md:w-24 md:h-24 rounded-full border border-white/40 bg-white/10 shadow-[0_4px_40px_rgba(0,0,0,0.13)] backdrop-blur-[6px] group-hover:bg-white/20 transition-colors">
+          <span className="relative z-10 flex items-center justify-center w-16 h-16 md:w-20 md:h-20 rounded-full border border-white/40 bg-white/10 shadow-[0_4px_40px_rgba(0,0,0,0.13)] backdrop-blur-[6px] group-hover:bg-white/20 transition-colors">
             {/* Icône loupe générique */}
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-9 h-9 md:w-12 md:h-12 text-neutral-600"><circle cx="11" cy="11" r="7" /><path d="M21 21l-3.8-3.8" /></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-8 h-8 md:w-10 md:h-10 text-neutral-600"><circle cx="11" cy="11" r="7" /><path d="M21 21l-3.8-3.8" /></svg>
           </span>
         </button>
         <span className="mt-3 text-base font-bold text-neutral-900 text-center md:text-lg md:font-bold">Tous</span>
       </div>
       {/* Autres catégories */}
       {groupes.map(grp => (
-        <div key={grp.key} className="flex flex-col items-center min-w-[90px] md:min-w-[120px] snap-start">
+        <div key={grp.key} className="flex flex-col items-center min-w-[90px] md:min-w-[100px] snap-start">
           <button
             ref={el => btnsRef.current[grp.key] = el}
             type="button"
             onClick={() => toggleOpen(grp.key)}
             className={
-              `relative group focus:outline-none \n              transition-transform active:scale-95 \n              hover:scale-105 ${opened===grp.key ? 'scale-105' : ''}`}
+              `relative group focus:outline-none 
+              transition-transform active:scale-95 
+              hover:scale-105 ${opened===grp.key ? 'scale-105' : ''}`}
             aria-label={grp.title}
           >
             <span className="absolute inset-0 z-0 rounded-2xl pointer-events-none glass-bg" />
-            <span className="relative z-10 flex items-center justify-center w-20 h-20 md:w-24 md:h-24 rounded-2xl \
+            <span className="relative z-10 flex items-center justify-center w-16 h-16 md:w-20 md:h-20 rounded-2xl \
               border border-white/40 bg-white/10 shadow-[0_4px_40px_rgba(0,0,0,0.13)] backdrop-blur-[6px] \
               group-hover:bg-white/20 transition-colors">
-              {grp.icon}
+              {/* icône de la catégorie */}
+              {grp.icon && typeof grp.icon === 'object' && React.cloneElement(grp.icon, { className: 'w-8 h-8 md:w-10 md:h-10 text-neutral-50' })}
             </span>
           </button>
           <span className="mt-3 text-base font-bold text-neutral-900 text-center md:text-lg md:font-bold">

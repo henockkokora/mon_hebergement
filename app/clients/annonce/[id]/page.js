@@ -764,7 +764,7 @@ export default function AnnonceDetails() {
           }
         }}
       >
-        Faire une visite virtuelle
+        Visiter
       </button>
     </div>
   </div>

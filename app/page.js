@@ -470,72 +470,95 @@ export default function Home() {
               Découvrez ce que nos clients pensent de leur expérience avec GELocation
             </p>
           </div>
-          <div className="flex justify-center py-8">
-             <DynamicStack
-               randomRotation={true}
-               sensitivity={160}
-               cardDimensions={{ width: 340, height: 340 }}
-               cardsData={[
-                     { id: 1, content: (
-                       <div className="flex flex-col h-full w-full p-6 bg-white rounded-2xl border-2 border-neutral-200 shadow-lg">
-                         <div className="flex items-center justify-center mb-4 sm:mb-6">
-                           <img src="/photo1.jpg" alt="Sarah Kouassi" className="h-16 w-16 sm:h-20 sm:w-20 rounded-full object-cover border-2 sm:border-4 border-[#4A9B8E]/20" loading="lazy" />
-                         </div>
-                         <div className="flex justify-center mb-3 sm:mb-4">
-                           {[...Array(5)].map((_, idx) => (
-                             <IconStar key={idx} className="w-4 h-4 sm:w-5 sm:h-5 text-[#4A9B8E]" />
-                           ))}
-                         </div>
-                         <p className="text-sm sm:text-base text-neutral-700 italic leading-relaxed mb-4 sm:mb-6 text-center">
-                           "Service rapide et fiable. La visite virtuelle m'a fait gagner beaucoup de temps. J'ai trouvé mon bien idéal sans me déplacer !"
-                         </p>
-                         <div className="text-center mt-auto">
-                           <div className="font-bold text-sm sm:text-base text-neutral-900">Sarah Kouassi</div>
-                           <div className="text-xs sm:text-sm text-neutral-600">Client</div>
-                         </div>
-                       </div>
-                     ) },
-                     { id: 2, content: (
-                       <div className="flex flex-col h-full w-full p-6 bg-white rounded-2xl border-2 border-neutral-200 shadow-lg">
-                         <div className="flex items-center justify-center mb-4 sm:mb-6">
-                           <img src="/photo2.jpg" alt="Jean-Pierre Diabaté" className="h-16 w-16 sm:h-20 sm:w-20 rounded-full object-cover border-2 sm:border-4 border-[#4A9B8E]/20" loading="lazy" />
-                         </div>
-                         <div className="flex justify-center mb-3 sm:mb-4">
-                           {[...Array(5)].map((_, idx) => (
-                             <IconStar key={idx} className="w-4 h-4 sm:w-5 sm:h-5 text-[#4A9B8E]" />
-                           ))}
-                         </div>
-                         <p className="text-sm sm:text-base text-neutral-700 italic leading-relaxed mb-4 sm:mb-6 text-center">
-                           'Excellente plateforme pour mettre en location mon bien. Les visites virtuelles sont de qualité et les clients sont sérieux.'
-                         </p>
-                         <div className="text-center mt-auto">
-                           <div className="font-bold text-sm sm:text-base text-neutral-900">Jean-Pierre Diabaté</div>
-                           <div className="text-xs sm:text-sm text-neutral-600">Propriétaire</div>
-                         </div>
-                       </div>
-                     ) },
-                     { id: 3, content: (
-                       <div className="flex flex-col h-full w-full p-6 bg-white rounded-2xl border-2 border-neutral-200 shadow-lg">
-                         <div className="flex items-center justify-center mb-4 sm:mb-6">
-                           <img src="/photo3.jpg" alt="Aminata Traoré" className="h-16 w-16 sm:h-20 sm:w-20 rounded-full object-cover border-2 sm:border-4 border-[#4A9B8E]/20" loading="lazy" />
-                         </div>
-                         <div className="flex justify-center mb-3 sm:mb-4">
-                           {[...Array(5)].map((_, idx) => (
-                             <IconStar key={idx} className="w-4 h-4 sm:w-5 sm:h-5 text-[#4A9B8E]" />
-                           ))}
-                         </div>
-                         <p className="text-sm sm:text-base text-neutral-700 italic leading-relaxed mb-4 sm:mb-6 text-center">
-                           "Je recommande vivement ! Le processus est simple, transparent et efficace. Mon nouveau bien correspond parfaitement à mes attentes."
-                         </p>
-                         <div className="text-center mt-auto">
-                           <div className="font-bold text-sm sm:text-base text-neutral-900">Aminata Traoré</div>
-                           <div className="text-xs sm:text-sm text-neutral-600">Client</div>
-                         </div>
-                       </div>
-                     ) },
-                   ]}
-             />
-           </div>
+          {/* Message UX mobile : swipe horizontal témoignages */}
+          {(function(){
+            const isMobile = typeof window !== 'undefined' ? window.innerWidth < 768 : false;
+            if(isMobile) {
+              return (
+                <div className="text-xs text-neutral-500 text-center mb-2 flex items-center justify-center gap-1 animate-bounce-x">
+                  <span>Faites défiler horizontalement pour lire d'autres témoignages</span>
+                  <span aria-hidden>➔</span>
+                </div>
+              );
+            }
+          })()}
+          {/* Mobile : carrousel, Desktop : Stack animé */}
+          {(function(){
+            const isMobile = useIsMobile();
+            const testimonials = [
+              (<div className="flex flex-col h-full w-full p-6 bg-white rounded-2xl border-2 border-neutral-200 shadow-lg">
+                <div className="flex items-center justify-center mb-4 sm:mb-6">
+                  <img src="/photo1.jpg" alt="Sarah Kouassi" className="h-16 w-16 sm:h-20 sm:w-20 rounded-full object-cover border-2 sm:border-4 border-[#4A9B8E]/20" loading="lazy" />
+                </div>
+                <div className="flex justify-center mb-3 sm:mb-4">
+                  {[...Array(5)].map((_, idx) => (
+                    <IconStar key={idx} className="w-4 h-4 sm:w-5 sm:h-5 text-[#4A9B8E]" />
+                  ))}
+                </div>
+                <p className="text-sm sm:text-base text-neutral-700 italic leading-relaxed mb-4 sm:mb-6 text-center">
+                  "Service rapide et fiable. La visite virtuelle m'a fait gagner beaucoup de temps. J'ai trouvé mon bien idéal sans me déplacer !"
+                </p>
+                <div className="text-center mt-auto">
+                  <div className="font-bold text-sm sm:text-base text-neutral-900">Sarah Kouassi</div>
+                  <div className="text-xs sm:text-sm text-neutral-600">Client</div>
+                </div>
+              </div>),
+              (<div className="flex flex-col h-full w-full p-6 bg-white rounded-2xl border-2 border-neutral-200 shadow-lg">
+                <div className="flex items-center justify-center mb-4 sm:mb-6">
+                  <img src="/photo2.jpg" alt="Jean-Pierre Diabaté" className="h-16 w-16 sm:h-20 sm:w-20 rounded-full object-cover border-2 sm:border-4 border-[#4A9B8E]/20" loading="lazy" />
+                </div>
+                <div className="flex justify-center mb-3 sm:mb-4">
+                  {[...Array(5)].map((_, idx) => (
+                    <IconStar key={idx} className="w-4 h-4 sm:w-5 sm:h-5 text-[#4A9B8E]" />
+                  ))}
+                </div>
+                <p className="text-sm sm:text-base text-neutral-700 italic leading-relaxed mb-4 sm:mb-6 text-center">
+                  'Excellente plateforme pour mettre en location mon bien. Les visites virtuelles sont de qualité et les clients sont sérieux.'
+                </p>
+                <div className="text-center mt-auto">
+                  <div className="font-bold text-sm sm:text-base text-neutral-900">Jean-Pierre Diabaté</div>
+                  <div className="text-xs sm:text-sm text-neutral-600">Propriétaire</div>
+                </div>
+              </div>),
+              (<div className="flex flex-col h-full w-full p-6 bg-white rounded-2xl border-2 border-neutral-200 shadow-lg">
+                <div className="flex items-center justify-center mb-4 sm:mb-6">
+                  <img src="/photo3.jpg" alt="Aminata Traoré" className="h-16 w-16 sm:h-20 sm:w-20 rounded-full object-cover border-2 sm:border-4 border-[#4A9B8E]/20" loading="lazy" />
+                </div>
+                <div className="flex justify-center mb-3 sm:mb-4">
+                  {[...Array(5)].map((_, idx) => (
+                    <IconStar key={idx} className="w-4 h-4 sm:w-5 sm:h-5 text-[#4A9B8E]" />
+                  ))}
+                </div>
+                <p className="text-sm sm:text-base text-neutral-700 italic leading-relaxed mb-4 sm:mb-6 text-center">
+                  "Je recommande vivement ! Le processus est simple, transparent et efficace. Mon nouveau bien correspond parfaitement à mes attentes."
+                </p>
+                <div className="text-center mt-auto">
+                  <div className="font-bold text-sm sm:text-base text-neutral-900">Aminata Traoré</div>
+                  <div className="text-xs sm:text-sm text-neutral-600">Client</div>
+                </div>
+              </div>),
+            ];
+            if (isMobile) {
+              return (
+                <div className="flex flex-row gap-6 overflow-x-auto hide-scrollbar snap-x w-full py-2 px-1 max-w-full mt-10">
+                  {testimonials.map((content, idx) => (
+                    <div key={idx} className="snap-center min-w-[260px] max-w-[300px] flex-shrink-0">{content}</div>
+                  ))}
+                </div>
+              );
+            }
+            // Version desktop stack (DynamicStack conservé)
+            return (
+              <div className="flex justify-center py-8">
+                <DynamicStack
+                  randomRotation={true}
+                  sensitivity={160}
+                  cardDimensions={{ width: 340, height: 340 }}
+                  cardsData={testimonials.map((content, idx) => ({ id: idx + 1, content }))}
+                />
+              </div>
+            );
+          })()}
         </div>
       </section>
 

@@ -529,7 +529,8 @@ function Header({
           </a>
           {isLoggedIn ? (
             <>
-              <div className="relative inline-block">
+              {/* Bouton Messagerie commenté temporairement */}
+              {/* <div className="relative inline-block">
                 <a href="/clients/messages" className="flex items-center gap-2 pb-2 relative">
                   <div className="relative">
                     <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
@@ -543,7 +544,7 @@ function Header({
                   </div>
                   <span className="font-medium">Messagerie</span>
                 </a>
-              </div>
+              </div> */}
               <a href="/clients/profil" className="flex items-center gap-2 pb-2">
                 <IconUser className="w-4 h-4" />
                 <span className="font-medium">Mon compte</span>

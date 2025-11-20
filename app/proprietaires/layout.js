@@ -140,7 +140,8 @@ export default function ProprietairesLayout({ children }) {
               <a className="px-3 py-1.5 rounded-full bg-[#F5F5F5] hover:bg-[#EDEDED] shadow font-semibold" href="/proprietaires">Dashboard</a>
               <a className="px-3 py-1.5 rounded-full bg-[#F5F5F5] hover:bg-[#EDEDED] shadow font-semibold" href="/proprietaires/annonces">Annonces</a>
               <a className="px-3 py-1.5 rounded-full bg-[#F5F5F5] hover:bg-[#EDEDED] shadow font-semibold" href="/proprietaires/nouvelle">Publier</a>
-              <a className="px-3 py-1.5 rounded-full bg-[#F5F5F5] hover:bg-[#EDEDED] shadow font-semibold" href="/proprietaires/messages">Messages {unreadTotal > 0 && (<span className="inline-flex items-center justify-center min-w-5 h-5 px-1 ml-1 rounded-full bg-red-600 text-white text-[10px]">{unreadTotal}</span>)}</a>
+              {/* Bouton Messages commenté temporairement */}
+              {/* <a className="px-3 py-1.5 rounded-full bg-[#F5F5F5] hover:bg-[#EDEDED] shadow font-semibold" href="/proprietaires/messages">Messages {unreadTotal > 0 && (<span className="inline-flex items-center justify-center min-w-5 h-5 px-1 ml-1 rounded-full bg-red-600 text-white text-[10px]">{unreadTotal}</span>)}</a> */}
               <a className="px-3 py-1.5 rounded-full bg-[#F5F5F5] hover:bg-[#EDEDED] shadow font-semibold" href="/proprietaires/paiements">Paiements</a>
               <a className="px-3 py-1.5 rounded-full bg-[#F5F5F5] hover:bg-[#EDEDED] shadow font-semibold" href="/proprietaires/profil">Profil</a>
               {showLogout && (
@@ -180,10 +181,11 @@ export default function ProprietairesLayout({ children }) {
                     </svg>
                     <span>Publier</span>
                   </a>
-                  <a className="px-3 py-2 rounded-lg hover:bg-black/[.04] flex items-center gap-2" href="/proprietaires/messages" onClick={()=>setMobileOpen(false)}>
+                  {/* Bouton Messages commenté temporairement */}
+                  {/* <a className="px-3 py-2 rounded-lg hover:bg-black/[.04] flex items-center gap-2" href="/proprietaires/messages" onClick={()=>setMobileOpen(false)}>
                     <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><path d="M21 15a4 4 0 0 1-4 4H8l-5 3 1.5-4.5A4 4 0 0 1 4 15V7a4 4 0 0 1 4-4h9a4 4 0 0 1 4 4z"/></svg>
                     <span className="flex items-center gap-2">Messages {unreadTotal > 0 && (<span className="inline-flex items-center justify-center min-w-5 h-5 px-1 rounded-full bg-red-600 text-white text-[10px]">{unreadTotal}</span>)}</span>
-                  </a>
+                  </a> */}
                   <a className="px-3 py-2 rounded-lg hover:bg-black/[.04] flex items-center gap-2" href="/proprietaires/paiements" onClick={()=>setMobileOpen(false)}>
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4" aria-hidden>
                       <path d="M3 7h18v10H3z" />
@@ -221,9 +223,10 @@ export default function ProprietairesLayout({ children }) {
             <a className="flex items-center justify-center" href="/proprietaires/nouvelle" aria-label="Publier">
               <IconPlus className="w-7 h-7" />
             </a>
-            <a className="flex items-center justify-center" href="/proprietaires/messages" aria-label="Messages">
+            {/* Bouton Messages commenté temporairement */}
+            {/* <a className="flex items-center justify-center" href="/proprietaires/messages" aria-label="Messages">
               <IconChat className="w-7 h-7" />
-            </a>
+            </a> */}
             <a className="flex items-center justify-center" href="/proprietaires/paiements" aria-label="Paiements">
               <IconWallet className="w-7 h-7" />
             </a>

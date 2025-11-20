@@ -289,28 +289,88 @@ export default function AnnonceDetails() {
       vv.removeEventListener('scroll', update);
     };
   }, []);
-  // Fonction pour contacter le propriétaire
+  // Fonction pour contacter le support (remplace la messagerie)
   const handleContactHost = async () => {
-    try {
-      const token = typeof window !== 'undefined' ? localStorage.getItem('auth_token') : null;
-      if (!token) {
-        toast.error('Veuillez-vous vous connecter pour envoyer un message');
-        router.push('/clients/connexion');
-        return;
-      }
-
-      if (!annonce?.proprietaireId?._id) {
-        toast.error('Impossible de contacter le propriétaire pour le moment');
-        return;
-      }
-
-      // Rediriger vers la messagerie avec l'ID du propriétaire et l'annonce
-      router.push(`/clients/messages?recipient=${annonce.proprietaireId._id}&annonce=${annonce._id}`);
-    } catch (error) {
-      console.error('Erreur lors de la redirection vers la messagerie:', error);
-      toast.error('Une erreur est survenue lors de la redirection');
-    }
+    // Premier modal accessible sans connexion
+    setContactModalOpen(true);
   };
+  
+  // Fonction pour appeler le numéro
+  const handleCall = () => {
+    window.location.href = `tel:+225${phoneNumber.replace(/\s/g, '')}`;
+  };
+  
+  // Fonction pour ouvrir le modal de message (vérifie la connexion ici)
+  const handleOpenMessageModal = () => {
+    const token = typeof window !== 'undefined' ? localStorage.getItem('auth_token') : null;
+    if (!token) {
+      toast.error('Veuillez-vous vous connecter pour envoyer un message');
+      setContactModalOpen(false);
+      router.push('/clients/connexion');
+      return;
+    }
+    setContactModalOpen(false);
+    setSupportModalOpen(true);
+  };
+  
+  // Fonction pour envoyer le message au support
+  async function handleSupportSubmit(e) {
+    e.preventDefault();
+    setSupportLoading(true);
+    setSupportFeedback(null);
+    
+    // Récupérer les infos utilisateur depuis localStorage
+    const userData = typeof window !== 'undefined' ? JSON.parse(localStorage.getItem('userData') || '{}') : {};
+    
+    // Préparer les données du formulaire
+    const formData = {
+      nom: userData.nom || 'Utilisateur',
+      email: userData.email || '',
+      telephone: userData.telephone || '',
+      message: supportMessage
+    };
+    
+    // Validation côté client
+    if (!formData.message || formData.message.trim().length < 5) {
+      setSupportFeedback({ type: 'error', message: 'Veuillez écrire un message plus détaillé (au moins 5 caractères).' });
+      setSupportLoading(false);
+      return;
+    }
+    
+    try {
+      const res = await apiService.post('/api/messages/support', formData);
+      if (res.success) {
+        setSupportFeedback({ type: 'success', message: 'Votre message a bien été transmis à notre équipe.' });
+        setSupportMessage("");
+        setTimeout(()=>{
+          setSupportModalOpen(false);
+          setSupportFeedback(null);
+        }, 1800);
+      } else {
+        throw new Error(res.message || 'Erreur lors de l\'envoi');
+      }
+    } catch (err) {
+      console.error('Erreur complète:', err);
+      let errorMessage = 'Erreur lors de l\'envoi';
+      
+      // Vérifier d'abord si c'est une erreur de validation (400)
+      if (err.response?.status === 400) {
+        errorMessage = err.response.data?.message || errorMessage;
+      } 
+      // Vérifier si c'est une erreur réseau
+      else if (!err.response) {
+        errorMessage = 'Erreur de connexion. Veuillez vérifier votre connexion internet.';
+      }
+      // Autres erreurs
+      else if (err.message) {
+        errorMessage = err.message;
+      }
+      
+      setSupportFeedback({ type: 'error', message: errorMessage });
+    } finally {
+      setSupportLoading(false);
+    }
+  }
 
   // Gestion favoris
   const handleToggleSave = async () => {
@@ -342,6 +402,16 @@ export default function AnnonceDetails() {
   const [reportReason, setReportReason] = useState('');
   const [submittingReport, setSubmittingReport] = useState(false);
   const [alreadyReported, setAlreadyReported] = useState(false);
+  
+  // --- Contact modal states ---
+  const [contactModalOpen, setContactModalOpen] = useState(false);
+  const phoneNumber = "25 21 00 24 02";
+  
+  // --- Support modal states ---
+  const [supportModalOpen, setSupportModalOpen] = useState(false);
+  const [supportMessage, setSupportMessage] = useState("");
+  const [supportLoading, setSupportLoading] = useState(false);
+  const [supportFeedback, setSupportFeedback] = useState(null);
 
   useEffect(() => {
     // Vérifie si l'utilisateur a déjà signalé cette annonce
@@ -863,7 +933,7 @@ export default function AnnonceDetails() {
                     className="mt-3 w-full px-3 py-2 rounded-full bg-[#4A9B8E] hover:bg-[#3a8b7e] text-white text-[13px] font-semibold shadow-sm fast-pulse hover:animate-none transition-all duration-300"
                     style={{ animation: 'fastPulse 1s ease-in-out infinite' }}
                   >
-                    Intéressé ? Contactez-nous
+                    Intéressé ? Contactez notre équipe
                   </button>
                 )}
               </div>
@@ -1169,6 +1239,101 @@ export default function AnnonceDetails() {
                   <button onClick={submitReport} className="px-4 py-2 rounded-xl bg-red-600 hover:bg-red-700 text-white font-semibold shadow">Envoyer le signalement</button>
                 )}
               </div>
+            </div>
+          </div>
+        )}
+        
+        {/* Modal Contact (première étape) */}
+        {contactModalOpen && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 min-h-screen py-8">
+            <div className="bg-neutral-50 rounded-2xl shadow-sm w-full max-w-[420px] mx-4 p-6 relative my-auto">
+              <button
+                className="absolute top-4 right-4 text-neutral-400 hover:text-neutral-700 transition-colors"
+                onClick={() => setContactModalOpen(false)}
+                aria-label="Fermer"
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M6 6l12 12M6 18L18 6"/></svg>
+              </button>
+              <h2 className="text-2xl font-bold mb-5 text-neutral-900">Contacter notre équipe</h2>
+              <div className="space-y-4">
+                {/* Numéro de téléphone */}
+                <div className="bg-white rounded-xl p-6 shadow-sm border border-neutral-200">
+                  <p className="text-sm text-neutral-600 mb-3 text-center">Contactez-nous par appel</p>
+                  <div className="flex items-center justify-center gap-3 mb-4">
+                    <svg className="w-6 h-6 text-[#4A9B8E]" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                    </svg>
+                    <a 
+                      href={`tel:+225${phoneNumber.replace(/\s/g, '')}`}
+                      className="text-2xl font-bold text-[#4A9B8E] hover:text-[#3a8b7e] transition-colors"
+                    >
+                      {phoneNumber}
+                    </a>
+                  </div>
+                  <button
+                    onClick={handleCall}
+                    className="w-full bg-[#4A9B8E] hover:bg-[#3a8b7e] text-white rounded-lg py-3 font-semibold transition-colors text-base shadow-sm flex items-center justify-center gap-2"
+                  >
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                    </svg>
+                    Appeler
+                  </button>
+                </div>
+                
+                {/* Bouton message */}
+                <button
+                  onClick={handleOpenMessageModal}
+                  className="w-full bg-neutral-800 hover:bg-neutral-700 text-white rounded-lg py-3 font-semibold transition-colors text-base shadow-sm flex items-center justify-center gap-2"
+                >
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                  </svg>
+                  Contactez par message
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+        
+        {/* Modal Support */}
+        {supportModalOpen && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 min-h-screen py-8">
+            <div className="bg-neutral-50 rounded-2xl shadow-sm w-full max-w-[420px] mx-4 p-6 relative my-auto">
+              <button
+                className="absolute top-4 right-4 text-neutral-400 hover:text-neutral-700 transition-colors"
+                onClick={() => setSupportModalOpen(false)}
+                aria-label="Fermer"
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M6 6l12 12M6 18L18 6"/></svg>
+              </button>
+              <h2 className="text-2xl font-bold mb-5 text-neutral-900">Contactez notre équipe</h2>
+              <form onSubmit={handleSupportSubmit} className="space-y-4">
+                <div>
+                  <textarea 
+                    className="w-full rounded-lg px-4 py-3 min-h-[120px] bg-[#F5F5F5] text-base text-neutral-900 placeholder:text-neutral-500 shadow-inner focus:outline-none focus:bg-[#EDEDED] resize-none" 
+                    placeholder="Écrivez votre message ici..." 
+                    required 
+                    value={supportMessage} 
+                    onChange={e=>setSupportMessage(e.target.value)} 
+                  />
+                </div>
+                <button 
+                  type="submit" 
+                  className="w-full bg-neutral-800 text-white rounded-lg py-3 font-semibold hover:bg-neutral-700 transition-colors text-base shadow-sm" 
+                  disabled={supportLoading}
+                >
+                  {supportLoading ? 'Envoi en cours...' : 'Envoyer'}
+                </button>
+                {supportFeedback && (
+                  <div className={`flex items-center justify-center gap-2 mt-3 p-3 rounded-lg ${supportFeedback.type==='success' ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'}`}>
+                    {supportFeedback.type === 'success' && (
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
+                    )}
+                    <span className="text-sm font-medium">{supportFeedback.message}</span>
+                  </div>
+                )}
+              </form>
             </div>
           </div>
         )}

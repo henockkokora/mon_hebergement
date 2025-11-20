@@ -126,8 +126,7 @@ export default function RechercheMobile() {
           'Bureau individuel','Bureau double','Bureau 3 pièces','Bureau 4 pièces et plus',
           'Magasin simple','Magasin en mezzanine',
           'Berline','Pickup','SUV',
-          'Engin de chantier','Engin de manutention','Engin d\'élevage','Engin de mine','Engin agricole',
-          'Camion agricole','Camion porte-voitures','Camion de pompier','Camion poubelle','Camion de chantier','Camion malaxeur','Camion isotherme','Camion de livraison urbaine'
+          'Engin de chantier','Engin de manutention','Engin d\'élevage','Engin de mine','Engin agricole','Camion'
         ];
         const items = Object.entries(counts)
           .filter(([,c]) => c > 0)

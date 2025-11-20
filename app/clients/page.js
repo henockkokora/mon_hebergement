@@ -1816,21 +1816,7 @@ function ClientsPageContent() {
                     { name: "Engin d'élevage", value: "Engin d'élevage", count: annonces.filter(a => a.type === "Engin d'élevage").length, icon: <IconBarn className="w-5 h-5" /> },
                     { name: 'Engin de mine', value: 'Engin de mine', count: annonces.filter(a => a.type === 'Engin de mine').length, icon: <IconPickaxe className="w-5 h-5" /> },
                     { name: 'Engin agricole', value: 'Engin agricole', count: annonces.filter(a => a.type === 'Engin agricole').length, icon: <IconTractor className="w-5 h-5" /> },
-                  ],
-                },
-                {
-                  key: 'camion',
-                  title: 'Camion',
-                  icon: <IconTruck className="w-9 h-9 md:w-12 md:h-12 text-neutral-50" />, 
-                  items: [
-                    { name: 'Camion agricole', value: 'Camion agricole', count: annonces.filter(a => a.type === 'Camion agricole').length, icon: <IconTruck className="w-5 h-5" /> },
-                    { name: 'Camion porte-voitures', value: 'Camion porte-voitures', count: annonces.filter(a => a.type === 'Camion porte-voitures').length, icon: <IconTruck className="w-5 h-5" /> },
-                    { name: 'Camion de pompier', value: 'Camion de pompier', count: annonces.filter(a => a.type === 'Camion de pompier').length, icon: <IconTruck className="w-5 h-5" /> },
-                    { name: 'Camion poubelle', value: 'Camion poubelle', count: annonces.filter(a => a.type === 'Camion poubelle').length, icon: <IconTruck className="w-5 h-5" /> },
-                    { name: 'Camion de chantier', value: 'Camion de chantier', count: annonces.filter(a => a.type === 'Camion de chantier').length, icon: <IconTruck className="w-5 h-5" /> },
-                    { name: 'Camion malaxeur', value: 'Camion malaxeur', count: annonces.filter(a => a.type === 'Camion malaxeur').length, icon: <IconTruck className="w-5 h-5" /> },
-                    { name: 'Camion isotherme', value: 'Camion isotherme', count: annonces.filter(a => a.type === 'Camion isotherme').length, icon: <IconTruck className="w-5 h-5" /> },
-                    { name: 'Camion de livraison urbaine', value: 'Camion de livraison urbaine', count: annonces.filter(a => a.type === 'Camion de livraison urbaine').length, icon: <IconTruck className="w-5 h-5" /> },
+                    { name: 'Camion', value: 'Camion', count: annonces.filter(a => a.type?.startsWith('Camion')).length, icon: <IconTruck className="w-5 h-5" /> },
                   ],
                 },
               ]}

@@ -58,9 +58,7 @@ export default function ProprietairesAnnonces() {
     // Voiture
     "Berline", "Pickup", "SUV",
     // Engin
-    "Engin de chantier", "Engin de manutention", "Engin d'élevage", "Engin de mine", "Engin agricole",
-    // Camion
-    "Camion agricole", "Camion porte-voitures", "Camion de pompier", "Camion poubelle", "Camion de chantier", "Camion malaxeur", "Camion isotherme", "Camion de livraison urbaine"
+    "Engin de chantier", "Engin de manutention", "Engin d'élevage", "Engin de mine", "Engin agricole", "Camion"
   ];
   
   // Options de tri disponibles

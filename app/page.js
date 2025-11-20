@@ -679,7 +679,7 @@ export default function Home() {
           <div className="grid gap-6 sm:gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
             {[
               {img: '1570129477492-45c003edd2be', date: '15 Mars 2025', author: 'Admin', title: 'Achat immobilier: erreurs à éviter', desc: 'Découvrez les principales erreurs à éviter lors de l\'achat d\'un bien immobilier et nos conseils pour un investissement réussi.'},
-              {img: '1522708323590-d24dbb6b0267', date: '12 Mars 2025', author: 'Admin', title: 'Comment préparer une visite virtuelle', desc: 'Tous nos conseils pour optimiser votre visite virtuelle et ne rien manquer lors de l\'exploration d\'un bien.'},
+              {img: '1522708323590-d24dbb6b0267', date: '12 Mars 2025', author: 'Admin', title: 'Comment préparer une visite ', desc: 'Tous nos conseils pour optimiser votre visite et ne rien manquer lors de l\'exploration d\'un bien.'},
               {img: '1505691723518-36a5ac3be353', date: '10 Mars 2025', author: 'Admin', title: 'Les tendances immobilières 2025', desc: 'Découvrez les tendances qui marquent le secteur immobilier cette année et les opportunités à saisir.'},
             ].map((article, i) => (
               <article 
@@ -739,7 +739,7 @@ export default function Home() {
             <div className="sm:col-span-2">
               <div className="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6">
                 <div className="h-10 w-10 sm:h-12 sm:w-12 rounded-xl sm:rounded-2xl bg-gradient-to-br from-[#4A9B8E] to-[#3a8b7e] flex items-center justify-center shadow-lg">
-                  <span className="text-white font-bold text-lg sm:text-xl">MH</span>
+                  <span className="text-white font-bold text-lg sm:text-xl">GE</span>
                 </div>
                 <span className="text-xl sm:text-2xl font-bold">GELocation</span>
               </div>

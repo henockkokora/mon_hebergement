@@ -12,7 +12,7 @@ function IconBack({ className = "w-5 h-5" }) {
   );
 }
 
-const STEPS = ["Identité", "Sécurité", "Localisation", "Téléphone", "Vérification"];
+const STEPS = ["Identité", "Sécurité", "Téléphone", "Vérification"];
 
 function StepDots({ step }) {
   return (
@@ -72,10 +72,7 @@ export default function InscriptionClient() {
     email: "",
     telephone: "",
     password: "",
-    confirmPassword: "",
-    ville: "",
-    quartier: "",
-    adresse: ""
+    confirmPassword: ""
   });
 
   const [errors, setErrors] = useState({});
@@ -229,13 +226,7 @@ export default function InscriptionClient() {
         else if (data.password !== data.confirmPassword) newErrors.confirmPassword = "Les mots de passe ne correspondent pas";
         break;
         
-      case 2: // Localisation
-        if (!data.ville.trim()) newErrors.ville = "La ville est requise";
-        if (!data.quartier.trim()) newErrors.quartier = "Le quartier est requis";
-        if (!data.adresse.trim()) newErrors.adresse = "L'adresse est requise";
-        break;
-        
-      case 3: // Téléphone
+      case 2: // Téléphone
         if (!data.telephone.trim()) newErrors.telephone = "Le numéro de téléphone est requis";
         else if (!/^225[0-9]{10}$/.test(data.telephone.replace(/[\s\-\(\)]/g, ''))) {
           newErrors.telephone = "Format invalide. Utilisez le format 225xxxxxxxxx";
@@ -268,7 +259,7 @@ export default function InscriptionClient() {
   const handleNext = async () => {
     if (!validateStep(step)) return;
     
-    if (step === 3) {
+    if (step === 2) {
       // Étape téléphone - vérifier d'abord si le numéro existe
       try {
         setSubmitting(true);
@@ -301,7 +292,7 @@ export default function InscriptionClient() {
       return;
     }
     
-    if (step === 4) {
+    if (step === 3) {
       // Étape vérification - vérifier OTP
       await verifyOtp();
       return;
@@ -460,56 +451,8 @@ export default function InscriptionClient() {
           </div>
         )}
 
-        {/* Étape 2: Localisation */}
+        {/* Étape 2: Téléphone */}
         {step === 2 && (
-          <div className="space-y-6">
-            <div>
-              <h2 className="text-lg font-semibold text-neutral-900 mb-1">Localisation</h2>
-              <p className="text-neutral-600 text-xs">Où vous trouvez-vous ?</p>
-            </div>
-            
-            <div className="space-y-4">
-              <div>
-                <label className="block text-[15px] font-semibold text-neutral-900 mb-2">Ville *</label>
-                <input
-                  type="text"
-                  value={data.ville}
-                  onChange={(e) => handleInputChange("ville", e.target.value)}
-                  className={`w-full px-4 py-3 rounded-xl text-[16px] placeholder:text-neutral-600 placeholder:font-medium bg-[#F5F5F5] shadow-inner focus:bg-[#EDEDED]`}
-                  placeholder="Ex: Abidjan"
-                />
-                {errors.ville && <p className="mt-1 text-sm text-red-600">{errors.ville}</p>}
-              </div>
-              
-              <div>
-                <label className="block text-[15px] font-semibold text-neutral-900 mb-2">Quartier *</label>
-                <input
-                  type="text"
-                  value={data.quartier}
-                  onChange={(e) => handleInputChange("quartier", e.target.value)}
-                  className={`w-full px-4 py-3 rounded-xl text-[16px] placeholder:text-neutral-600 placeholder:font-medium bg-[#F5F5F5] shadow-inner focus:bg-[#EDEDED]`}
-                  placeholder="Ex: Cocody"
-                />
-                {errors.quartier && <p className="mt-1 text-sm text-red-600">{errors.quartier}</p>}
-              </div>
-              
-              <div>
-                <label className="block text-[15px] font-semibold text-neutral-900 mb-2">Adresse *</label>
-                <textarea
-                  value={data.adresse}
-                  onChange={(e) => handleInputChange("adresse", e.target.value)}
-                  rows={3}
-                  className={`w-full px-4 py-3 rounded-xl text-[16px] placeholder:text-neutral-600 placeholder:font-medium bg-[#F5F5F5] shadow-inner focus:bg-[#EDEDED] resize-none`}
-                  placeholder="Votre adresse complète"
-                />
-                {errors.adresse && <p className="mt-1 text-sm text-red-600">{errors.adresse}</p>}
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Étape 3: Téléphone */}
-        {step === 3 && (
           <div className="space-y-6">
             <div>
               <h2 className="text-lg font-semibold text-neutral-900 mb-1">Vérification téléphone</h2>
@@ -533,8 +476,8 @@ export default function InscriptionClient() {
           </div>
         )}
 
-        {/* Étape 4: Vérification OTP */}
-        {step === 4 && (
+        {/* Étape 3: Vérification OTP */}
+        {step === 3 && (
           <div className="space-y-6">
             <div>
               <h2 className="text-xl font-semibold text-neutral-900 mb-2">Code de vérification</h2>
@@ -598,7 +541,7 @@ export default function InscriptionClient() {
 
         {/* Boutons de navigation */}
         <div className="mt-8 flex gap-3">
-          {step > 0 && step < 4 && (
+          {step > 0 && step < 3 && (
             <button
               onClick={() => setStep(step - 1)}
               className="flex-1 px-6 py-3 text-neutral-900 rounded-xl bg-neutral-100 hover:bg-neutral-200 transition-colors font-semibold shadow-sm"
@@ -607,13 +550,13 @@ export default function InscriptionClient() {
             </button>
           )}
           
-          {step < 4 ? (
+          {step < 3 ? (
             <button
               onClick={handleNext}
               disabled={submitting}
               className="flex-1 px-6 py-3 bg-neutral-800 text-white rounded-xl hover:bg-neutral-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed font-semibold shadow-sm"
             >
-              {submitting ? "En cours..." : step === 3 ? "Envoyer le code" : "Suivant"}
+              {submitting ? "En cours..." : step === 2 ? "Envoyer le code" : "Suivant"}
             </button>
           ) : (
             <button

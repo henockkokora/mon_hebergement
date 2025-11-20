@@ -101,6 +101,8 @@ function Icon360({ className = "w-6 h-6" }) {
 export default function Home() {
   const [isVisible, setIsVisible] = useState({});
   const [showVideo, setShowVideo] = useState(false);
+  const [isScrolling, setIsScrolling] = useState(false);
+  const scrollTimeoutRef = useRef(null);
   const heroVideoRef = useRef(null);
   const videoBannerRef = useRef(null);
 
@@ -130,6 +132,43 @@ export default function Home() {
     elements.forEach((el) => observer.observe(el));
 
     return () => observer.disconnect();
+  }, []);
+
+  // Détecter le scroll pour désactiver temporairement les interactions du composant Stack
+  useEffect(() => {
+    let lastScrollY = window.scrollY;
+    let ticking = false;
+
+    const handleScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const currentScrollY = window.scrollY;
+          const scrollDelta = Math.abs(currentScrollY - lastScrollY);
+          
+          if (scrollDelta > 5) {
+            setIsScrolling(true);
+            if (scrollTimeoutRef.current) {
+              clearTimeout(scrollTimeoutRef.current);
+            }
+            scrollTimeoutRef.current = setTimeout(() => {
+              setIsScrolling(false);
+            }, 150);
+          }
+          
+          lastScrollY = currentScrollY;
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      if (scrollTimeoutRef.current) {
+        clearTimeout(scrollTimeoutRef.current);
+      }
+    };
   }, []);
 
   useEffect(() => {
@@ -427,15 +466,15 @@ export default function Home() {
                   id="awesome-features"
                   className={`max-w-xl w-full text-white transition-all duration-1000 ${isVisible['awesome-features'] ? 'opacity-100 translate-x-0 translate-y-0' : 'opacity-0 -translate-x-4 md:-translate-x-4 translate-y-4 md:translate-y-0'}`}
                 >
-                  <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 sm:mb-6 leading-tight">Découvrez la visite virtuelle</h3>
+                  <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 sm:mb-6 leading-tight">Possibilité de visiter sans se déplacer</h3>
                   <p className="text-base sm:text-lg text-white/95 mb-6 sm:mb-8 md:mb-10 leading-relaxed">
-                    Immersion totale, disponibilité 24h/24 et narration guidée : explorez chaque bien (logement, bureau, magasin, véhicule ou engin) comme si vous y étiez réellement avant même de vous déplacer.
+                    Explorez chaque bien comme si vous y étiez réellement avant même de vous déplacer.
                   </p>
                   <div className="space-y-5 sm:space-y-6">
                     {[
-                      {title: 'Immersion 360°', icon: <Icon360 className="w-6 h-6" />, desc: "Déplacez-vous librement dans chaque espace, changez d'angle et zoomez sur les détails importants."},
-                      {title: 'Visite à votre rythme', icon: <IconClock className="w-6 h-6" />, desc: 'Revenez autant de fois que nécessaire et partagez le lien avec votre entourage en toute simplicité.'},
-                      {title: 'Décisions éclairées', icon: <IconSearch className="w-6 h-6" />, desc: 'Comparez les biens en ligne, prenez des notes et préparez votre sélection avant toute visite physique.'},
+                      {title: 'Immersion 360°', icon: <Icon360 className="w-6 h-6" />, desc: "Déplacez-vous librement et zoomez sur les détails."},
+                      {title: 'Visite à votre rythme', icon: <IconClock className="w-6 h-6" />, desc: 'Disponible 24h/24, partagez le lien avec votre entourage.'},
+                      {title: 'Décisions éclairées', icon: <IconSearch className="w-6 h-6" />, desc: 'Comparez les biens en ligne avant toute visite physique.'},
                     ].map((feature, idx) => (
                       <div key={idx} className="flex items-start gap-3 sm:gap-4">
                         <div className="flex h-11 w-11 sm:h-12 sm:w-12 items-center justify-center rounded-lg sm:rounded-xl bg-white/20 backdrop-blur-sm text-white flex-shrink-0 shadow-lg">
@@ -549,13 +588,22 @@ export default function Home() {
             }
             // Version desktop stack (DynamicStack conservé)
             return (
-              <div className="flex justify-center py-8">
-                <DynamicStack
-                  randomRotation={true}
-                  sensitivity={160}
-                  cardDimensions={{ width: 340, height: 340 }}
-                  cardsData={testimonials.map((content, idx) => ({ id: idx + 1, content }))}
-                />
+              <div 
+                className="flex justify-center py-8"
+                style={{
+                  position: 'relative',
+                  overflow: 'visible',
+                  pointerEvents: isScrolling ? 'none' : 'auto'
+                }}
+              >
+                <div style={{ pointerEvents: 'auto' }}>
+                  <DynamicStack
+                    randomRotation={true}
+                    sensitivity={160}
+                    cardDimensions={{ width: 340, height: 340 }}
+                    cardsData={testimonials.map((content, idx) => ({ id: idx + 1, content }))}
+                  />
+                </div>
               </div>
             );
           })()}
@@ -683,7 +731,7 @@ export default function Home() {
       <footer 
         data-reveal 
         id="footer" 
-        className={`relative bg-gradient-to-br from-neutral-900 via-neutral-800 to-neutral-900 text-white overflow-hidden transition-all duration-1000 ${isVisible['footer'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
+        className={`relative bg-gradient-to-br from-neutral-900 via-neutral-800 to-neutral-900 text-white transition-all duration-1000 ${isVisible['footer'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
       >
         <div className="absolute inset-0 bg-gradient-to-r from-[#4A9B8E]/10 to-transparent"></div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 py-12 sm:py-16">

@@ -4,7 +4,7 @@
 
 /* Mobile stability & readability */
 html, body {
-  height: 100%;
+  min-height: 100%;
   -webkit-text-size-adjust: 100%; /* Prevent iOS auto-zooming text */
   overscroll-behavior: none; /* Avoid pull-to-refresh layout shift */
 }

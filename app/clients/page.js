@@ -1205,33 +1205,40 @@ function GlassCategoriesGrid({ groupes, selectedType, setSelectedType }) {
 
   return (
     <>
-      {/* Message avec flèches cliquables uniquement sur mobile */}
+      {/* Message uniquement sur mobile */}
       {isMobile && (
         <div className="px-4 mb-2">
-          <p className="text-sm text-neutral-500 flex items-center justify-center gap-2">
-            <button
-              onClick={scrollLeft}
-              className="p-1.5 hover:bg-neutral-100 rounded-full transition-colors active:scale-95"
-              aria-label="Défiler vers la gauche"
-            >
-              <svg className="w-4 h-4 text-neutral-600" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
-              </svg>
-            </button>
-            <span>Scrollez ou cliquez sur les flèches pour voir plus de catégories</span>
-            <button
-              onClick={scrollRight}
-              className="p-1.5 hover:bg-neutral-100 rounded-full transition-colors active:scale-95"
-              aria-label="Défiler vers la droite"
-            >
-              <svg className="w-4 h-4 text-neutral-600" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-              </svg>
-            </button>
+          <p className="text-lg text-neutral-500 text-center">
+            Scrollez ou cliquez sur les flèches pour voir plus de catégories
           </p>
         </div>
       )}
-      <div ref={scrollRef} className="w-full flex flex-row gap-x-6 overflow-x-auto hide-scrollbar px-2 py-6 items-start justify-start scroll-snap-x">
+      <div className="relative">
+        {/* Flèche gauche - uniquement sur mobile, positionnée à gauche du conteneur */}
+        {isMobile && (
+          <button
+            onClick={scrollLeft}
+            className="absolute -left-6 top-1/2 -translate-y-1/2 z-20 w-14 h-14 rounded-full bg-white shadow-xl border-2 border-neutral-200 flex items-center justify-center hover:bg-neutral-50 active:scale-95 transition-all"
+            aria-label="Défiler vers la gauche"
+          >
+            <svg className="w-7 h-7 text-neutral-700" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+            </svg>
+          </button>
+        )}
+        {/* Flèche droite - uniquement sur mobile, positionnée à droite du conteneur */}
+        {isMobile && (
+          <button
+            onClick={scrollRight}
+            className="absolute -right-4 top-1/2 -translate-y-1/2 z-20 w-14 h-14 rounded-full bg-white shadow-xl border-2 border-neutral-200 flex items-center justify-center hover:bg-neutral-50 active:scale-95 transition-all"
+            aria-label="Défiler vers la droite"
+          >
+            <svg className="w-7 h-7 text-neutral-700" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
+        )}
+        <div ref={scrollRef} className={`w-full flex flex-row gap-x-6 overflow-x-auto hide-scrollbar py-6 items-start justify-start scroll-snap-x ${isMobile ? 'px-12' : 'px-2'}`}>
       {/* Bouton "Tous" en premier */}
       <div className="flex flex-col items-center min-w-[90px] md:min-w-[100px] snap-start">
         <button
@@ -1312,6 +1319,7 @@ function GlassCategoriesGrid({ groupes, selectedType, setSelectedType }) {
           )}
         </div>
       ))}
+        </div>
       <style jsx global>{`
         .glass-bg {
           background: linear-gradient(135deg, rgba(255,255,255,0.17), rgba(36,36,49,0.30)), rgba(21,19,49,0.26);
@@ -1801,9 +1809,7 @@ function ClientsPageContent() {
         
         {/* Section Catégories */}
         <div className="space-y-4">
-          <div className="px-4">
-            <h2 className="text-[22px] leading-7 md:text-xl font-semibold text-neutral-900 md:text-neutral-800">Catégories populaires</h2>
-          </div>
+         
           <div className="relative">
             {/* Nouvelle grille GlassIcons */}
             <GlassCategoriesGrid 

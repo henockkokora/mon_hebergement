@@ -1160,6 +1160,28 @@ function GlassCategoriesGrid({ groupes, selectedType, setSelectedType }) {
   const popinRef = useRef(null);
   const btnsRef = useRef({});
   const scrollRef = useRef(null); // Pour le scroll horizontal
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Détecter si on est sur mobile
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  // Fonctions de scroll pour les flèches
+  const scrollLeft = () => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollBy({ left: -200, behavior: 'smooth' });
+    }
+  };
+
+  const scrollRight = () => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollBy({ left: 200, behavior: 'smooth' });
+    }
+  };
 
   // Clic dehors : ferme le menu déroulant
   useEffect(() => {
@@ -1182,7 +1204,34 @@ function GlassCategoriesGrid({ groupes, selectedType, setSelectedType }) {
   const toggleOpen = (key) => setOpened(opened === key ? null : key);
 
   return (
-    <div ref={scrollRef} className="w-full flex flex-row gap-x-6 overflow-x-auto hide-scrollbar px-2 py-6 items-start justify-start scroll-snap-x">
+    <>
+      {/* Message avec flèches cliquables uniquement sur mobile */}
+      {isMobile && (
+        <div className="px-4 mb-2">
+          <p className="text-sm text-neutral-500 flex items-center justify-center gap-2">
+            <button
+              onClick={scrollLeft}
+              className="p-1.5 hover:bg-neutral-100 rounded-full transition-colors active:scale-95"
+              aria-label="Défiler vers la gauche"
+            >
+              <svg className="w-4 h-4 text-neutral-600" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+              </svg>
+            </button>
+            <span>Scrollez ou cliquez sur les flèches pour voir plus de catégories</span>
+            <button
+              onClick={scrollRight}
+              className="p-1.5 hover:bg-neutral-100 rounded-full transition-colors active:scale-95"
+              aria-label="Défiler vers la droite"
+            >
+              <svg className="w-4 h-4 text-neutral-600" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+              </svg>
+            </button>
+          </p>
+        </div>
+      )}
+      <div ref={scrollRef} className="w-full flex flex-row gap-x-6 overflow-x-auto hide-scrollbar px-2 py-6 items-start justify-start scroll-snap-x">
       {/* Bouton "Tous" en premier */}
       <div className="flex flex-col items-center min-w-[90px] md:min-w-[100px] snap-start">
         <button
@@ -1281,7 +1330,8 @@ function GlassCategoriesGrid({ groupes, selectedType, setSelectedType }) {
         .scroll-snap-x { scroll-snap-type: x mandatory; }
         .snap-start { scroll-snap-align: start; }
       `}</style>
-    </div>
+      </div>
+    </>
   );
 }
 
@@ -1753,15 +1803,6 @@ function ClientsPageContent() {
         <div className="space-y-4">
           <div className="px-4">
             <h2 className="text-[22px] leading-7 md:text-xl font-semibold text-neutral-900 md:text-neutral-800">Catégories populaires</h2>
-            <p className="text-sm text-neutral-500 mt-1 flex items-center gap-1">
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M7 16l-4-4m0 0l4-4m-4 4h18" />
-              </svg>
-              <span>Défilez pour voir plus de catégories</span>
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-              </svg>
-            </p>
           </div>
           <div className="relative">
             {/* Nouvelle grille GlassIcons */}

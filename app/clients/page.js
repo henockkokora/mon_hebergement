@@ -698,7 +698,7 @@ function Header({
             <input
               type="text"
               className="flex-1 bg-transparent outline-none text-[16px] md:text-sm font-medium md:font-normal text-neutral-900 placeholder:text-neutral-500 placeholder:font-medium md:placeholder:font-normal"
-              placeholder="Rechercher votre appartement"
+              placeholder="Rechercher un bien"
               readOnly
               onFocus={() => router.push('/clients/recherche')}
             />
@@ -809,7 +809,7 @@ function Header({
               }}
               className="flex-1 min-w-0 px-6 py-4 cursor-pointer relative z-10"
             >
-              <div className="text-[12px] font-semibold uppercase tracking-wide text-neutral-500">Type d'appartement</div>
+              <div className="text-[12px] font-semibold uppercase tracking-wide text-neutral-500">Type de bien</div>
               <div 
                 className="w-full text-base outline-none bg-transparent cursor-pointer"
                 onClick={() => {
@@ -1918,7 +1918,7 @@ function ClientsPageContent() {
                 return (
                   <>
                     <p className="text-[15px] font-semibold text-neutral-900 mb-1">Aucune publication{selectedType && selectedType !== 'Tous' ? ` pour cette catégorie (${label})` : ''}</p>
-                    <p className="text-[13px] text-neutral-600">Aucune publication n'a été faite pour l'instant. Repassez plus tard ou visitez d'autres types d'appartements disponibles.</p>
+                    <p className="text-[13px] text-neutral-600">Aucune publication n'a été faite pour l'instant. Repassez plus tard ou visitez d'autres types de biens disponibles.</p>
                   </>
                 );
               })()}

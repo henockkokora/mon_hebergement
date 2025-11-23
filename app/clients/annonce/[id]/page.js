@@ -7,6 +7,7 @@ import apiService from '@/services/api';
 import toast from 'react-hot-toast';
 import MatterportViewer from '@/components/MatterportViewer';
 import { getImageUrl } from '@/utils/imageUtils';
+import Card from '../../components/Card'; // adapte si l'import n'est pas bon
 
 function IconStar({ className = "w-5 h-5" }) {
   return (
@@ -26,7 +27,7 @@ function IconBack({ className = "w-5 h-5" }) {
 
 // Utilise maintenant la fonction utilitaire commune
 
-function SimpleCarousel({ images, title }) {
+function SimpleCarousel({ images, title, onImageClick }) {
   // Nettoyage et normalisation des images
   const safeImages = useMemo(() => {
     if (!images) return [];
@@ -122,7 +123,10 @@ function SimpleCarousel({ images, title }) {
             </button>
           </div>
         ) : (
-          <div className="relative w-full h-full">
+          <div 
+            className="relative w-full h-full cursor-pointer"
+            onClick={() => onImageClick && onImageClick(current, imageUrl)}
+          >
             <Image
               src={imageUrl}
               alt={`${title || 'Annonce'} - Photo ${current + 1}`}
@@ -163,7 +167,7 @@ function SimpleCarousel({ images, title }) {
 }
 
 // Galerie type maquette: grande image à gauche, deux vignettes à droite
-function Gallery({ images, title }) {
+function Gallery({ images, title, onImageClick }) {
   const safe = useMemo(() => {
     const arr = Array.isArray(images) ? images : (images ? [images] : []);
     return arr
@@ -190,14 +194,23 @@ function Gallery({ images, title }) {
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-4 mb-6">
-      <div className="relative h-[280px] sm:h-[380px] lg:h-[420px] rounded-3xl overflow-hidden">
+      <div 
+        className="relative h-[280px] sm:h-[380px] lg:h-[420px] rounded-3xl overflow-hidden cursor-pointer"
+        onClick={() => onImageClick && onImageClick(0, main)}
+      >
         <Image src={main} alt={title || 'Photo principale'} fill className="object-cover" sizes="(max-width: 1024px) 100vw, 66vw" unoptimized={true} />
       </div>
       <div className="grid grid-rows-2 gap-4">
-        <div className="relative rounded-3xl overflow-hidden h-[130px] sm:h-[180px] lg:h-[200px]">
+        <div 
+          className="relative rounded-3xl overflow-hidden h-[130px] sm:h-[180px] lg:h-[200px] cursor-pointer"
+          onClick={() => onImageClick && onImageClick(1, side1)}
+        >
           <Image src={side1} alt="Photo secondaire 1" fill className="object-cover" sizes="(max-width: 1024px) 100vw, 34vw" unoptimized={true} />
         </div>
-        <div className="relative rounded-3xl overflow-hidden h-[130px] sm:h-[180px] lg:h-[200px]">
+        <div 
+          className="relative rounded-3xl overflow-hidden h-[130px] sm:h-[180px] lg:h-[200px] cursor-pointer"
+          onClick={() => onImageClick && onImageClick(2, side2)}
+        >
           <Image src={side2} alt="Photo secondaire 2" fill className="object-cover" sizes="(max-width: 1024px) 100vw, 34vw" unoptimized={true} />
         </div>
       </div>
@@ -207,6 +220,8 @@ function Gallery({ images, title }) {
 
 export default function AnnonceDetails() {
   const [showGallery, setShowGallery] = useState(null);
+  const [imageModalOpen, setImageModalOpen] = useState(false);
+  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const router = useRouter();
   
   // CSS pour l'animation rapide
@@ -226,32 +241,6 @@ export default function AnnonceDetails() {
   }, []);
   const params = useParams();
   const id = params?.id;
-
-  // Fonction pour gérer le partage de l'annonce
-  const handleShare = async () => {
-    try {
-      // Créer l'URL complète de l'annonce
-      const shareUrl = `${window.location.origin}/clients/annonce/${id}`;
-      
-      // Vérifier si l'API Web Share est disponible (mobile)
-      if (navigator.share) {
-        await navigator.share({
-          title: annonce?.titre || 'Annonce immobilière',
-          text: annonce?.description?.substring(0, 100) + '...' || 'Découvrez cette annonce immobilière',
-          url: shareUrl,
-        });
-      } else {
-        // Fallback pour les navigateurs qui ne supportent pas l'API Web Share
-        await navigator.clipboard.writeText(shareUrl);
-        toast.success('Lien copié dans le presse-papiers !');
-      }
-    } catch (error) {
-      if (error.name !== 'AbortError') {
-        console.error('Erreur lors du partage:', error);
-        toast.error('Erreur lors du partage de l\'annonce');
-      }
-    }
-  };
 
   // Tous les hooks doivent être déclarés ici AVANT tout return
   const [isFavorite, setIsFavorite] = useState(false);
@@ -289,6 +278,62 @@ export default function AnnonceDetails() {
       vv.removeEventListener('scroll', update);
     };
   }, []);
+
+  // Récupérer toutes les images normalisées pour la modal
+  const allImages = useMemo(() => {
+    if (!annonce) return [];
+    const imagesArray = [...(annonce.images || []), ...(annonce.photos || [])];
+    return imagesArray
+      .map(img => {
+        const url = getImageUrl(img);
+        return url ? { src: url, original: img } : null;
+      })
+      .filter(Boolean)
+      .filter((img, index, self) => index === self.findIndex(i => i.src === img.src));
+  }, [annonce]);
+
+  // Fonction pour ouvrir la modal d'image en grand
+  const handleImageClick = (clickedIndex, clickedImageUrl = null) => {
+    if (clickedImageUrl) {
+      // Trouver l'index dans allImages en utilisant l'URL
+      const foundIndex = allImages.findIndex(img => img.src === clickedImageUrl);
+      if (foundIndex !== -1) {
+        setSelectedImageIndex(foundIndex);
+        setImageModalOpen(true);
+        return;
+      }
+    }
+    // Fallback sur l'index passé
+    setSelectedImageIndex(clickedIndex);
+    setImageModalOpen(true);
+  };
+
+  // Fonction pour gérer le partage de l'annonce
+  const handleShare = async () => {
+    try {
+      // Créer l'URL complète de l'annonce
+      const shareUrl = `${window.location.origin}/clients/annonce/${id}`;
+      
+      // Vérifier si l'API Web Share est disponible (mobile)
+      if (navigator.share) {
+        await navigator.share({
+          title: annonce?.titre || 'Annonce immobilière',
+          text: annonce?.description?.substring(0, 100) + '...' || 'Découvrez cette annonce immobilière',
+          url: shareUrl,
+        });
+      } else {
+        // Fallback pour les navigateurs qui ne supportent pas l'API Web Share
+        await navigator.clipboard.writeText(shareUrl);
+        toast.success('Lien copié dans le presse-papiers !');
+      }
+    } catch (error) {
+      if (error.name !== 'AbortError') {
+        console.error('Erreur lors du partage:', error);
+        toast.error('Erreur lors du partage de l\'annonce');
+      }
+    }
+  };
+
   // Fonction pour contacter le support (remplace la messagerie)
   const handleContactHost = async () => {
     // Premier modal accessible sans connexion
@@ -840,7 +885,7 @@ export default function AnnonceDetails() {
   </div>
 )}
 {showGallery === true && (
-  <Gallery images={[...(annonce.images || []), ...(annonce.photos || [])]} title={annonce.title || annonce.titre || 'Annonce'} />
+  <Gallery images={[...(annonce.images || []), ...(annonce.photos || [])]} title={annonce.title || annonce.titre || 'Annonce'} onImageClick={handleImageClick} />
 )}
 {showGallery === false && (annonce?.matterportModelId || annonce?.matterportShareUrl) && (
   <div className="w-full flex flex-col items-center justify-center py-10">
@@ -863,8 +908,8 @@ export default function AnnonceDetails() {
             >
               Partager
             </button>
-            <button onClick={handleToggleSave} className={`px-3 py-1.5 rounded-full bg-[#F5F5F5] hover:bg-[#EDEDED] text-[13px] font-medium shadow ${isFavorite ? 'text-[#d23b3b]' : ''}`}>{isFavorite ? 'Enregistré' : 'Enregistrer'}</button>
-            <button onClick={handleOpenReport} className="px-3 py-1.5 rounded-full bg-[#F5F5F5] hover:bg-[#EDEDED] text-[13px] font-medium shadow">Signaler</button>
+            <button onClick={handleToggleSave} className={`px-3 py-1.5 rounded-full text-white text-[13px] font-medium shadow transition-colors ${isFavorite ? 'bg-green-600 hover:bg-green-700' : 'bg-green-500 hover:bg-green-600'}`}>{isFavorite ? 'Enregistré' : 'Enregistrer l\'annonce'}</button>
+            <button onClick={handleOpenReport} className="px-3 py-1.5 rounded-full bg-red-500 hover:bg-red-600 text-white text-[13px] font-medium shadow transition-colors">Signaler</button>
             {(annonce.matterportModelId || annonce.matterportShareUrl) && (
               <button
                 onClick={() => router.push(`/clients/annonce/${id}/visite3d`)}
@@ -1337,7 +1382,143 @@ export default function AnnonceDetails() {
             </div>
           </div>
         )}
+
+        {/* Modal de visualisation d'image en grand */}
+        {imageModalOpen && allImages.length > 0 && (
+          <div 
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4"
+            onClick={() => setImageModalOpen(false)}
+          >
+            <button
+              className="absolute top-4 right-4 text-white hover:text-gray-300 transition-colors z-10 bg-black/50 rounded-full p-2"
+              onClick={() => setImageModalOpen(false)}
+              aria-label="Fermer"
+            >
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+            
+            {allImages.length > 1 && (
+              <>
+                <button
+                  className="absolute left-4 top-1/2 -translate-y-1/2 text-white hover:text-gray-300 transition-colors z-10 bg-black/50 rounded-full p-3"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setSelectedImageIndex(prev => (prev === 0 ? allImages.length - 1 : prev - 1));
+                  }}
+                  aria-label="Image précédente"
+                >
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+                  </svg>
+                </button>
+                <button
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-white hover:text-gray-300 transition-colors z-10 bg-black/50 rounded-full p-3"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setSelectedImageIndex(prev => (prev === allImages.length - 1 ? 0 : prev + 1));
+                  }}
+                  aria-label="Image suivante"
+                >
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                  </svg>
+                </button>
+                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10">
+                  {allImages.map((_, idx) => (
+                    <button
+                      key={idx}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setSelectedImageIndex(idx);
+                      }}
+                      className={`w-2.5 h-2.5 rounded-full transition-all ${idx === selectedImageIndex ? 'bg-white scale-125' : 'bg-white/50 hover:bg-white/70'}`}
+                      aria-label={`Image ${idx + 1}`}
+                    />
+                  ))}
+                </div>
+              </>
+            )}
+
+            <div 
+              className="relative w-full h-full max-w-7xl max-h-[90vh] flex items-center justify-center"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <img
+                src={allImages[selectedImageIndex]?.src}
+                alt={`${annonce?.title || annonce?.titre || 'Annonce'} - Photo ${selectedImageIndex + 1}`}
+                className="max-w-full max-h-[90vh] object-contain rounded-lg"
+              />
+            </div>
+          </div>
+        )}
       </main>
+
+      {/* Annonces similaires */}
+      <section className="mt-16 pt-10 border-t border-neutral-200">
+        <h2 className="text-2xl font-bold mb-8 text-neutral-900 text-center">Annonces similaires</h2>
+        <SimilarListings idCourante={annonce?._id || id} typeCourant={annonce?.type} villeCourante={annonce?.ville || annonce?.address?.ville} prixCourant={annonce?.price || annonce?.prixParNuit} />
+      </section>
+    </div>
+  );
+}
+
+function SimilarListings({ idCourante, typeCourant, villeCourante, prixCourant }) {
+  const [loading, setLoading] = useState(true);
+  const [similar, setSimilar] = useState([]);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    if (!typeCourant || !villeCourante) return;
+    const fetch = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const res = await apiService.getAnnonces();
+        const all = Array.isArray(res.data) ? res.data : [];
+        const filtered = all
+          .filter(a => a._id !== idCourante && a.type === typeCourant && (a.ville === villeCourante || a.address?.ville === villeCourante))
+          .sort((a, b) => Math.abs((a.price || a.prixParNuit || 0) - (prixCourant || 0)) - Math.abs((b.price || b.prixParNuit || 0) - (prixCourant || 0)))
+          .slice(0, 6);
+        setSimilar(filtered);
+      } catch (e) {
+        setError("Impossible de charger les annonces similaires");
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetch();
+  }, [idCourante, typeCourant, villeCourante, prixCourant]);
+
+  if (!typeCourant || !villeCourante) return null;
+
+  return (
+    <div className="min-h-[130px] w-full">
+      {loading ? (
+        <div className="flex justify-center py-8 text-neutral-600">Chargement…</div>
+      ) : error ? (
+        <div className="flex justify-center py-8 text-red-500">{error}</div>
+      ) : similar.length === 0 ? (
+        <div className="flex justify-center py-8 text-neutral-500">Aucune annonce similaire trouvée</div>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6 max-w-5xl mx-auto">
+          {similar.map(item => (
+            <Card
+              key={item._id}
+              item={{
+                id: item._id,
+                title: item.titre,
+                subtitle: `${item.type || ''}${item.ville ? ' · ' + item.ville : ''}`,
+                price: item.prixParNuit || item.price || 0,
+                rating: item.rating,
+                image: (item.photos?.[0] || item.images?.[0]) ?? null,
+                type: item.type || ''
+              }}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 }

@@ -1239,9 +1239,9 @@ function GlassCategoriesGrid({ groupes, selectedType, setSelectedType }) {
             </svg>
           </button>
         )}
-        <div ref={scrollRef} className={`w-full flex flex-row gap-x-6 overflow-x-auto hide-scrollbar py-6 items-start justify-start scroll-snap-x ${isMobile ? 'pl-16 pr-6' : 'px-2'}`}>
+        <div ref={scrollRef} className={`w-full flex flex-row gap-x-6 overflow-x-auto hide-scrollbar py-6 items-start justify-start scroll-snap-x ${isMobile ? 'pl-4 pr-6' : 'px-2'}`}>
       {/* Bouton "Tous" en premier */}
-      <div className="flex flex-col items-center min-w-[110px] md:min-w-[100px] snap-start">
+      <div className="flex flex-col items-center min-w-[110px] md:min-w-[100px] snap-start ml-16">
         <button
           type="button"
           onClick={() => setSelectedType('Tous')}

@@ -1451,8 +1451,24 @@ export default function AnnonceDetails() {
         )}
       </main>
 
+      {/* Barre d'action fixe pour mobile */}
+      <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-lg md:hidden z-50 py-3 px-4">
+        <div className="flex items-center justify-between max-w-md mx-auto w-full">
+          <div className="flex-1 pr-2">
+            <p className="text-sm font-medium text-gray-700">Intéressé(e) ?</p>
+            <p className="text-xs text-gray-500">Contactez notre équipe</p>
+          </div>
+          <button 
+            onClick={handleContactHost}
+            className="bg-[#4A9B8E] hover:bg-[#3d857a] text-white font-medium py-3 px-6 rounded-lg text-sm transition-colors whitespace-nowrap"
+          >
+            Contacter
+          </button>
+        </div>
+      </div>
+
       {/* Annonces similaires */}
-      <section className="mt-16 pt-10 border-t border-neutral-200">
+      <section className="mt-16 pt-10 border-t border-neutral-200 pb-20 md:pb-10">
         <h2 className="text-2xl font-bold mb-8 text-neutral-900 text-center">Annonces similaires</h2>
         <SimilarListings idCourante={annonce?._id || id} typeCourant={annonce?.type} villeCourante={annonce?.ville || annonce?.address?.ville} prixCourant={annonce?.price || annonce?.prixParNuit} />
       </section>

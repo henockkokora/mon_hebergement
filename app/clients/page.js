@@ -1206,12 +1206,19 @@ function GlassCategoriesGrid({ groupes, selectedType, setSelectedType }) {
 
   return (
     <>
-      {/* Message uniquement sur mobile */}
+      {/* Message d'instruction pour le défilement - version mobile */}
       {isMobile && (
-        <div className="px-4 mb-2">
-          <p className="text-lg text-neutral-500 text-center">
-            Scrollez ou cliquez sur les flèches pour voir plus de catégories
-          </p>
+        <div className="px-6 mb-4 mt-2">
+          <div className="bg-white/80 backdrop-blur-sm border border-neutral-100 rounded-xl p-3 shadow-sm">
+            <p className="text-sm font-medium text-neutral-700 text-center flex items-center justify-center gap-2">
+              <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-[#4A9B8E]/10 text-[#4A9B8E]">
+                <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 5l7 7-7 7M5 5l7 7-7 7" />
+                </svg>
+              </span>
+              <span>Faites défiler pour explorer plus de catégories</span>
+            </p>
+          </div>
         </div>
       )}
       <div className="relative">

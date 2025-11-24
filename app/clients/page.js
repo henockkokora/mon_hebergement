@@ -516,7 +516,7 @@ function Header({
       <div className="max-w-[1200px] mx-auto px-4 py-3 flex items-center gap-6">
         {/* Brand + Support */}
         <div className="flex items-center gap-2">
-          <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-[#4A9B8E] text-white text-[12px] font-bold">M</span>
+          <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-[#4A9B8E] text-white text-[12px] font-bold">GE</span>
           <span className="font-semibold">GELocation</span>
         </div>
         {/* Mobile hamburger (original) hidden; moved to right actions */}
@@ -1239,9 +1239,9 @@ function GlassCategoriesGrid({ groupes, selectedType, setSelectedType }) {
             </svg>
           </button>
         )}
-        <div ref={scrollRef} className={`w-full flex flex-row gap-x-6 overflow-x-auto hide-scrollbar py-6 items-start justify-start scroll-snap-x ${isMobile ? 'px-12' : 'px-2'}`}>
+        <div ref={scrollRef} className={`w-full flex flex-row gap-x-6 overflow-x-auto hide-scrollbar py-6 items-start justify-start scroll-snap-x ${isMobile ? 'pl-16 pr-6' : 'px-2'}`}>
       {/* Bouton "Tous" en premier */}
-      <div className="flex flex-col items-center min-w-[90px] md:min-w-[100px] snap-start">
+      <div className="flex flex-col items-center min-w-[110px] md:min-w-[100px] snap-start">
         <button
           type="button"
           onClick={() => setSelectedType('Tous')}

@@ -927,12 +927,8 @@ export default function AnnonceDetails() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
           {/* Left Column */}
           <div className="lg:col-span-2 space-y-4">
-            <div className="rounded-3xl bg-neutral-50 shadow-sm p-6">
-              <h2 className="text-[15px] font-semibold text-neutral-900">
-                {annonce.type || 'Logement'}{annonce.type ? ' · ' : ''}Propriétaire : {annonce.proprietaireId?.nom || annonce.proprietaire?.nom || 'Non renseigné'}
-              </h2>
-            </div>
-            <div className="rounded-3xl bg-neutral-50 shadow-sm p-6">
+           
+            <div className="rounded-3xl bg-neutral-50 shadow-lg border-2 border-neutral-200 p-6">
               <h3 className="text-[15px] font-semibold mb-3 text-neutral-900">Description</h3>
               <p className="text-[16px] text-neutral-700 leading-relaxed">{annonce.description || 'Description non renseignée.'}</p>
             </div>
@@ -942,7 +938,7 @@ export default function AnnonceDetails() {
           <div className="lg:col-span-1">
             <div className="sticky top-24 flex flex-col gap-6">
               {/* Carte propriétaire */}
-              <div className="rounded-3xl bg-neutral-50 shadow-sm p-5">
+              <div className="rounded-3xl bg-neutral-50 shadow-lg border-2 border-neutral-200 p-5">
                 <h4 className="text-[15px] font-semibold text-neutral-900 mb-3">Propriétaire</h4>
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center gap-3">
@@ -984,7 +980,7 @@ export default function AnnonceDetails() {
               </div>
 
               {/* Carte réservation/visite */}
-              <div className="bg-neutral-50 rounded-3xl shadow-sm p-6">
+              <div className="bg-neutral-50 rounded-3xl shadow-lg border-2 border-neutral-200 p-6">
                 <div className="text-center mb-4">
                   <div className="flex items-center justify-center">
                     <span className="text-2xl font-bold text-gray-900">{(annonce.price || annonce.prixParNuit || 0).toLocaleString()} FCFA</span>

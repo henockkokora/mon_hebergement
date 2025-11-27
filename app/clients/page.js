@@ -1288,7 +1288,10 @@ function GlassCategoriesGrid({ groupes, selectedType, setSelectedType }) {
                     bg-white/40 hover:bg-white/60 transition \
                     ${selectedType === item.value ? 'ring-2 ring-[#4A9B8E] font-bold bg-white/80' : ''}`
                   }
-                  onClick={() => setSelectedType(item.value)}
+                  onClick={() => {
+                    setSelectedType(item.value);
+                    setOpened(null); // Ferme le menu déroulant
+                  }}
                 >
                   <span className="w-7 h-7 flex items-center justify-center">{item.icon}</span>
                   <span className="break-words whitespace-normal flex-1">{item.name}</span>

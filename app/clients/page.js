@@ -1208,44 +1208,18 @@ function GlassCategoriesGrid({ groupes, selectedType, setSelectedType }) {
     <>
       {/* Message d'instruction pour le défilement - version mobile */}
       {isMobile && (
-        <div className="px-6 mb-4 mt-2">
-          <div className="bg-white/80 backdrop-blur-sm border border-neutral-100 rounded-xl p-3 shadow-sm">
-            <p className="text-sm font-medium text-neutral-700 text-center flex items-center justify-center gap-2">
-              <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-[#4A9B8E]/10 text-[#4A9B8E]">
-                <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 5l7 7-7 7M5 5l7 7-7 7" />
-                </svg>
-              </span>
-              <span>Faites défiler pour explorer plus de catégories</span>
+        <div className="px-6 mb-3 mt-2">
+          <div className="bg-white/90 backdrop-blur-sm border border-neutral-200 rounded-lg p-2.5 shadow-sm">
+            <p className="text-sm font-medium text-neutral-700 text-center">
+              <span className="inline-block mx-1 text-base">←</span>
+              Glissez pour explorer les catégories
+              <span className="inline-block mx-1 text-base">→</span>
             </p>
           </div>
         </div>
       )}
       <div className="relative">
-        {/* Flèche gauche - uniquement sur mobile, positionnée à gauche du conteneur */}
-        {isMobile && (
-          <button
-            onClick={scrollLeft}
-            className="absolute -left-6 top-1/2 -translate-y-1/2 z-20 w-14 h-14 rounded-full bg-white shadow-xl border-2 border-neutral-200 flex items-center justify-center hover:bg-neutral-50 active:scale-95 transition-all"
-            aria-label="Défiler vers la gauche"
-          >
-            <svg className="w-7 h-7 text-neutral-700" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
-            </svg>
-          </button>
-        )}
-        {/* Flèche droite - uniquement sur mobile, positionnée à droite du conteneur */}
-        {isMobile && (
-          <button
-            onClick={scrollRight}
-            className="absolute -right-4 top-1/2 -translate-y-1/2 z-20 w-14 h-14 rounded-full bg-white shadow-xl border-2 border-neutral-200 flex items-center justify-center hover:bg-neutral-50 active:scale-95 transition-all"
-            aria-label="Défiler vers la droite"
-          >
-            <svg className="w-7 h-7 text-neutral-700" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-            </svg>
-          </button>
-        )}
+        {/* Flèches supprimées pour la version mobile */}
         <div ref={scrollRef} className={`w-full flex flex-row gap-x-6 overflow-x-auto hide-scrollbar py-6 items-start justify-start scroll-snap-x ${isMobile ? 'pl-4 pr-6' : 'px-2'}`}>
       {/* Bouton "Tous" en premier */}
       <div className="flex flex-col items-center min-w-[110px] md:min-w-[100px] snap-start ml-16">
